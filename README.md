@@ -52,3 +52,13 @@ export default tseslint.config({
   },
 });
 ```
+
+## Deployment to GitHub Pages
+
+To publish this project on [GitHub Pages](https://pages.github.com/), the base path in `vite.config.ts` is set to `/zewa_2025/`. The repository includes a workflow file at `.github/workflows/gh-pages.yml` that builds the project and deploys the contents of the `dist` folder whenever changes are pushed to the `main` branch.
+
+1. Enable GitHub Pages in the repository settings and choose **GitHub Actions** as the source.
+2. Push your changes to the `main` branch.
+3. The workflow will build the site with `pnpm` and publish it to the `gh-pages` environment automatically.
+
+The published site will be available at `https://<your-github-username>.github.io/zewa_2025/`.
