@@ -1,6 +1,6 @@
 {
   "name": "zewa_2025",
-  "homepage": "https://chernyshovaalexandra.github.io/zewa_2025",
+  "homepage": "./",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -26,6 +26,7 @@
     "react-dom": "^18.3.1",
     "react-router-dom": "^7.6.2",
     "styled-components": "^6.1.18",
+    "url": "^0.11.4",
     "uuid": "^11.1.0",
     "zustand": "^5.0.5"
   },
