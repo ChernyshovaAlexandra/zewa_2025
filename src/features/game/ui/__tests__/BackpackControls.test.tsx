@@ -34,5 +34,4 @@ describe('BackpackControls', () => {
     await userEvent.click(buttons[2]);
     expect(moveRight).toHaveBeenCalled();
   });
-
 });
