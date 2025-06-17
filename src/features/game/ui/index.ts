@@ -8,3 +8,4 @@ export * from './GameCanvas';
 export * from './GameTickerWrapper';
 export * from './GameUIOverlay';
 export * from './OnboardingOverlay';
+export * from './PauseOverlay';

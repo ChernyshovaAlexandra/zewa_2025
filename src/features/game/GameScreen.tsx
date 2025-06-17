@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { renderGameOverModal, renderPauseModal, useHowToPlayEntry } from './lib';
 import { useGameModelStore } from './model/gameModelStore';
-import { BackpackControls, GameUIOverlay, GameCanvas, OnboardingOverlay } from './ui';
+import { BackpackControls, GameUIOverlay, GameCanvas, OnboardingOverlay, PauseOverlay } from './ui';
 import { useModalStore } from '@/shared/model/modalStore';
 import { useNavigate } from 'react-router-dom';
 
@@ -36,7 +36,8 @@ export function GameScreen() {
       <GameCanvas />
       <GameUIOverlay />
       <BackpackControls />
-      <OnboardingOverlay /> 
+      <PauseOverlay />
+      <OnboardingOverlay />
     </>
   );
 }
