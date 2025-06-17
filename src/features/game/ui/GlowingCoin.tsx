@@ -19,7 +19,7 @@ export const GlowingCoin = ({ x, y, size = 64 }: { x: number; y: number; size?: 
       {/* Лучи */}
       <Sprite
         ref={raysRef}
-        image="/assets/images/coin-rays.png"
+        image="./assets/images/coin-rays.png"
         width={size * 2}
         height={size * 2}
         anchor={0.5}
@@ -29,7 +29,7 @@ export const GlowingCoin = ({ x, y, size = 64 }: { x: number; y: number; size?: 
       {/* Свечение */}
       <Sprite
         ref={glowRef}
-        image="/assets/images/coin-glow.png"
+        image="./assets/images/coin-glow.png"
         width={size * 1.5}
         height={size * 1.5}
         anchor={0.5}
@@ -37,7 +37,7 @@ export const GlowingCoin = ({ x, y, size = 64 }: { x: number; y: number; size?: 
         blendMode={PIXI.BLEND_MODES.ADD}
       />
       {/* Монетка */}
-      <Sprite image="/assets/images/items/coin.png" width={size} height={size} anchor={0.5} />
+      <Sprite image="./assets/images/items/coin.png" width={size} height={size} anchor={0.5} />
     </Container>
   );
 };

@@ -3,9 +3,9 @@ import styled from 'styled-components';
 export const Screen4 = () => {
   return (
     <>
-      <Domovenok src="/assets/images/onboarding/domovenok4.png" />
+      <Domovenok src="./assets/images/onboarding/domovenok4.png" />
       <Bubble>
-        <img src={'/assets/images/onboarding/bubble4.png'} alt={`Bubble`} />
+        <img src={'./assets/images/onboarding/bubble4.png'} alt={`Bubble`} />
       </Bubble>
     </>
   );

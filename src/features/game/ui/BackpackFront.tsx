@@ -14,7 +14,7 @@ export const BackpackFront = ({
   return (
     <Container x={x} y={y}>
       <Sprite
-        image="/assets/images/backpack-front.png"
+        image="./assets/images/backpack-front.png"
         width={width}
         height={height}
         anchor={0.5}

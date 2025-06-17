@@ -6,7 +6,7 @@ export const Wrapper = styled.div<{
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: url('/assets/images/bg.svg'), linear-gradient(180deg, #2d59df 0%, #1945cb 100%);
+  background: url('./assets/images/bg.svg'), linear-gradient(180deg, #2d59df 0%, #1945cb 100%);
 
   ${({ $fullscreen }) =>
     $fullscreen &&
