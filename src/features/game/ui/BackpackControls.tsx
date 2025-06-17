@@ -1,33 +1,58 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useGameModelStore } from '@/features/game/model/gameModelStore';
 import styled from 'styled-components';
 import { ForwardIcon, LeftIcon } from '@/shared/ui';
 import { useCoinAnimationStore } from '@/features/game/model/coinAnimationStore';
 import { useSwipe } from '@/hooks';
+import { useModalStore } from '@/shared/model/modalStore';
 
 export const BackpackControls = () => {
   const moveLeft = useGameModelStore((s) => s.moveLeft);
   const moveRight = useGameModelStore((s) => s.moveRight);
   const flyingCoins = useCoinAnimationStore((s) => s.flyingCoins);
+  const isPaused = useGameModelStore((s) => s.isPaused);
+  const isGameOver = useGameModelStore((s) => s.isGameOver);
+  const isGameStarted = useGameModelStore((s) => s.isGameStarted);
+  const isModalOpen = useModalStore((s) => s.isOpen);
+
+  const canMove = useMemo(
+    () => isGameStarted && !isPaused && !isGameOver && !isModalOpen,
+    [isGameStarted, isPaused, isGameOver, isModalOpen],
+  );
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
-      if (flyingCoins.length) return;
+      if (!canMove || flyingCoins.length) return;
       if (e.key === 'ArrowLeft') moveLeft();
       if (e.key === 'ArrowRight') moveRight();
     };
     window.addEventListener('keydown', handleKey);
     return () => window.removeEventListener('keydown', handleKey);
-  }, [flyingCoins.length, moveLeft, moveRight]);
+  }, [canMove, flyingCoins.length, moveLeft, moveRight]);
 
-  useSwipe({ onSwipeLeft: moveLeft, onSwipeRight: moveRight });
+  useSwipe({
+    onSwipeLeft: () => {
+      if (canMove) moveLeft();
+    },
+    onSwipeRight: () => {
+      if (canMove) moveRight();
+    },
+  });
 
   return (
     <ControlsWrapper>
-      <ArrowButton onClick={moveLeft}>
+      <ArrowButton
+        onClick={() => {
+          if (canMove) moveLeft();
+        }}
+      >
         <LeftIcon />
       </ArrowButton>
-      <ArrowButton onClick={moveRight}>
+      <ArrowButton
+        onClick={() => {
+          if (canMove) moveRight();
+        }}
+      >
         <ForwardIcon />
       </ArrowButton>
     </ControlsWrapper>
