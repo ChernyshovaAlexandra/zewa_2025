@@ -1,5 +1,5 @@
 import { useTick } from '@pixi/react';
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react';
 import { useGameModelStore } from '@/features/game/model/gameModelStore';
 
 export const useGameTicker = (canvasWidth: number, canvasHeight: number) => {
@@ -11,6 +11,10 @@ export const useGameTicker = (canvasWidth: number, canvasHeight: number) => {
 
   const timer = useRef(0);
   const ADD_INTERVAL = 1600;
+
+  useEffect(() => {
+    timer.current = 0;
+  }, [isGameStarted]);
 
   useTick((delta: number) => {
     if (!isGameStarted || isPaused) return;

@@ -18,7 +18,7 @@ describe('BackpackControls', () => {
   beforeEach(() => {
     moveLeft.mockClear();
     moveRight.mockClear();
-    useGameModelStore.setState({ moveLeft, moveRight });
+    useGameModelStore.setState({ moveLeft, moveRight, isGameStarted: true });
     (useCoinAnimationStore as unknown as vi.Mock).mockReturnValue({ flyingCoins: [] });
   });
 

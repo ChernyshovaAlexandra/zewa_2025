@@ -16,6 +16,7 @@
   "dependencies": {
     "@pixi/filter-glow": "^5.2.1",
     "@pixi/react": "^7.1.2",
+    "@testing-library/dom": "^10.4.0",
     "antd": "^5.26.0",
     "axios": "^1.9.0",
     "classnames": "^2.5.1",
