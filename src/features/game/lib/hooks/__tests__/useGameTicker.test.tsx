@@ -12,12 +12,16 @@ describe('useGameTicker', () => {
   const moveItems = vi.fn();
   const addItem = vi.fn();
   const spawnCoin = vi.fn();
+  const pauseGame = vi.fn();
+  const resumeGame = vi.fn();
 
   beforeEach(() => {
     useGameModelStore.setState({
       moveItems,
       addItem,
       spawnCoin,
+      pauseGame,
+      resumeGame,
       isPaused: false,
       isGameStarted: true,
     });
@@ -37,5 +41,17 @@ describe('useGameTicker', () => {
     expect(moveItems).toHaveBeenCalled();
     const spawns = addItem.mock.calls.length + spawnCoin.mock.calls.length;
     expect(spawns).toBeGreaterThan(0);
+  });
+
+  it('handles visibility change pause and resume', () => {
+    renderHook(() => useGameTicker(100, 200));
+
+    Object.defineProperty(document, 'hidden', { configurable: true, value: true });
+    document.dispatchEvent(new Event('visibilitychange'));
+    expect(pauseGame).toHaveBeenCalled();
+
+    Object.defineProperty(document, 'hidden', { configurable: true, value: false });
+    document.dispatchEvent(new Event('visibilitychange'));
+    expect(resumeGame).toHaveBeenCalled();
   });
 });
