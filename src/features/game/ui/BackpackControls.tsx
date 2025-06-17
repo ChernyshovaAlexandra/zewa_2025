@@ -1,14 +1,14 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { useGameModelStore } from '@/features/game/model/gameModelStore';
 import styled from 'styled-components';
 import { ForwardIcon, LeftIcon } from '@/shared/ui';
 import { useCoinAnimationStore } from '@/features/game/model/coinAnimationStore';
+import { useSwipe } from '@/hooks';
 
 export const BackpackControls = () => {
   const moveLeft = useGameModelStore((s) => s.moveLeft);
   const moveRight = useGameModelStore((s) => s.moveRight);
   const flyingCoins = useCoinAnimationStore((s) => s.flyingCoins);
-  const touchStartX = useRef<number | null>(null);
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
@@ -20,25 +20,7 @@ export const BackpackControls = () => {
     return () => window.removeEventListener('keydown', handleKey);
   }, [flyingCoins.length, moveLeft, moveRight]);
 
-  useEffect(() => {
-    const handleTouchStart = (e: TouchEvent) => {
-      touchStartX.current = e.touches[0].clientX;
-    };
-    const handleTouchEnd = (e: TouchEvent) => {
-      if (touchStartX.current === null) return;
-      const deltaX = e.changedTouches[0].clientX - touchStartX.current;
-      if (deltaX > 30) moveRight();
-      if (deltaX < -30) moveLeft();
-      touchStartX.current = null;
-    };
-
-    window.addEventListener('touchstart', handleTouchStart);
-    window.addEventListener('touchend', handleTouchEnd);
-    return () => {
-      window.removeEventListener('touchstart', handleTouchStart);
-      window.removeEventListener('touchend', handleTouchEnd);
-    };
-  }, [moveLeft, moveRight]);
+  useSwipe({ onSwipeLeft: moveLeft, onSwipeRight: moveRight });
 
   return (
     <ControlsWrapper>
