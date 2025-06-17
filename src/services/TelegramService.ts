@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export interface TelegramUser {
   id: number;
   first_name: string;
@@ -16,7 +17,7 @@ export interface TelegramWebApp {
   expand: () => void;
   ready: () => void;
   sendData: (data: string) => void;
-  onEvent: (eventType: string, callback: (...args: unknown[]) => void) => void;
+  onEvent: (...args: any[]) => void;
 }
 
 export class TelegramService {
