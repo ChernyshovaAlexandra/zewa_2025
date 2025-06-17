@@ -1,4 +1,5 @@
 import { RouterProvider } from 'react-router-dom';
+import { Suspense } from 'react';
 
 import {
   //  useUiStore
@@ -14,7 +15,9 @@ export default function App() {
 
   return (
     <>
-      <RouterProvider router={router} />
+      <Suspense fallback={<SplashScreen />}>
+        <RouterProvider router={router} />
+      </Suspense>
       <ZewaModal />
     </>
   );
