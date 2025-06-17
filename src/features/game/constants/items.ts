@@ -44,7 +44,7 @@ export interface ItemMeta {
 }
 
 export const coinMeta = {
-  texture: '/assets/images/coin.png',
+  texture: './assets/images/coin.png',
   width: 48,
   height: 48,
   isGood: true,
@@ -53,7 +53,7 @@ export const coinMeta = {
 export const ITEM_CATALOG: Record<ItemKind, ItemMeta> = {
   book: {
     kind: 'book',
-    texture: '/assets/images/items/book.png',
+    texture: './assets/images/items/book.png',
     radius: 1,
     scale: 1,
     width: 92,
@@ -62,7 +62,7 @@ export const ITEM_CATALOG: Record<ItemKind, ItemMeta> = {
   },
   palette: {
     kind: 'palette',
-    texture: '/assets/images/items/palette.png',
+    texture: './assets/images/items/palette.png',
     radius: 1,
     scale: 1,
     width: 80,
@@ -71,7 +71,7 @@ export const ITEM_CATALOG: Record<ItemKind, ItemMeta> = {
   },
   marker: {
     kind: 'marker',
-    texture: '/assets/images/items/marker.png',
+    texture: './assets/images/items/marker.png',
     radius: 1,
     scale: 1,
     width: 68,
@@ -80,7 +80,7 @@ export const ITEM_CATALOG: Record<ItemKind, ItemMeta> = {
   },
   apple: {
     kind: 'apple',
-    texture: '/assets/images/items/apple.png',
+    texture: './assets/images/items/apple.png',
     radius: 1,
     scale: 1,
     width: 54,
@@ -89,7 +89,7 @@ export const ITEM_CATALOG: Record<ItemKind, ItemMeta> = {
   },
   scissors: {
     kind: 'scissors',
-    texture: '/assets/images/items/scissors.png',
+    texture: './assets/images/items/scissors.png',
     radius: 1,
     scale: 1,
     width: 82,
@@ -98,7 +98,7 @@ export const ITEM_CATALOG: Record<ItemKind, ItemMeta> = {
   },
   pen: {
     kind: 'pen',
-    texture: '/assets/images/items/pen.png',
+    texture: './assets/images/items/pen.png',
     radius: 1,
     scale: 1,
     width: 42,
@@ -107,7 +107,7 @@ export const ITEM_CATALOG: Record<ItemKind, ItemMeta> = {
   },
   sharpener: {
     kind: 'sharpener',
-    texture: '/assets/images/items/sharpener.png',
+    texture: './assets/images/items/sharpener.png',
     radius: 1,
     scale: 1,
     width: 44,
@@ -116,7 +116,7 @@ export const ITEM_CATALOG: Record<ItemKind, ItemMeta> = {
   },
   sharpener2: {
     kind: 'sharpener2',
-    texture: '/assets/images/items/sharpener2.png',
+    texture: './assets/images/items/sharpener2.png',
     radius: 1,
     scale: 1,
     width: 47,
@@ -125,7 +125,7 @@ export const ITEM_CATALOG: Record<ItemKind, ItemMeta> = {
   },
   ruler: {
     kind: 'ruler',
-    texture: '/assets/images/items/ruler.png',
+    texture: './assets/images/items/ruler.png',
     radius: 1,
     scale: 1,
     width: 31.5,
@@ -134,7 +134,7 @@ export const ITEM_CATALOG: Record<ItemKind, ItemMeta> = {
   },
   'triangle-ruler': {
     kind: 'triangle-ruler',
-    texture: '/assets/images/items/triangle-ruler.png',
+    texture: './assets/images/items/triangle-ruler.png',
     radius: 1,
     scale: 1,
     width: 93,
@@ -143,7 +143,7 @@ export const ITEM_CATALOG: Record<ItemKind, ItemMeta> = {
   },
   'books-stack': {
     kind: 'books-stack',
-    texture: '/assets/images/items/books-stack.png',
+    texture: './assets/images/items/books-stack.png',
     radius: 1,
     scale: 1,
     width: 104,
@@ -152,7 +152,7 @@ export const ITEM_CATALOG: Record<ItemKind, ItemMeta> = {
   },
   'pencil-red': {
     kind: 'pencil-red',
-    texture: '/assets/images/items/pencil-red.png',
+    texture: './assets/images/items/pencil-red.png',
     radius: 1,
     scale: 1,
     width: 54,
@@ -161,7 +161,7 @@ export const ITEM_CATALOG: Record<ItemKind, ItemMeta> = {
   },
   'pencil-blue': {
     kind: 'pencil-blue',
-    texture: '/assets/images/items/pencil-blue.png',
+    texture: './assets/images/items/pencil-blue.png',
     radius: 1,
     scale: 1,
     width: 54,
@@ -170,7 +170,7 @@ export const ITEM_CATALOG: Record<ItemKind, ItemMeta> = {
   },
   'pencil-yellow': {
     kind: 'pencil-yellow',
-    texture: '/assets/images/items/pencil-yellow.png',
+    texture: './assets/images/items/pencil-yellow.png',
     radius: 1,
     scale: 1,
     width: 54,
@@ -180,7 +180,7 @@ export const ITEM_CATALOG: Record<ItemKind, ItemMeta> = {
 
   ball: {
     kind: 'ball',
-    texture: '/assets/images/items/ball.png',
+    texture: './assets/images/items/ball.png',
     radius: 1,
     scale: 1,
     width: 82,
@@ -189,7 +189,7 @@ export const ITEM_CATALOG: Record<ItemKind, ItemMeta> = {
   },
   roller: {
     kind: 'roller',
-    texture: '/assets/images/items/skates.png',
+    texture: './assets/images/items/skates.png',
     radius: 1,
     scale: 1,
     width: 92.5,
@@ -198,7 +198,7 @@ export const ITEM_CATALOG: Record<ItemKind, ItemMeta> = {
   },
   zewa1: {
     kind: 'zewa1',
-    texture: '/assets/images/items/zewa1.png',
+    texture: './assets/images/items/zewa1.png',
     radius: 1,
     scale: 1,
     width: 25,
@@ -208,7 +208,7 @@ export const ITEM_CATALOG: Record<ItemKind, ItemMeta> = {
   },
   zewa2: {
     kind: 'zewa2',
-    texture: '/assets/images/items/zewa2.png',
+    texture: './assets/images/items/zewa2.png',
     radius: 1,
     scale: 1,
     width: 25,
@@ -218,7 +218,7 @@ export const ITEM_CATALOG: Record<ItemKind, ItemMeta> = {
   },
   zewa3: {
     kind: 'zewa3',
-    texture: '/assets/images/items/zewa3.png',
+    texture: './assets/images/items/zewa3.png',
     radius: 1,
     scale: 1,
     width: 25,
@@ -228,7 +228,7 @@ export const ITEM_CATALOG: Record<ItemKind, ItemMeta> = {
   },
   zewa4: {
     kind: 'zewa4',
-    texture: '/assets/images/items/zewa4.png',
+    texture: './assets/images/items/zewa4.png',
     radius: 1,
     scale: 1,
     width: 25,
@@ -238,7 +238,7 @@ export const ITEM_CATALOG: Record<ItemKind, ItemMeta> = {
   },
   zewa5: {
     kind: 'zewa5',
-    texture: '/assets/images/items/zewa5.png',
+    texture: './assets/images/items/zewa5.png',
     radius: 1,
     scale: 1,
     width: 25,
@@ -248,7 +248,7 @@ export const ITEM_CATALOG: Record<ItemKind, ItemMeta> = {
   },
   zewa6: {
     kind: 'zewa6',
-    texture: '/assets/images/items/zewa6.png',
+    texture: './assets/images/items/zewa6.png',
     radius: 1,
     scale: 1,
     width: 55,
@@ -258,7 +258,7 @@ export const ITEM_CATALOG: Record<ItemKind, ItemMeta> = {
   },
   zewa7: {
     kind: 'zewa7',
-    texture: '/assets/images/items/zewa7.png',
+    texture: './assets/images/items/zewa7.png',
     radius: 1,
     scale: 1,
     width: 55,
@@ -269,7 +269,7 @@ export const ITEM_CATALOG: Record<ItemKind, ItemMeta> = {
 
   hammer: {
     kind: 'hammer',
-    texture: '/assets/images/items/hammer.png',
+    texture: './assets/images/items/hammer.png',
     radius: 1,
     scale: 1,
     width: 86,
@@ -278,7 +278,7 @@ export const ITEM_CATALOG: Record<ItemKind, ItemMeta> = {
   },
   boomerang: {
     kind: 'boomerang',
-    texture: '/assets/images/items/boomerang.png',
+    texture: './assets/images/items/boomerang.png',
     radius: 1,
     scale: 1,
     width: 60,
@@ -287,7 +287,7 @@ export const ITEM_CATALOG: Record<ItemKind, ItemMeta> = {
   },
   slingshot: {
     kind: 'slingshot',
-    texture: '/assets/images/items/slingshot.png',
+    texture: './assets/images/items/slingshot.png',
     radius: 1,
     scale: 1,
     width: 45,
@@ -296,7 +296,7 @@ export const ITEM_CATALOG: Record<ItemKind, ItemMeta> = {
   },
   'tennis-racket': {
     kind: 'tennis-racket',
-    texture: '/assets/images/items/tennis-racket.png',
+    texture: './assets/images/items/tennis-racket.png',
     radius: 1,
     scale: 1,
     width: 110,
@@ -305,7 +305,7 @@ export const ITEM_CATALOG: Record<ItemKind, ItemMeta> = {
   },
   gamepad: {
     kind: 'gamepad',
-    texture: '/assets/images/items/gamepad.png',
+    texture: './assets/images/items/gamepad.png',
     radius: 1,
     scale: 1,
     width: 70,
@@ -314,7 +314,7 @@ export const ITEM_CATALOG: Record<ItemKind, ItemMeta> = {
   },
   skateboard: {
     kind: 'skateboard',
-    texture: '/assets/images/items/skateboard.png',
+    texture: './assets/images/items/skateboard.png',
     radius: 1,
     scale: 1,
     width: 130,
@@ -323,7 +323,7 @@ export const ITEM_CATALOG: Record<ItemKind, ItemMeta> = {
   },
   headphones: {
     kind: 'headphones',
-    texture: '/assets/images/items/headphones.png',
+    texture: './assets/images/items/headphones.png',
     radius: 1,
     scale: 1,
     width: 65,

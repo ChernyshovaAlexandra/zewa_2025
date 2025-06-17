@@ -43,7 +43,7 @@ export const AnimatedFlyingCoin = ({
 
   return (
     <Container x={x} y={y} scale={scale} alpha={alpha} rotation={rotation} anchor={0.5}>
-      <Sprite image="/assets/images/items/coin.png" width={40} height={40} anchor={0.5} />
+      <Sprite image="./assets/images/items/coin.png" width={40} height={40} anchor={0.5} />
     </Container>
   );
 };

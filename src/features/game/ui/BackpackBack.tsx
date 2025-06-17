@@ -13,7 +13,7 @@ export const BackpackBack = ({
 }) => {
   return (
     <Container x={x} y={y + 10}>
-      <Sprite image="/assets/images/backpack-back.png" width={width} height={height} anchor={0.5} />
+      <Sprite image="./assets/images/backpack-back.png" width={width} height={height} anchor={0.5} />
     </Container>
   );
 };

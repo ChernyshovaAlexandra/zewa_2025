@@ -40,14 +40,14 @@ export const GameUIOverlay = () => {
                   <img
                     width="30"
                     height="30"
-                    src="/assets/images/items/coin.png"
+                    src="./assets/images/items/coin.png"
                     alt="иконка монета"
                   />
                 </div>
                 {coins}
               </Flex>
               <Flex gap="4px">
-                <img src="/assets/images/backpack-icon.png" alt="иконка рюкзак" />
+                <img src="./assets/images/backpack-icon.png" alt="иконка рюкзак" />
                 {score}
               </Flex>
             </Flex>

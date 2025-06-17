@@ -3,11 +3,11 @@ import styled from 'styled-components';
 export const Screen3 = () => {
   return (
     <>
-      <Items style={{ filter: 'brightness(0.35)' }} src="/assets/images/onboarding/items3.png" />
-      <Items src="/assets/images/onboarding/items2.png" />
-      <Domovenok src="/assets/images/onboarding/domovenok3.png" />
+      <Items style={{ filter: 'brightness(0.35)' }} src="./assets/images/onboarding/items3.png" />
+      <Items src="./assets/images/onboarding/items2.png" />
+      <Domovenok src="./assets/images/onboarding/domovenok3.png" />
       <Bubble>
-        <img src={'/assets/images/onboarding/bubble3.png'} alt={`Bubble`} />
+        <img src={'./assets/images/onboarding/bubble3.png'} alt={`Bubble`} />
       </Bubble>
     </>
   );

@@ -18,7 +18,7 @@ export function HomeScreen() {
         <Flex justify="space-between">
           <ZewaButton variant="white">
             <Flex gap="6px">
-              <img src="/assets/images/coin-icon.png" alt="монетка" />
+              <img src="./assets/images/coin-icon.png" alt="монетка" />
               745
             </Flex>
           </ZewaButton>
@@ -33,7 +33,7 @@ export function HomeScreen() {
         </Flex>
       </Navigation>
       <BackpackContainer>
-        <Backpack src="/assets/images/backpack.png" alt="Backpack" />
+        <Backpack src="./assets/images/backpack.png" alt="Backpack" />
         <ZewaButton variant="play" icon={<PlayIcon />} onClick={() => navigate('/game')}>
           ИГРАТЬ
         </ZewaButton>

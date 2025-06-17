@@ -6,19 +6,19 @@ import { ForwardIcon, LeftIcon } from '@/shared/ui';
 export const Screen1 = () => {
   return (
     <>
-      <Domovenok src={'/assets/images/onboarding/domovenok1.png'} alt={`domovenok`} />
+      <Domovenok src={'./assets/images/onboarding/domovenok1.png'} alt={`domovenok`} />
       <BackPack
         width={BACKPACK_WIDTH}
-        src={'/assets/images/onboarding/backpack.png'}
+        src={'./assets/images/onboarding/backpack.png'}
         alt={`backpack`}
       />
       <BackpackCounter>
         <InfoBlock>
-          <img src="/assets/images/backpack-icon.png" alt="иконка рюкзак" />0
+          <img src="./assets/images/backpack-icon.png" alt="иконка рюкзак" />0
         </InfoBlock>
       </BackpackCounter>
       <Bubble1>
-        <Bubble1Img src={'/assets/images/onboarding/bubble1.png'} alt={`Bubble`} />
+        <Bubble1Img src={'./assets/images/onboarding/bubble1.png'} alt={`Bubble`} />
       </Bubble1>
       <ControlsWrapper>
         <ArrowButton>
