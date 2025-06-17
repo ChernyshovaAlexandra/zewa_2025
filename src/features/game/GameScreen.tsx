@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { renderGameOverModal, renderPauseModal, useHowToPlayEntry } from './lib';
+import { renderPauseModal, scheduleGameOverModal, useHowToPlayEntry } from './lib';
 import { useGameModelStore } from './model/gameModelStore';
 import { BackpackControls, GameUIOverlay, GameCanvas, OnboardingOverlay } from './ui';
 import { useNavigate } from 'react-router-dom';
@@ -21,7 +21,8 @@ export function GameScreen() {
 
   useEffect(() => {
     if (!isGameOver) return;
-    renderGameOverModal(score, navigate);
+    const id = scheduleGameOverModal(score, navigate);
+    return () => clearTimeout(id);
   }, [isGameOver, score, navigate]);
 
   return (
