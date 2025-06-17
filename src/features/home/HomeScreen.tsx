@@ -5,7 +5,7 @@ import {
   BackpackContainer,
   Navigation,
 } from './HomeScreen.styles';
-import { PlayIcon, ScanIcon, UserIcon, ZewaButton } from '@/shared/ui';
+import { PlayIcon, ScanIcon, TournamentIcon, UserIcon, ZewaButton } from '@/shared/ui';
 import { useNavigate } from 'react-router-dom';
 import { Flex } from 'antd';
 
@@ -22,9 +22,14 @@ export function HomeScreen() {
               745
             </Flex>
           </ZewaButton>
-          <ZewaButton variant="white" onClick={() => navigate('/profile')}>
-            <UserIcon />
-          </ZewaButton>
+          <Flex gap="10px">
+            <ZewaButton variant="white" onClick={() => navigate('/tournament')}>
+              <TournamentIcon />
+            </ZewaButton>
+            <ZewaButton variant="white" onClick={() => navigate('/profile')}>
+              <UserIcon />
+            </ZewaButton>
+          </Flex>
         </Flex>
       </Navigation>
       <BackpackContainer>
