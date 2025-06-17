@@ -5,7 +5,7 @@ export function ProfileScreen() {
   const user = useUserStore((s) => s.user);
 
   return (
-    <PageContainer title="Личный кабинет" scrollable={false}>
+    <PageContainer fullscreen title="Личный кабинет" scrollable={false}>
       {user ? (
         <Text size="p4" color="#fff">
           {user.firstName || `ID: ${user.id}`}
