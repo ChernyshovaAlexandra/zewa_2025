@@ -22,7 +22,7 @@ export function HomeScreen() {
               745
             </Flex>
           </ZewaButton>
-          <ZewaButton variant="white">
+          <ZewaButton variant="white" onClick={() => navigate('/profile')}>
             <UserIcon />
           </ZewaButton>
         </Flex>

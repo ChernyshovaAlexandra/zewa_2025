@@ -28,6 +28,9 @@ const GameRulesScreen = lazy(() =>
 const GameScreen = lazy(() =>
   import('@/features/game/GameScreen').then((m) => ({ default: m.GameScreen })),
 );
+const ProfileScreen = lazy(() =>
+  import('@/features/profile/ProfileScreen').then((m) => ({ default: m.ProfileScreen })),
+);
 
 export const router = createHashRouter([
   { path: '/', element: <HomeScreen /> },
@@ -39,4 +42,5 @@ export const router = createHashRouter([
   { path: '/tournament', element: <TournamentScreen /> },
   { path: '/game/rules', element: <GameRulesScreen /> },
   { path: '/game', element: <GameScreen /> },
+  { path: '/profile', element: <ProfileScreen /> },
 ]);
