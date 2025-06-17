@@ -2,15 +2,30 @@
 import styled from 'styled-components';
 import { useGameModelStore } from '@/features/game/model/gameModelStore';
 import { renderPauseModal } from '@/features/game/lib';
-import { HeartIcon, PauseIcon } from '@/shared/ui';
+import { PauseIcon } from '@/shared/ui';
 import { Flex } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { Heart } from './components/Heart';
 
 export const GameUIOverlay = () => {
   const score = useGameModelStore((s) => s.score);
   const lives = useGameModelStore((s) => s.lives);
   const coins = useGameModelStore((s) => s.coins);
+
+  const [breakingIndex, setBreakingIndex] = useState<number | null>(null);
+  const prevLivesRef = useRef(lives);
+
+  useEffect(() => {
+    if (prevLivesRef.current > lives) {
+      const idx = prevLivesRef.current - 1;
+      setBreakingIndex(idx);
+      const t = setTimeout(() => setBreakingIndex(null), 500);
+      prevLivesRef.current = lives;
+      return () => clearTimeout(t);
+    }
+    prevLivesRef.current = lives;
+  }, [lives]);
 
   const navigate = useNavigate();
   const coinTargetRef = useRef<HTMLDivElement>(null);
@@ -28,7 +43,7 @@ export const GameUIOverlay = () => {
         <InfoBlock>
           <Flex gap="4px">
             {Array.from({ length: 3 }).map((_, i) => (
-              <HeartIcon key={i} fill={i < lives ? '#F23177' : 'none'} stroke="#F23177" />
+              <Heart key={i} filled={i < lives} breaking={breakingIndex === i} />
             ))}
           </Flex>
         </InfoBlock>
