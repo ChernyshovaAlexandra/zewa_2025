@@ -1,5 +1,5 @@
 import { Container, Stage } from '@pixi/react';
-import { useContainerSize } from '../../../hooks';
+import { useContainerSize } from '@/hooks';
 import { FallingItems } from './FallingItems';
 import { GameTickerWrapper } from './GameTickerWrapper';
 import { BackpackBack } from './BackpackBack';
