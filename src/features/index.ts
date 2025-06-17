@@ -7,3 +7,4 @@ export * from './rules/RulesScreen';
 export * from './faq/FaqScreen';
 export * from './tournament/TournamentScreen';
 export * from './game';
+export * from './error/ErrorPage';
