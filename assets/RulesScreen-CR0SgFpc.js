@@ -1,4 +1,4 @@
-import{d as e,j as i,T as o}from"./index-D1QCTak2.js";import{a as t}from"./nbsp-CPwNMLba.js";import{Z as a}from"./ZewaButton-_W-yycLu.js";import{P as n}from"./PageContainer-DuFZCi0F.js";const r=`Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+import{d as e,j as i,T as o}from"./index-Dh6tcIGX.js";import{a as t}from"./nbsp-CPwNMLba.js";import{Z as a}from"./ZewaButton-r2UXv69e.js";import{P as n}from"./PageContainer-D2Pr6d5F.js";const r=`Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
 
 Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
 
