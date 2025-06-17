@@ -1,4 +1,4 @@
-import { useCoinAnimationStore } from '@/features/game/store/coinAnimationStore';
+import { useCoinAnimationStore } from '@/features/game/model/coinAnimationStore';
 import { AnimatedFlyingCoin } from './AnimatedFlyingCoin';
 
 export const CoinAnimationsLayer = () => {

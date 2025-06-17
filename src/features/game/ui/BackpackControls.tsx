@@ -1,8 +1,8 @@
 import { useEffect, useRef } from 'react';
-import { useBackpackStore } from '@/features/game/store/backpackStore';
+import { useBackpackStore } from '@/features/game/model/backpackStore';
 import styled from 'styled-components';
-import { ForwardIcon, LeftIcon } from '@/components/ui';
-import { useCoinAnimationStore } from '@/features/game/store/coinAnimationStore';
+import { ForwardIcon, LeftIcon } from '@/shared/ui';
+import { useCoinAnimationStore } from '@/features/game/model/coinAnimationStore';
 
 export const BackpackControls = () => {
   const moveLeft = useBackpackStore((s) => s.moveLeft);

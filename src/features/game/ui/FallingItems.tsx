@@ -1,7 +1,7 @@
 import { Sprite } from '@pixi/react';
 import { GlowFilter } from '@pixi/filter-glow';
 import { coinMeta, ITEM_CATALOG } from '@/features/game/constants/items';
-import { useItemStore } from '@/features/game/store/itemStore';
+import { useItemStore } from '@/features/game/model/itemStore';
 import { GlowingCoin } from './GlowingCoin';
 
 export const FallingItems = () => {

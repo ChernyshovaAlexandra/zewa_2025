@@ -5,7 +5,7 @@ import {
   BackpackContainer,
   Navigation,
 } from './HomeScreen.styles';
-import { PlayIcon, ScanIcon, UserIcon, ZewaButton } from '@/components/ui';
+import { PlayIcon, ScanIcon, UserIcon, ZewaButton } from '@/shared/ui';
 import { useNavigate } from 'react-router-dom';
 import { Flex } from 'antd';
 

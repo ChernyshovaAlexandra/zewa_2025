@@ -1,7 +1,7 @@
 import { ITEM_CATALOG, type ItemMeta } from '@/features/game/constants/items';
-import { useCoinAnimationStore } from '@/features/game/store/coinAnimationStore';
-import type { useGameStateStore } from '@/features/game/store/gameStore';
-import type { Item } from '@/features/game/store/itemStore';
+import { useCoinAnimationStore } from '@/features/game/model/coinAnimationStore';
+import type { useGameStateStore } from '@/features/game/model/gameStore';
+import type { Item } from '@/features/game/model/itemStore';
 import { isIntersecting } from './collision';
 import { getPixiCoordsFromDOM } from './getPixiCoordsFromDOM';
 

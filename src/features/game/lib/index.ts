@@ -6,3 +6,4 @@ export * from './renderGameOverModal';
 export * from './renderHowToPlayModal';
 export * from './renderPauseModal';
 export * from './useHowToPlayEntry';
+export * from './hooks/useGameTicker';

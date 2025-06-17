@@ -1,5 +1,5 @@
-import { useModalStore } from '@/stores/modalStore';
-import { CancelIcon } from '@/components/ui/icons';
+import { useModalStore } from '@/shared/model/modalStore';
+import { CancelIcon } from '@/shared/ui/icons';
 import { ModalCard, ModalContent, ModalTitle, Overlay, CloseBtn, ModalCardInner } from './style';
 
 export const ZewaModal = () => {

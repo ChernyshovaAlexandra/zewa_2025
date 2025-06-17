@@ -1,5 +1,5 @@
 import { ITEM_CATALOG, type ItemKind } from '@/features/game/constants/items';
-import type { Item } from '@/features/game/store/itemStore';
+import type { Item } from '@/features/game/model/itemStore';
 
 export class ItemSpawner {
   private canvasWidth: number;

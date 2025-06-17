@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { PageContainer, Text } from '@/components/ui';
+import { PageContainer, Text } from '@/shared/ui';
 import { applyNbsp } from '@/utils/nbsp';
 import { rulesText } from './gameRulesText';
 

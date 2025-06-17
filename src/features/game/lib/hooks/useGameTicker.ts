@@ -1,7 +1,7 @@
 import { useTick } from '@pixi/react';
 import { useRef } from 'react';
-import { useItemStore } from '@/features/game/store/itemStore';
-import { useGameStateStore } from '@/features/game/store/gameStore';
+import { useItemStore } from '@/features/game/model/itemStore';
+import { useGameStateStore } from '@/features/game/model/gameStore';
 
 export const useGameTicker = (canvasWidth: number, canvasHeight: number) => {
   const moveItems = useItemStore((s) => s.moveItems);
