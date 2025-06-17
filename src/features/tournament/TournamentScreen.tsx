@@ -1,4 +1,4 @@
-import { PageContainer } from '../../components/ui';
+import { PageContainer } from '@/components/ui';
 
 export function TournamentScreen() {
   return (

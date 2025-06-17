@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Heading } from '../typography';
+import { Heading } from '@/components/ui/typography';
 
 export const Overlay = styled.div`
   position: fixed;

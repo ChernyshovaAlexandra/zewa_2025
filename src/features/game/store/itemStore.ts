@@ -1,6 +1,6 @@
 import { create } from 'zustand';
-import { type ItemKind } from '../constants/items';
-import { ItemSpawner, getBackpackRect, handleItemCatch } from '../lib';
+import { type ItemKind } from '@/features/game/constants/items';
+import { ItemSpawner, getBackpackRect, handleItemCatch } from '@/features/game/lib';
 
 export type SpecialItemKind = 'coin';
 

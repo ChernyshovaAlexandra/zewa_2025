@@ -1,5 +1,5 @@
 import { type ReactNode } from 'react';
-import { PageHeader } from '../page-header';
+import { PageHeader } from '@/components/ui/page-header';
 import { ScrollArea, Wrapper } from './PageContainer.style';
 
 interface PageContainerProps {

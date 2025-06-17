@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
-import { PageContainer, Text } from '../../components/ui';
-import { applyNbsp } from '../../utils/nbsp';
+import { PageContainer, Text } from '@/components/ui';
+import { applyNbsp } from '@/utils/nbsp';
 import { rulesText } from './gameRulesText';
 
 export function GameRulesScreen() {
