@@ -15,6 +15,8 @@ const breakAnim = keyframes`
 
 const Wrapper = styled.div<{ $breaking: boolean }>`
   display: inline-block;
+  transform: scale(1) rotate(0deg);
+  opacity: 1;
   ${(p) =>
     p.$breaking &&
     css`
