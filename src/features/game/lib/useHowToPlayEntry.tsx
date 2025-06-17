@@ -9,8 +9,10 @@ export function useHowToPlayEntry() {
 
   useEffect(() => {
     const cameFromRules = sessionStorage.getItem('cameFromRules') === 'true';
-    if (!cameFromRules) resetSession();
-    resetGame();
+    if (!cameFromRules) {
+      resetSession();
+      resetGame();
+    }
     sessionStorage.removeItem('cameFromRules');
   }, [resetGame, resetSession]);
 
