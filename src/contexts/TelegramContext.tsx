@@ -1,7 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useEffect, type ReactNode } from 'react';
 import { telegramService } from '../services/TelegramService';
-import { useUserStore } from '../stores';
+import { useUserStore } from '../shared/model';
 
 export const TelegramContext = createContext(telegramService);
 

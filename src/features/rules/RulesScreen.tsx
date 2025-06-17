@@ -1,6 +1,6 @@
 import { rulesText } from './rulesText';
 import { applyNbsp } from '@/utils';
-import { PageContainer, Text, ZewaButton } from '@/components/ui';
+import { PageContainer, Text, ZewaButton } from '@/shared/ui';
 import { ButtonWrapper } from './RulesScreen.styles';
 
 export function RulesScreen() {

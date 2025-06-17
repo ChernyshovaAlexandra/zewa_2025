@@ -1,5 +1,5 @@
-import { useGameStateStore } from '@/features/game/store/gameStore';
-import { type Item } from '@/features/game/store/itemStore';
+import { useGameStateStore } from '@/features/game/model/gameStore';
+import { type Item } from '@/features/game/model/itemStore';
 import {
   checkCollision,
   getItemMeta,

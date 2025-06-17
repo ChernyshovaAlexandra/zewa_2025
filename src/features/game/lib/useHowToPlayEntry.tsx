@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
-import { useGameProgressStore } from '@/features/game/store/useGameProgressStore';
+import { useGameProgressStore } from '@/features/game/model/useGameProgressStore';
 import { renderHowToPlayModal } from './renderHowToPlayModal';
-import { useGameStateStore } from '@/features/game/store/gameStore';
+import { useGameStateStore } from '@/features/game/model/gameStore';
 
 export function useHowToPlayEntry() {
   const { hasPlayedEver, hasPlayedSession, hasHydrated, resetSession } = useGameProgressStore();

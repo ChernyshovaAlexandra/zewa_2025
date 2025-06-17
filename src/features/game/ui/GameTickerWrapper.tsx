@@ -1,4 +1,4 @@
-import { useGameTicker } from '@/features/game/hooks/useGameTicker';
+import { useGameTicker } from '@/features/game/lib/hooks/useGameTicker';
 
 export const GameTickerWrapper = ({ width, height }: { width: number, height: number }) => {
   useGameTicker(width, height);
