@@ -1,9 +1,9 @@
-import { useModalStore } from '../../../stores/modalStore';
-import { ZewaButton, Text } from '../../../components/ui';
+import { useModalStore } from '@/stores/modalStore';
+import { ZewaButton, Text } from '@/components/ui';
 import { Flex } from 'antd';
-import { useGameProgressStore } from '../store/useGameProgressStore';
-import { useOnboardingStore } from '../store/onboardingStore';
-import { useGameStateStore } from '../store/gameStore';
+import { useGameProgressStore } from '@/features/game/store/useGameProgressStore';
+import { useOnboardingStore } from '@/features/game/store/onboardingStore';
+import { useGameStateStore } from '@/features/game/store/gameStore';
 
 export const renderHowToPlayModal = () => {
   const { setHasPlayedEver, setHasPlayedSession } = useGameProgressStore.getState();

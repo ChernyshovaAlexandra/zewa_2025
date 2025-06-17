@@ -1,4 +1,4 @@
-import { BACKPACK_HEIGHT, BACKPACK_WIDTH, useBackpackStore } from '../store/backpackStore';
+import { BACKPACK_HEIGHT, BACKPACK_WIDTH, useBackpackStore } from '@/features/game/store/backpackStore';
 
 export function getBackpackRect(canvasHeight: number) {
   const offsetX = useBackpackStore.getState().x;

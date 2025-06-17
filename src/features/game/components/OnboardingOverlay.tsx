@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useOnboardingStore } from '../store/onboardingStore';
+import { useOnboardingStore } from '@/features/game/store/onboardingStore';
 import { Screen1 } from './onboardingScreens/Screen1';
 import { Screen2 } from './onboardingScreens/Screen2';
 import { Screen3 } from './onboardingScreens/Screen3';

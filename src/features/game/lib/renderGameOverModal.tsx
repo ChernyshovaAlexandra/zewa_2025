@@ -1,6 +1,6 @@
-import { useGameStateStore } from '../store/gameStore';
-import { useModalStore } from '../../../stores/modalStore';
-import { ReloadIcon, Text, ZewaButton } from '../../../components/ui';
+import { useGameStateStore } from '@/features/game/store/gameStore';
+import { useModalStore } from '@/stores/modalStore';
+import { ReloadIcon, Text, ZewaButton } from '@/components/ui';
 import { useNavigate } from 'react-router-dom';
 import { Flex } from 'antd';
 

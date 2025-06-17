@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import styled from 'styled-components';
-import { useGameStateStore } from '../store/gameStore';
-import { renderPauseModal } from '../lib';
-import { HeartIcon, PauseIcon } from '../../../components/ui';
+import { useGameStateStore } from '@/features/game/store/gameStore';
+import { renderPauseModal } from '@/features/game/lib';
+import { HeartIcon, PauseIcon } from '@/components/ui';
 import { Flex } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useRef } from 'react';

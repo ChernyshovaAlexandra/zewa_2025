@@ -4,7 +4,7 @@ import { FallingItems } from './FallingItems';
 import { GameTickerWrapper } from './GameTickerWrapper';
 import { BackpackBack } from './BackpackBack';
 import { BackpackFront } from './BackpackFront';
-import { BACKPACK_HEIGHT, BACKPACK_WIDTH, useBackpackStore } from '../store/backpackStore';
+import { BACKPACK_HEIGHT, BACKPACK_WIDTH, useBackpackStore } from '@/features/game/store/backpackStore';
 import { Background } from './Background';
 import { useEffect } from 'react';
 import { BackpackAnimator } from './BackpackAnimator';

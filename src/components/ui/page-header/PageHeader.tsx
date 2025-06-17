@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { HeaderWrapper, BackButton, Title } from './PageHeader.styles';
-import { BackIcon } from '../icons';
+import { BackIcon } from '@/components/ui/icons';
 
 interface PageHeaderProps {
   title?: string;

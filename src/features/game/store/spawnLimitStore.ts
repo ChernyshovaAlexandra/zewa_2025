@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { ItemKind } from "../constants/items";
+import type { ItemKind } from "@/features/game/constants/items";
 
 interface SpawnLimitStore {
   limits: Partial<Record<ItemKind, number>>;
