@@ -1,4 +1,4 @@
-import { useGameStateStore } from '@/features/game/model/gameStore';
+import { useGameModelStore } from '@/features/game/model/gameModelStore';
 import { useModalStore } from '@/shared/model/modalStore';
 import { ReloadIcon, Text, ZewaButton } from '@/shared/ui';
 import { useNavigate } from 'react-router-dom';
@@ -6,7 +6,7 @@ import { Flex } from 'antd';
 
 export const renderGameOverModal = (score: number, navigate: ReturnType<typeof useNavigate>) => {
   const { closeModal } = useModalStore.getState();
-  const { resetGame } = useGameStateStore.getState();
+  const { resetGame } = useGameModelStore.getState();
 
   useModalStore.getState().openModal({
     title: 'Конец игры',

@@ -1,18 +1,18 @@
 import { useEffect } from 'react';
 import { renderGameOverModal, renderPauseModal, useHowToPlayEntry } from './lib';
-import { useGameStateStore } from './model/gameStore';
+import { useGameModelStore } from './model/gameModelStore';
 import { BackpackControls, GameUIOverlay, GameCanvas, OnboardingOverlay } from './ui';
 import { useNavigate } from 'react-router-dom';
 
 export function GameScreen() {
-  const isGameOver = useGameStateStore((s) => s.isGameOver);
-  const score = useGameStateStore((s) => s.score);
+  const isGameOver = useGameModelStore((s) => s.isGameOver);
+  const score = useGameModelStore((s) => s.score);
   const navigate = useNavigate();
 
   useHowToPlayEntry();
 
   useEffect(() => {
-    const { isPaused, wasNavigatedToRules, setWasNavigatedToRules } = useGameStateStore.getState();
+    const { isPaused, wasNavigatedToRules, setWasNavigatedToRules } = useGameModelStore.getState();
     if (isPaused && wasNavigatedToRules) {
       renderPauseModal(navigate);
       setWasNavigatedToRules(false);

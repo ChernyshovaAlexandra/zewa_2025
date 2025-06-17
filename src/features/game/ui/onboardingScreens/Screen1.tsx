@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { InfoBlock } from '@/features/game/ui/GameUIOverlay';
-import { BACKPACK_WIDTH } from '@/features/game/model/backpackStore';
+import { BACKPACK_WIDTH } from '@/features/game/model/backpack';
 import { ForwardIcon, LeftIcon } from '@/shared/ui';
 
 export const Screen1 = () => {

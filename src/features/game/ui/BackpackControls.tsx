@@ -1,12 +1,12 @@
 import { useEffect, useRef } from 'react';
-import { useBackpackStore } from '@/features/game/model/backpackStore';
+import { useGameModelStore } from '@/features/game/model/gameModelStore';
 import styled from 'styled-components';
 import { ForwardIcon, LeftIcon } from '@/shared/ui';
 import { useCoinAnimationStore } from '@/features/game/model/coinAnimationStore';
 
 export const BackpackControls = () => {
-  const moveLeft = useBackpackStore((s) => s.moveLeft);
-  const moveRight = useBackpackStore((s) => s.moveRight);
+  const moveLeft = useGameModelStore((s) => s.moveLeft);
+  const moveRight = useGameModelStore((s) => s.moveRight);
   const flyingCoins = useCoinAnimationStore((s) => s.flyingCoins);
   const touchStartX = useRef<number | null>(null);
 

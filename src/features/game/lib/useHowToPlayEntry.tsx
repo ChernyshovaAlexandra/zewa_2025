@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 import { useGameProgressStore } from '@/features/game/model/useGameProgressStore';
 import { renderHowToPlayModal } from './renderHowToPlayModal';
-import { useGameStateStore } from '@/features/game/model/gameStore';
+import { useGameModelStore } from '@/features/game/model/gameModelStore';
 
 export function useHowToPlayEntry() {
   const { hasPlayedEver, hasPlayedSession, hasHydrated, resetSession } = useGameProgressStore();
-  const { resetGame } = useGameStateStore.getState();
+  const { resetGame } = useGameModelStore.getState();
 
   useEffect(() => {
     const cameFromRules = sessionStorage.getItem('cameFromRules') === 'true';

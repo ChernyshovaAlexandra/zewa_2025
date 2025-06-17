@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import styled from 'styled-components';
-import { useGameStateStore } from '@/features/game/model/gameStore';
+import { useGameModelStore } from '@/features/game/model/gameModelStore';
 import { renderPauseModal } from '@/features/game/lib';
 import { HeartIcon, PauseIcon } from '@/shared/ui';
 import { Flex } from 'antd';
@@ -8,9 +8,9 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect, useRef } from 'react';
 
 export const GameUIOverlay = () => {
-  const score = useGameStateStore((s) => s.score);
-  const lives = useGameStateStore((s) => s.lives);
-  const coins = useGameStateStore((s) => s.coins);
+  const score = useGameModelStore((s) => s.score);
+  const lives = useGameModelStore((s) => s.lives);
+  const coins = useGameModelStore((s) => s.coins);
 
   const navigate = useNavigate();
   const coinTargetRef = useRef<HTMLDivElement>(null);

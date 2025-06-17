@@ -3,12 +3,12 @@ import { ZewaButton, Text } from '@/shared/ui';
 import { Flex } from 'antd';
 import { useGameProgressStore } from '@/features/game/model/useGameProgressStore';
 import { useOnboardingStore } from '@/features/game/model/onboardingStore';
-import { useGameStateStore } from '@/features/game/model/gameStore';
+import { useGameModelStore } from '@/features/game/model/gameModelStore';
 
 export const renderHowToPlayModal = () => {
   const { setHasPlayedEver, setHasPlayedSession } = useGameProgressStore.getState();
   const { start: startOnboarding } = useOnboardingStore.getState();
-  const startGame = useGameStateStore.getState().startGame;
+  const startGame = useGameModelStore.getState().startGame;
   const { openModal, closeModal } = useModalStore.getState();
 
   const handleStart = () => {

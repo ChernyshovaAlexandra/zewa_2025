@@ -4,7 +4,8 @@ import { FallingItems } from './FallingItems';
 import { GameTickerWrapper } from './GameTickerWrapper';
 import { BackpackBack } from './BackpackBack';
 import { BackpackFront } from './BackpackFront';
-import { BACKPACK_HEIGHT, BACKPACK_WIDTH, useBackpackStore } from '@/features/game/model/backpackStore';
+import { BACKPACK_HEIGHT, BACKPACK_WIDTH } from '@/features/game/model/backpack';
+import { useGameModelStore } from '@/features/game/model/gameModelStore';
 import { Background } from './Background';
 import { useEffect } from 'react';
 import { BackpackAnimator } from './BackpackAnimator';
@@ -13,8 +14,8 @@ import { CoinAnimationsLayer } from './CoinAnimationsLayer';
 export const GameCanvas = () => {
   const { ref, width, height } = useContainerSize();
   const bottomY = height - BACKPACK_HEIGHT / 2 - 20;
-  const x = useBackpackStore((s) => s.x);
-  const setCanvasWidth = useBackpackStore((s) => s.setCanvasWidth);
+  const x = useGameModelStore((s) => s.x);
+  const setCanvasWidth = useGameModelStore((s) => s.setCanvasWidth);
   const centerX = width / 2 + x;
 
   useEffect(() => {

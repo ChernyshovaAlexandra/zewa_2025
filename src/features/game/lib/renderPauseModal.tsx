@@ -1,11 +1,11 @@
-import { useGameStateStore } from '@/features/game/model/gameStore';
+import { useGameModelStore } from '@/features/game/model/gameModelStore';
 import { useModalStore } from '@/shared/model/modalStore';
 import { ZewaButton } from '@/shared/ui';
 import { Flex } from 'antd';
 import type { useNavigate } from 'react-router-dom';
 
 export const renderPauseModal = (navigate: ReturnType<typeof useNavigate>) => {
-  const { pauseGame, resumeGame } = useGameStateStore.getState();
+  const { pauseGame, resumeGame } = useGameModelStore.getState();
   const { openModal, closeModal } = useModalStore.getState();
 
   pauseGame();
@@ -28,8 +28,8 @@ export const renderPauseModal = (navigate: ReturnType<typeof useNavigate>) => {
           variant="blue-b"
           onClick={() => {
             closeModal();
-            useGameStateStore.getState().pauseGame();
-            useGameStateStore.getState().setWasNavigatedToRules(true);
+            useGameModelStore.getState().pauseGame();
+            useGameModelStore.getState().setWasNavigatedToRules(true);
             navigate('/game/rules');
           }}
         >
@@ -39,7 +39,7 @@ export const renderPauseModal = (navigate: ReturnType<typeof useNavigate>) => {
           variant="blue-b"
           onClick={() => {
             closeModal();
-            useGameStateStore.getState().resetGame();
+            useGameModelStore.getState().resetGame();
             navigate('/');
           }}
         >
