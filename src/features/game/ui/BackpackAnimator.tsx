@@ -1,8 +1,8 @@
 import { useTick } from '@pixi/react';
-import { useBackpackStore } from '@/features/game/model/backpackStore';
+import { useGameModelStore } from '@/features/game/model/gameModelStore';
 
 export const BackpackAnimator = () => {
-  const tick = useBackpackStore((s) => s.tick);
+  const tick = useGameModelStore((s) => s.tick);
   useTick(() => {
     tick();
   });

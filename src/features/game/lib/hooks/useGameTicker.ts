@@ -1,14 +1,13 @@
 import { useTick } from '@pixi/react';
 import { useRef } from 'react';
-import { useItemStore } from '@/features/game/model/itemStore';
-import { useGameStateStore } from '@/features/game/model/gameStore';
+import { useGameModelStore } from '@/features/game/model/gameModelStore';
 
 export const useGameTicker = (canvasWidth: number, canvasHeight: number) => {
-  const moveItems = useItemStore((s) => s.moveItems);
-  const isPaused = useGameStateStore((s) => s.isPaused);
-  const addItem = useItemStore((s) => s.addItem);
-  const addCoin = useItemStore((s) => s.addCoin);
-  const isGameStarted = useGameStateStore((s) => s.isGameStarted);
+  const moveItems = useGameModelStore((s) => s.moveItems);
+  const isPaused = useGameModelStore((s) => s.isPaused);
+  const addItem = useGameModelStore((s) => s.addItem);
+  const spawnCoin = useGameModelStore((s) => s.spawnCoin);
+  const isGameStarted = useGameModelStore((s) => s.isGameStarted);
 
   const timer = useRef(0);
   const ADD_INTERVAL = 1600;
@@ -22,7 +21,7 @@ export const useGameTicker = (canvasWidth: number, canvasHeight: number) => {
     if (timer.current >= ADD_INTERVAL) {
       const shouldSpawnCoin = Math.random() < 0.2; // 20% шанс
       if (shouldSpawnCoin) {
-        addCoin(canvasWidth);
+        spawnCoin(canvasWidth);
       } else {
         addItem(canvasWidth);
       }

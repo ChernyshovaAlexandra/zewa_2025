@@ -1,9 +1,9 @@
 import { ITEM_CATALOG, type ItemMeta } from '@/features/game/constants/items';
-import { useCoinAnimationStore } from '@/features/game/model/coinAnimationStore';
-import type { useGameStateStore } from '@/features/game/model/gameStore';
-import type { Item } from '@/features/game/model/itemStore';
-import { isIntersecting } from './collision';
-import { getPixiCoordsFromDOM } from './getPixiCoordsFromDOM';
+import { useCoinAnimationStore } from './coinAnimationStore';
+import type { useGameModelStore } from './gameModelStore';
+import type { Item } from './gameModelStore';
+import { isIntersecting } from '../lib/collision';
+import { getPixiCoordsFromDOM } from '../lib/getPixiCoordsFromDOM';
 
 export function moveCaughtItem(item: Item): Item {
   return { ...item, y: item.y + item.speed };
@@ -32,7 +32,7 @@ export function handleMissedItem(
   item: Item,
   meta: ItemMeta | undefined,
   MISS_LINE_Y: number,
-  state: ReturnType<typeof useGameStateStore.getState>,
+  state: ReturnType<typeof useGameModelStore.getState>,
 ): Item {
   if (item.kind !== 'coin' && meta?.isGood && !item.missed && item.y - item.radius > MISS_LINE_Y) {
     applyLifeLoss(state);
@@ -46,7 +46,7 @@ export function handleCaughtItem(
   item: Item,
   meta: ItemMeta | undefined,
   offsetX: number,
-  state: ReturnType<typeof useGameStateStore.getState>,
+  state: ReturnType<typeof useGameModelStore.getState>,
   backpack: { x: number; y: number; width: number; height: number },
 ): Item {
   const { addScore } = state;
@@ -70,7 +70,7 @@ export function handleCaughtItem(
 
 export function processCoinCatch(
   item: Item,
-  state: ReturnType<typeof useGameStateStore.getState>,
+  state: ReturnType<typeof useGameModelStore.getState>,
 ): void {
   state.addCoin();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -82,7 +82,7 @@ export function processCoinCatch(
   useCoinAnimationStore.getState().launchCoin(from, to);
 }
 
-export function applyLifeLoss(state: ReturnType<typeof useGameStateStore.getState>): void {
+export function applyLifeLoss(state: ReturnType<typeof useGameModelStore.getState>): void {
   const { lives, loseLife, stopGame, setGameOver } = state;
   if (lives <= 1) {
     loseLife();
