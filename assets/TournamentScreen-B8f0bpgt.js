@@ -1,0 +1,1 @@
+import{j as r}from"./index-SzbPZR2K.js";import{P as e}from"./PageContainer-F1hbm2Gc.js";function o(){return r.jsx(e,{fullscreen:!0,scrollable:!0,title:"Турнирная таблица",children:r.jsx("div",{children:"Экран: Турнирная таблица"})})}export{o as TournamentScreen};

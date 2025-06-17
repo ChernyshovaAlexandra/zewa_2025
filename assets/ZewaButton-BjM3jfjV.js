@@ -1,0 +1,1 @@
+import{j as t,S as o,I as x,L as j}from"./index-SzbPZR2K.js";function i({variant:n,onClick:r,icon:s,children:a,...e}){return t.jsxs(o,{$variant:n,onClick:r,...e,children:[s&&t.jsx(x,{children:s}),a&&t.jsx(j,{children:a})]})}export{i as Z};

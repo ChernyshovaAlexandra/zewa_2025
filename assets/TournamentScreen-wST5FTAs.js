@@ -1,1 +1,0 @@
-import{j as r}from"./index-bDdffARb.js";import{P as e}from"./PageContainer-B-WN4wQ1.js";function o(){return r.jsx(e,{fullscreen:!0,scrollable:!0,title:"Турнирная таблица",children:r.jsx("div",{children:"Экран: Турнирная таблица"})})}export{o as TournamentScreen};
