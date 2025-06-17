@@ -1,4 +1,4 @@
-import{u as o,j as e,T as t}from"./index-Dh6tcIGX.js";import{P as a}from"./PageContainer-D2Pr6d5F.js";import{a as s}from"./nbsp-CPwNMLba.js";const n=`Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+import{u as o,j as e,T as t}from"./index-DklSHUfL.js";import{P as a}from"./PageContainer-Er5NoWUD.js";import{a as s}from"./nbsp-CPwNMLba.js";const n=`Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
 
 Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
 

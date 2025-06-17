@@ -1,0 +1,1 @@
+import{i,j as r,T as s}from"./index-DklSHUfL.js";import{P as t}from"./PageContainer-Er5NoWUD.js";function n(){const e=i(o=>o.user);return r.jsx(t,{fullscreen:!0,title:"Личный кабинет",scrollable:!1,children:e?r.jsx(s,{size:"p4",color:"#fff",children:e.firstName||`ID: ${e.id}`}):r.jsx(s,{size:"p4",color:"#fff",children:"Пользователь не найден"})})}export{n as ProfileScreen};
