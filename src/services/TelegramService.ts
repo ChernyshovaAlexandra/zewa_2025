@@ -20,6 +20,7 @@ export interface TelegramWebApp {
   ready: () => void;
   sendData: (data: string) => void;
   onEvent: (...args: any[]) => void;
+  showScanQrPopup: () => void;
 }
 
 export class TelegramService {
@@ -55,6 +56,10 @@ export class TelegramService {
 
   close() {
     this.tg?.close();
+  }
+
+  showScanQrPopup() {
+    (this.tg as any)?.showScanQrPopup();
   }
 }
 
