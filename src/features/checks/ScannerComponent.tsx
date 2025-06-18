@@ -3,13 +3,14 @@ import { Flex } from 'antd';
 import { telegramService } from '@/services/TelegramService';
 import { useModalStore } from '@/shared/model/modalStore';
 import { KeyboardIcon, ScanWhiteIcon, ScreenshotIcon, ZewaButton, Text } from '@/shared/ui';
+import { ManualInputForm } from './ManualInputForm';
 import { parseReceipt } from './lib/parseReceipt';
 
 const renderManualInputModal = () => {
   useModalStore.getState().openModal({
     title: 'Ручной ввод',
     closable: true,
-    content: <div>TODO: manual input</div>,
+    content: <ManualInputForm />,
   });
 };
 
