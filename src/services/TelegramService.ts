@@ -15,6 +15,8 @@ export interface TelegramWebApp {
   };
   close: () => void;
   expand: () => void;
+  /** Disable vertical swipe gestures that close or minimize the Mini App */
+  disableVerticalSwipes?: () => void;
   ready: () => void;
   sendData: (data: string) => void;
   onEvent: (...args: any[]) => void;
@@ -26,6 +28,13 @@ export class TelegramService {
   init() {
     this.tg = window?.Telegram?.WebApp;
     this.tg?.ready();
+
+    // Expand the Web App to full screen on mobile devices
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    if (isMobile) {
+      this.tg?.expand?.();
+      this.tg?.disableVerticalSwipes?.();
+    }
   }
 
   onEvent(eventType: string, callback: (...args: unknown[]) => void) {
