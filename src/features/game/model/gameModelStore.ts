@@ -20,7 +20,6 @@ export type SpecialItemKind = 'coin';
 export const MAX_COINS_PER_GAME = 10;
 
 interface GameModelState {
-  // game slice
   isGameStarted: boolean;
   score: number;
   coins: number;
@@ -40,7 +39,6 @@ interface GameModelState {
   resetLives: () => void;
   resetScore: () => void;
 
-  // item slice
   items: Item[];
   spawnCounts: Record<ItemKind, number>;
   spawnedCoinsCount: number;
@@ -50,7 +48,6 @@ interface GameModelState {
   markAsCaught: (id: string) => void;
   resetItems: () => void;
 
-  // backpack slice
   x: number;
   targetX: number;
   canvasWidth: number;
@@ -64,7 +61,6 @@ interface GameModelState {
 }
 
 export const useGameModelStore = create<GameModelState>((set, get) => ({
-  // game slice state
   isGameStarted: false,
   score: 0,
   coins: 0,
@@ -122,7 +118,9 @@ export const useGameModelStore = create<GameModelState>((set, get) => ({
     set((s) => ({ items: [...s.items, coinItem], spawnedCoinsCount: s.spawnedCoinsCount + 1 }));
   },
   markAsCaught: (id) =>
-    set((s) => ({ items: s.items.map((item) => (item.id === id ? { ...item, caught: true } : item)) })),
+    set((s) => ({
+      items: s.items.map((item) => (item.id === id ? { ...item, caught: true } : item)),
+    })),
   moveItems: (canvasHeight) => {
     const { x, canvasWidth } = get();
     const backpack = {
@@ -142,7 +140,8 @@ export const useGameModelStore = create<GameModelState>((set, get) => ({
           return handleItemCatch(item, backpack, canvasHeight, state);
         })
         .filter(
-          (item): item is Item => !!item && (item.kind !== 'coin' || !item.caught) && item.y - item.radius < canvasHeight,
+          (item): item is Item =>
+            !!item && (item.kind !== 'coin' || !item.caught) && item.y - item.radius < canvasHeight,
         );
       return { items: updated };
     });

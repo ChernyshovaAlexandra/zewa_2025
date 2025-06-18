@@ -44,7 +44,7 @@ export const GameUIOverlay = () => {
                     alt="иконка монета"
                   />
                 </div>
-                {coins}
+                {coins}/{coins}
               </Flex>
               <Flex gap="4px">
                 <img src="./assets/images/backpack-icon.png" alt="иконка рюкзак" />
