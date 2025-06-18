@@ -6,6 +6,7 @@ import {
   Navigation,
 } from './HomeScreen.styles';
 import { PlayIcon, ScanIcon, TournamentIcon, UserIcon, ZewaButton } from '@/shared/ui';
+import { renderQrScannerModal } from '@/features';
 import { useNavigate } from 'react-router-dom';
 import { Flex } from 'antd';
 
@@ -39,8 +40,13 @@ export function HomeScreen() {
         </ZewaButton>
       </BackpackContainer>
       <ButtonsWrapper>
-        <ZewaButton style={{ padding: '14px' }} variant="white" icon={<ScanIcon />}>
-          Загрузить чек
+        <ZewaButton
+          style={{ padding: '14px' }}
+          variant="white"
+          icon={<ScanIcon />}
+          onClick={renderQrScannerModal}
+        >
+          Сканировать чек
         </ZewaButton>
         <ZewaButton style={{ padding: '14px' }} variant="white" onClick={() => navigate('/rules')}>
           Правила участия

@@ -9,3 +9,4 @@ export * from './tournament/TournamentScreen';
 export * from './game';
 export * from './error/ErrorPage';
 export * from './profile/ProfileScreen';
+export * from './checks/lib/renderQrScannerModal';
