@@ -9,3 +9,6 @@ export * from './ForwardIcon';
 export * from './LeftIcon';
 export * from './UserIcon';
 export * from './TournamentIcon';
+export * from './ScanWhiteIcon';
+export * from './ScreenshotIcon';
+export * from './KeyboardIcon';

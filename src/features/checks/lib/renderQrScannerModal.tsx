@@ -1,5 +1,5 @@
 import { useModalStore } from '@/shared/model/modalStore';
-import { ZewaButton } from '@/shared/ui';
+import { KeyboardIcon, ScanWhiteIcon, ScreenshotIcon, ZewaButton } from '@/shared/ui';
 import { Flex } from 'antd';
 
 export const renderQrScannerModal = () => {
@@ -9,13 +9,19 @@ export const renderQrScannerModal = () => {
     content: (
       <Flex vertical gap="10px">
         <ZewaButton variant="blue-b" onClick={() => {}}>
-          СКАНИРОВАТЬ
+          <Flex align="center" gap="5px">
+            <ScanWhiteIcon /> Сканировать
+          </Flex>
         </ZewaButton>
         <ZewaButton variant="blue-b" onClick={() => {}}>
-          ЗАГРУЗИТЬ СКРИНШОТ
+          <Flex align="center" gap="5px">
+            <ScreenshotIcon /> Загрузить скриншот
+          </Flex>
         </ZewaButton>
         <ZewaButton variant="blue-b" onClick={() => {}}>
-          ВВЕСТИ ДАННЫЕ ВРУЧНУЮ
+          <Flex align="center" gap="5px">
+            <KeyboardIcon /> Ввести вручную
+          </Flex>
         </ZewaButton>
       </Flex>
     ),

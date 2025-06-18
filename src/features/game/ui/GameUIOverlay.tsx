@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import styled from 'styled-components';
-import { useGameModelStore } from '@/features/game/model/gameModelStore';
+import { MAX_COINS_PER_GAME, useGameModelStore } from '@/features/game/model/gameModelStore';
 import { renderPauseModal } from '@/features/game/lib';
 import { HeartIcon, PauseIcon } from '@/shared/ui';
 import { Flex } from 'antd';
@@ -44,7 +44,7 @@ export const GameUIOverlay = () => {
                     alt="иконка монета"
                   />
                 </div>
-                {coins}/{coins}
+                {coins}/{MAX_COINS_PER_GAME}
               </Flex>
               <Flex gap="4px">
                 <img src="./assets/images/backpack-icon.png" alt="иконка рюкзак" />
