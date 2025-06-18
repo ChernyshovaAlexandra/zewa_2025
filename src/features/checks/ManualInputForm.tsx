@@ -2,24 +2,77 @@ import { Form, Input, DatePicker, TimePicker } from 'antd';
 import styled from 'styled-components';
 import { ZewaButton, Text } from '@/shared/ui';
 
+const FIELD_HEIGHT = '52px';
+const FIELD_BORDER = '1px solid #5C82C6';
+const FIELD_RADIUS = '10px';
+
 const StyledInput = styled(Input)`
+  width: 100%;
+  height: ${FIELD_HEIGHT};
   background: #fff;
-  border: 1px solid #2d59df;
-  border-radius: 4px;
+  border: ${FIELD_BORDER};
+  border-radius: ${FIELD_RADIUS};
+  padding: 11px 12px;
+  font-size: 16px;
+  line-height: 20px;
+
+  .ant-input-clear-icon {
+    top: 50%;
+    transform: translateY(-50%);
+  }
 `;
 
 const StyledDatePicker = styled(DatePicker)`
-  background: #fff;
-  border: 1px solid #2d59df;
-  border-radius: 4px;
   width: 100%;
+  height: ${FIELD_HEIGHT};
+  background: #fff;
+  border: ${FIELD_BORDER};
+  border-radius: ${FIELD_RADIUS};
+  padding: 11px 12px;
+
+  .ant-picker-input > input {
+    height: ${FIELD_HEIGHT};
+    line-height: ${FIELD_HEIGHT};
+    padding: 0;
+  }
 `;
 
 const StyledTimePicker = styled(TimePicker)`
-  background: #fff;
-  border: 1px solid #2d59df;
-  border-radius: 4px;
   width: 100%;
+  height: ${FIELD_HEIGHT};
+  background: #fff;
+  border: ${FIELD_BORDER};
+  border-radius: ${FIELD_RADIUS};
+  padding: 11px 12px;
+
+  .ant-picker-input > input {
+    height: ${FIELD_HEIGHT};
+    line-height: ${FIELD_HEIGHT};
+    padding: 0;
+  }
+`;
+
+const RowWrapper = styled.div`
+  display: flex;
+  gap: 8px;
+`;
+
+const SumWrapper = styled(RowWrapper)`
+  & > .sum-rub {
+    flex: 1 1 70%;
+  }
+  & > .sum-kop {
+    flex: 1 1 30%;
+  }
+`;
+
+const DateTimeWrapper = styled(RowWrapper)`
+  & > .date-field {
+    flex: 1 1 50%;
+  }
+  & > .time-field {
+    flex: 1 1 50%;
+  }
 `;
 
 export function ManualInputForm() {
@@ -32,35 +85,45 @@ export function ManualInputForm() {
   return (
     <Form form={form} layout="vertical" onFinish={handleSubmit}>
       <Text size="p4" align="center" style={{ marginBottom: 12 }}>
-        Введите код из чека в нужное поле.
+        Введите код из чека в нужное поле.
       </Text>
-      <Form.Item label="ФН" name="fn" rules={[{ required: true, message: 'Введите ФН' }]}> 
-        <StyledInput allowClear />
+
+      <Form.Item label="ФН" name="fn" rules={[{ required: true, message: 'Введите ФН' }]}>
+        <StyledInput allowClear placeholder="Введите данные" />
       </Form.Item>
-      <Form.Item label="ФД" name="fd" rules={[{ required: true, message: 'Введите ФД' }]}> 
-        <StyledInput allowClear />
+
+      <Form.Item label="ФД" name="fd" rules={[{ required: true, message: 'Введите ФД' }]}>
+        <StyledInput allowClear placeholder="Введите данные" />
       </Form.Item>
-      <Form.Item label="ФП" name="fp" rules={[{ required: true, message: 'Введите ФП' }]}> 
-        <StyledInput allowClear />
+
+      <Form.Item label="ФП" name="fp" rules={[{ required: true, message: 'Введите ФП' }]}>
+        <StyledInput allowClear placeholder="Введите данные" />
       </Form.Item>
-      <Form.Item
-        label="Сумма"
-        name="sum"
-        rules={[
-          { required: true, message: 'Введите сумму' },
-          { pattern: /^\d+(\.\d{2})?$/, message: 'Формат: руб.коп (00.00)' },
-        ]}
-      >
-        <StyledInput allowClear placeholder="0.00" />
+
+      <Form.Item label="Сумма">
+        <SumWrapper>
+          <Form.Item name="sumRub" noStyle rules={[{ required: true, message: 'Рубли' }]}>
+            <StyledInput className="sum-rub" placeholder="руб." />
+          </Form.Item>
+          <Form.Item name="sumKop" noStyle rules={[{ required: true, message: 'Копейки' }]}>
+            <StyledInput className="sum-kop" placeholder="коп." />
+          </Form.Item>
+        </SumWrapper>
       </Form.Item>
-      <Form.Item label="Дата" name="date" rules={[{ required: true, message: 'Выберите дату' }]}> 
-        <StyledDatePicker allowClear format="DD.MM.YYYY" />
+
+      <Form.Item label="Дата и время">
+        <DateTimeWrapper>
+          <Form.Item name="date" noStyle rules={[{ required: true, message: 'Выберите дату' }]}>
+            <StyledDatePicker className="date-field" allowClear format="DD.MM.YYYY" />
+          </Form.Item>
+          <Form.Item name="time" noStyle rules={[{ required: true, message: 'Выберите время' }]}>
+            <StyledTimePicker className="time-field" allowClear format="HH:mm" />
+          </Form.Item>
+        </DateTimeWrapper>
       </Form.Item>
-      <Form.Item label="Время" name="time" rules={[{ required: true, message: 'Выберите время' }]}> 
-        <StyledTimePicker allowClear format="HH:mm" />
-      </Form.Item>
-      <Form.Item>
-        <ZewaButton variant="blue-b" htmlType="submit">
+
+      <Form.Item style={{ textAlign: 'center', marginTop: 16 }}>
+        <ZewaButton variant="blue-b" type="submit">
           Отправить
         </ZewaButton>
       </Form.Item>
