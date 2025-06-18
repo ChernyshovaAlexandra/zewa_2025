@@ -42,12 +42,14 @@ export function TournamentScreen() {
   return (
     <PageContainer fullscreen scrollable title="Турнирная таблица">
       <S.TabsWrapper>
-        <S.TabButton $active={active === 'players'} onClick={() => setActive('players')}>
-          Лучшие игроки
-        </S.TabButton>
-        <S.TabButton $active={active === 'winners'} onClick={() => setActive('winners')}>
-          Выигрыши
-        </S.TabButton>
+        <S.Tabs>
+          <S.TabButton $active={active === 'players'} onClick={() => setActive('players')}>
+            Лучшие игроки
+          </S.TabButton>
+          <S.TabButton $active={active === 'winners'} onClick={() => setActive('winners')}>
+            Выигрыши
+          </S.TabButton>
+        </S.Tabs>
       </S.TabsWrapper>
       {active === 'players' ? (
         <S.Table>

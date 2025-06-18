@@ -3,23 +3,30 @@ import styled from 'styled-components';
 export const TabsWrapper = styled.div`
   display: flex;
   justify-content: center;
-  gap: 8px;
   margin-bottom: 16px;
 `;
 
-export const TabButton = styled.button<{ $active?: boolean }>`
-  padding: 6px 12px;
+export const Tabs = styled.div`
+  display: flex;
+  background: #e1e3e6;
   border-radius: 8px;
+  padding: 4px;
+`;
+
+export const TabButton = styled.button<{ $active?: boolean }>`
+  flex: 1;
+  padding: 6px 12px;
+  border-radius: 6px;
   font-family: 'Foco Trial';
   font-size: 16px;
   font-weight: 700;
   border: none;
   cursor: pointer;
-  color: ${({ $active }) => ($active ? '#fff' : '#1235ab')};
-  background: ${({ $active }) =>
-    $active
-      ? 'linear-gradient(180deg, #2d59df 0%, #1945cb 100%)'
-      : 'linear-gradient(180deg, #f4fcff 0%, #e3f7ff 100%)'};
+  background: ${({ $active }) => ($active ? '#fff' : 'transparent')};
+  color: ${({ $active }) => ($active ? '#2d59df' : '#6d7885')};
+  transition:
+    background 0.3s,
+    color 0.3s;
 `;
 
 export const Table = styled.table`
