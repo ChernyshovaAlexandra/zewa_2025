@@ -42,12 +42,14 @@ export function TournamentScreen() {
   return (
     <PageContainer fullscreen scrollable title="Турнирная таблица">
       <S.TabsWrapper>
-        <S.TabButton $active={active === 'players'} onClick={() => setActive('players')}>
-          Лучшие игроки
-        </S.TabButton>
-        <S.TabButton $active={active === 'winners'} onClick={() => setActive('winners')}>
-          Выигрыши
-        </S.TabButton>
+        <S.Tabs>
+          <S.TabButton $active={active === 'players'} onClick={() => setActive('players')}>
+            Лучшие игроки
+          </S.TabButton>
+          <S.TabButton $active={active === 'winners'} onClick={() => setActive('winners')}>
+            Выигрыши
+          </S.TabButton>
+        </S.Tabs>
       </S.TabsWrapper>
       {active === 'players' ? (
         <S.Table>
@@ -72,11 +74,15 @@ export function TournamentScreen() {
         <div>
           {winners.map((w, i) => (
             <S.PrizeItem key={i}>
-              <img src={w.image} alt={w.prize} width={50} height={50} />
               <div>
-                <Text weight={700}>{maskName(w.name)}</Text>
-                <Text size="p4">{w.prize}</Text>
+                <Text color="#1235AB" weight={900}>
+                  {maskName(w.name)}
+                </Text>
+                <Text size="p4" color="#596471">
+                  {w.prize}
+                </Text>
               </div>
+              <img src={w.image} alt={w.prize} width={50} height={50} />
             </S.PrizeItem>
           ))}
         </div>

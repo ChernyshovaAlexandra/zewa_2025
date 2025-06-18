@@ -21,6 +21,7 @@ export const ScrollArea = styled.div<{ $withPadding?: boolean }>`
   font-size: 16px;
   line-height: 1.5;
   white-space: pre-wrap;
+  width: 100%;
   flex-grow: 1;
 
   color: #fff;

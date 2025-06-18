@@ -3,23 +3,38 @@ import styled from 'styled-components';
 export const TabsWrapper = styled.div`
   display: flex;
   justify-content: center;
-  gap: 8px;
   margin-bottom: 16px;
+  width: 100%;
+`;
+
+export const Tabs = styled.div`
+  display: flex;
+  width: 100%;
+  border-radius: 10px;
+  padding-bottom: 2px;
+  border: 1px solid #a3b5eb;
 `;
 
 export const TabButton = styled.button<{ $active?: boolean }>`
-  padding: 6px 12px;
-  border-radius: 8px;
+  flex: 1;
+  padding: 10px 12px;
+  border-radius: 6px;
   font-family: 'Foco Trial';
   font-size: 16px;
   font-weight: 700;
   border: none;
   cursor: pointer;
-  color: ${({ $active }) => ($active ? '#fff' : '#1235ab')};
   background: ${({ $active }) =>
+    $active ? 'linear-gradient(180deg, #f4fcff 0%, #e3f7ff 100%)' : 'transparent'};
+  color: ${({ $active }) => ($active ? '#1235AB' : '#fff')};
+
+  box-shadow: ${({ $active }) =>
     $active
-      ? 'linear-gradient(180deg, #2d59df 0%, #1945cb 100%)'
-      : 'linear-gradient(180deg, #f4fcff 0%, #e3f7ff 100%)'};
+      ? `0px -2px 3px 0px #b3c7e9 inset,
+    0px 3px 0px 0px #b3c7e9,
+    0px 5px 5px 0px rgba(0, 53, 116, 0.5)`
+      : 'none'};
+  transition: background 0.3s ease-in;
 `;
 
 export const Table = styled.table`
@@ -46,6 +61,7 @@ export const Table = styled.table`
 export const PrizeItem = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 12px;
   background: linear-gradient(180deg, #f4fcff 0%, #e3f7ff 100%);
   border-radius: 10px;
