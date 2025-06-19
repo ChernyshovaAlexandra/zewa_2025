@@ -1,5 +1,6 @@
-import { lazy } from 'react';
-import { createHashRouter } from 'react-router-dom';
+import { lazy, Suspense } from 'react';
+import { HashRouter, Routes, Route } from 'react-router-dom';
+import { SplashScreen } from './features/splash/SplashScreen';
 
 const HomeScreen = lazy(() =>
   import('@/features/home/HomeScreen').then((m) => ({ default: m.HomeScreen })),
@@ -32,15 +33,23 @@ const ProfileScreen = lazy(() =>
   import('@/features/profile/ProfileScreen').then((m) => ({ default: m.ProfileScreen })),
 );
 
-export const router = createHashRouter([
-  { path: '/', element: <HomeScreen /> },
-  { path: '/upload', element: <UploadCheckScreen /> },
-  { path: '/prizes', element: <PrizesScreen /> },
-  { path: '/history', element: <HistoryScreen /> },
-  { path: '/rules', element: <RulesScreen /> },
-  { path: '/faq', element: <FaqScreen /> },
-  { path: '/tournament', element: <TournamentScreen /> },
-  { path: '/game/rules', element: <GameRulesScreen /> },
-  { path: '/game', element: <GameScreen /> },
-  { path: '/profile', element: <ProfileScreen /> },
-]);
+export function AppRouter() {
+  return (
+    <HashRouter>
+      <Suspense fallback={<SplashScreen />}>
+        <Routes>
+          <Route path="/" element={<HomeScreen />} />
+          <Route path="/upload" element={<UploadCheckScreen />} />
+          <Route path="/prizes" element={<PrizesScreen />} />
+          <Route path="/history" element={<HistoryScreen />} />
+          <Route path="/rules" element={<RulesScreen />} />
+          <Route path="/faq" element={<FaqScreen />} />
+          <Route path="/tournament" element={<TournamentScreen />} />
+          <Route path="/game/rules" element={<GameRulesScreen />} />
+          <Route path="/game" element={<GameScreen />} />
+          <Route path="/profile" element={<ProfileScreen />} />
+        </Routes>
+      </Suspense>
+    </HashRouter>
+  );
+}

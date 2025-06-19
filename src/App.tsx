@@ -1,11 +1,10 @@
-import { RouterProvider } from 'react-router-dom';
 import { Suspense } from 'react';
 
 import {
   //  useUiStore
 } from './shared/model';
 import { SplashScreen } from './features/splash/SplashScreen';
-import { router } from './router';
+import { AppRouter } from './router';
 import { ZewaModal } from './shared/ui';
 
 export default function App() {
@@ -16,7 +15,7 @@ export default function App() {
   return (
     <>
       <Suspense fallback={<SplashScreen />}>
-        <RouterProvider router={router} />
+        <AppRouter />
       </Suspense>
       <ZewaModal />
     </>
