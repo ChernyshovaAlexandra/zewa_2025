@@ -1,12 +1,14 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useEffect, type ReactNode } from 'react';
 import { telegramService } from '../services/TelegramService';
+import { apiService } from '../services/ApiService';
 import { useUserStore } from '../shared/model';
 
 export const TelegramContext = createContext(telegramService);
 
 export function TelegramProvider({ children }: { children: ReactNode }) {
   const setUser = useUserStore((s) => s.setUser);
+  const setStartData = useUserStore((s) => s.setStartData);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -18,7 +20,8 @@ export function TelegramProvider({ children }: { children: ReactNode }) {
         telegramService.disableVerticalSwipes();
 
         const user = telegramService.getUser();
-        if (user) {
+        const webApp = telegramService.getWebApp();
+        if (user && webApp) {
           setUser({
             id: user.id,
             firstName: user.first_name,
@@ -26,12 +29,23 @@ export function TelegramProvider({ children }: { children: ReactNode }) {
             username: user.username,
             photoUrl: user.photo_url,
           });
+
+          apiService.setHash(webApp.initDataUnsafe?.hash ?? '');
+          apiService
+            .start({
+              telegram_id: user.id,
+              username: user.username ?? '',
+              ts: parseInt(webApp.initDataUnsafe?.auth_date ?? '0', 10),
+              payload: webApp.initData,
+            })
+            .then((res) => setStartData(res.data))
+            .catch((err) => console.error('start error', err));
         }
       }
     }, 100);
 
     return () => clearInterval(interval);
-  }, [setUser]);
+  }, [setUser, setStartData]);
 
   return <TelegramContext.Provider value={telegramService}>{children}</TelegramContext.Provider>;
 }
