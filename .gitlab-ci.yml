@@ -1,0 +1,101 @@
+image: node:20
+
+stages:
+  - build
+  - deploy
+
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - .yarn/cache
+    - node_modules/
+
+build_dev:
+  stage: build
+  only:
+    - develop
+  before_script:
+    - yarn install --frozen-lockfile
+  script:
+    - yarn build:dev
+  artifacts:
+    paths:
+      - dist/
+    expire_in: 1 hour
+
+# deploy на develop
+deploy_dev:
+  stage: deploy
+  image: node:20
+  only:
+    - develop
+  before_script:
+    - apt-get update -y && apt-get install -y openssh-client rsync
+    - mkdir -p ~/.ssh
+    - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    - ssh-keyscan -H "$DEPLOY_HOST" >> ~/.ssh/known_hosts
+  script:
+    # синхронизируем сборку на сервер
+    - rsync -avz --delete dist/ "$DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH"
+    # по коду возврата rsync отправляем нужный статус в Telegram
+    - |
+      RSYNC_CODE=$?  # сохранили код rsync
+      SUCCESS=(
+        "🐙 tf2.anilau.com пережил ещё один деплой. Мы тоже."
+      )
+      FAIL=(
+        "😾 Опять что‑то пошло не так — tf2.anilau.com остался на старой версии."
+       )
+
+      if [ $RSYNC_CODE -eq 0 ]; then
+        STATUS="${SUCCESS[$RANDOM % ${#SUCCESS[@]}]}"
+      else
+        STATUS="${FAIL[$RANDOM % ${#FAIL[@]}]}"
+      fi
+      curl -s -X POST https://api.telegram.org/bot8181248379:AAE2sk_bmppXN4xZosh4pprYAgc0DGTfx9Y/sendMessage \
+        -d chat_id=-4839926681 \
+        -d parse_mode=Markdown \
+        -d text="$STATUS"
+
+build_prod:
+  stage: build
+  only:
+    - main
+  before_script:
+    - yarn install --frozen-lockfile
+  script:
+    - yarn build
+  artifacts:
+    paths:
+      - dist/
+    expire_in: 1 hour
+# deploy на main (production)
+deploy_prod:
+  stage: deploy
+  image: node:20
+  only:
+    - main
+  before_script:
+    - apt-get update -y && apt-get install -y openssh-client rsync
+    - mkdir -p ~/.ssh
+    - printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+    - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    - ssh-keyscan -H "$PROD_DEPLOY_HOST" >> ~/.ssh/known_hosts
+  script:
+    # синхронизируем на прод
+    - rsync -avz --delete dist/ "$PROD_DEPLOY_USER@$PROD_DEPLOY_HOST:$PROD_DEPLOY_PATH"
+    - |
+      RSYNC_CODE=$?
+      # Можно переиспользовать те же массивы SUCCESS/FAIL,
+      # либо завести свои, более “продовые” сообщения.
+      if [ $RSYNC_CODE -eq 0 ]; then
+        STATUS="🎉 Продакшн обновлён успешно на $PROD_DEPLOY_HOST!"
+      else
+        STATUS="💥 Ошибка деплоя на продакшн $PROD_DEPLOY_HOST."
+      fi
+      curl -s -X POST https://api.telegram.org/bot8181248379:AAE2sk_bmppXN4xZosh4pprYAgc0DGTfx9Y/sendMessage \
+        -d chat_id=-4839926681 \
+        -d parse_mode=Markdown \
+        -d text="$STATUS"
