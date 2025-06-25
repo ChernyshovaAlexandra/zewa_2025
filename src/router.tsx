@@ -34,59 +34,6 @@ const ProfileScreen = lazy(() =>
   import('@/features/profile/ProfileScreen').then((m) => ({ default: m.ProfileScreen })),
 );
 
-const pathToPanel: Record<string, string> = {
-  '/': 'home',
-  '/upload': 'upload',
-  '/prizes': 'prizes',
-  '/history': 'history',
-  '/rules': 'rules',
-  '/faq': 'faq',
-  '/tournament': 'tournament',
-  '/game/rules': 'gameRules',
-  '/game': 'game',
-  '/profile': 'profile',
-};
-
-function RouterView() {
-  const location = useLocation();
-  const activePanel = pathToPanel[location.pathname] ?? 'home';
-
-  return (
-    <View activePanel={activePanel} id="main">
-      <Panel id="home">
-        <HomeScreen />
-      </Panel>
-      <Panel id="upload">
-        <UploadCheckScreen />
-      </Panel>
-      <Panel id="prizes">
-        <PrizesScreen />
-      </Panel>
-      <Panel id="history">
-        <HistoryScreen />
-      </Panel>
-      <Panel id="rules">
-        <RulesScreen />
-      </Panel>
-      <Panel id="faq">
-        <FaqScreen />
-      </Panel>
-      <Panel id="tournament">
-        <TournamentScreen />
-      </Panel>
-      <Panel id="gameRules">
-        <GameRulesScreen />
-      </Panel>
-      <Panel id="game">
-        <GameScreen />
-      </Panel>
-      <Panel id="profile">
-        <ProfileScreen />
-      </Panel>
-    </View>
-  );
-}
-
 export function AppRouter() {
   return (
     <HashRouter>
@@ -103,7 +50,7 @@ export function AppRouter() {
           <Route path="/game" element={<GameScreen />} />
           <Route path="/profile" element={<ProfileScreen />} />
         </Routes>
-        <RouterView />
+        {/* <RouterView /> */}
       </Suspense>
     </HashRouter>
   );

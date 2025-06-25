@@ -6,7 +6,7 @@ import { AdaptivityProvider, AppRoot, ConfigProvider, SafeAreaInsets } from '@vk
 import { GlobalProvider } from './contexts/GlobalProvider';
 
 export default function App() {
-  const loading = false; // useUiStore((s) => s.loading);
+  const loading = false;
 
   const insets: SafeAreaInsets = {
     top: 20,
