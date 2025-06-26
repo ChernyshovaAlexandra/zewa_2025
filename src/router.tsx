@@ -1,6 +1,5 @@
-import { Panel, View } from '@vkontakte/vkui';
 import { lazy, Suspense } from 'react';
-import { HashRouter, Route, Routes, useLocation } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { SplashScreen } from './features/splash/SplashScreen';
 
 const HomeScreen = lazy(() =>
@@ -35,8 +34,9 @@ const ProfileScreen = lazy(() =>
 );
 
 export function AppRouter() {
+  const basename = import.meta.env.BASE_URL.replace(/\/$/, '');
   return (
-    <HashRouter>
+    <BrowserRouter basename={basename}>
       <Suspense fallback={<SplashScreen />}>
         <Routes>
           <Route path="/" element={<HomeScreen />} />
@@ -52,6 +52,6 @@ export function AppRouter() {
         </Routes>
         {/* <RouterView /> */}
       </Suspense>
-    </HashRouter>
+    </BrowserRouter>
   );
 }
