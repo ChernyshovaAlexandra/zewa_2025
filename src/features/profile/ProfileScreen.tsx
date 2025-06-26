@@ -7,12 +7,15 @@ import { useNavigate } from 'react-router-dom';
 export function ProfileScreen() {
   const user = useUserStore((s) => s.user);
   const navigate = useNavigate();
-
+  
 
   return (
     <PageContainer fullscreen title="Личный кабинет" scrollable={false}>
       <GroupStyled style={{ marginTop: 0 }}>
-        <FlexBetweenDiv>{/* <Coins /> */}</FlexBetweenDiv>
+        <FlexBetweenDiv>
+          {/* {startData} */}
+          {/* <Coins /> */}
+        </FlexBetweenDiv>
         {/* <StyledCentredImage src={'/images/name.png'} alt="name" /> */}
 
         <FlexColumnDiv>

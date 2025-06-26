@@ -38,8 +38,14 @@ export function TelegramProvider({ children }: { children: ReactNode }) {
               ts: parseInt(webApp.initDataUnsafe?.auth_date ?? '0', 10),
               payload: webApp.initData,
             })
-            .then((res) => setStartData(res.data))
-            .catch((err) => console.error('start error', err));
+            .then((res) => {
+              alert(res.data);
+              setStartData(res.data);
+            })
+            .catch((err) => {
+              alert(err);
+              console.error('start error', err);
+            });
         }
       }
     }, 100);

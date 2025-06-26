@@ -77,6 +77,7 @@ export class ApiService {
     const form = new FormData();
     Object.entries(data).forEach(([key, value]) => {
       if (value !== undefined && value !== null) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         form.append(key, value as any);
       }
     });

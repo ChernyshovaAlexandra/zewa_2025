@@ -11,6 +11,8 @@ export interface TelegramWebApp {
   initData: string;
   initDataUnsafe: {
     user?: TelegramUser;
+    hash?: string;
+    auth_date?: string;
   };
   close: () => void;
   expand: () => void;
