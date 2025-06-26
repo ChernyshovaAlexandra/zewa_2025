@@ -39,11 +39,9 @@ export function TelegramProvider({ children }: { children: ReactNode }) {
               payload: webApp.initData,
             })
             .then((res) => {
-              alert(res.data);
               setStartData(res.data);
             })
             .catch((err) => {
-              alert(err);
               console.error('start error', err);
             });
         }

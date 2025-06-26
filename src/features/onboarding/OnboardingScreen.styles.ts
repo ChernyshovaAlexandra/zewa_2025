@@ -12,6 +12,11 @@ export const Wrapper = styled.div`
 
 export const Image = styled.img`
   width: 100%;
+  background-color: #fff;
+  padding-bottom: 100%;
+  height: 0;
+  object-fit: cover;
+  object-position: center;
   border-radius: 20px;
   margin-bottom: 24px;
 `;
