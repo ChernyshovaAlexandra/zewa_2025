@@ -49,7 +49,7 @@ export class ApiService {
   private axios: AxiosInstance;
   private hash = '';
 
-  constructor(baseURL = import.meta.env.VITE_API_BASE_URL || '/api') {
+  constructor(baseURL = import.meta.env.VITE_API_BASE_URL + 'api') {
     this.axios = axios.create({
       baseURL,
       timeout: 10000,
