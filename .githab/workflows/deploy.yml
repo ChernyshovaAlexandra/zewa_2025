@@ -1,0 +1,76 @@
+name: Deploy to Server
+
+on:
+  push:
+    branches:
+      - develop
+      - main
+
+env:
+  CHAT_ID: -4839926681
+  TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build app (dev or prod)
+        run: |
+          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            yarn build
+          else
+            yarn build:dev
+          fi
+
+      - name: Archive production build
+        run: tar -czf dist.tar.gz dist/
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist
+          path: dist.tar.gz
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: dist
+
+      - name: Extract build
+        run: tar -xzf dist.tar.gz
+
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H "${{ secrets.DEPLOY_HOST }}" >> ~/.ssh/known_hosts
+
+      - name: Deploy via rsync
+        run: |
+          rsync -avz --delete dist/ ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:${{ secrets.DEPLOY_PATH }}
+          EXIT_CODE=$?
+          if [[ $EXIT_CODE == 0 ]]; then
+            STATUS="✅ Деплой прошёл успешно."
+          else
+            STATUS="❌ Ошибка при деплое."
+          fi
+          curl -s -X POST https://api.telegram.org/bot${{ env.TELEGRAM_BOT_TOKEN }}/sendMessage \
+            -d chat_id=${{ env.CHAT_ID }} \
+            -d text="$STATUS"
