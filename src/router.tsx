@@ -50,7 +50,6 @@ export function AppRouter() {
           <Route path="/game" element={<GameScreen />} />
           <Route path="/profile" element={<ProfileScreen />} />
         </Routes>
-        {/* <RouterView /> */}
       </Suspense>
     </BrowserRouter>
   );

@@ -8,13 +8,9 @@ export default defineConfig(({ mode }) => {
   const isProd = mode === 'production';
   return {
     server: {
-      host: true,
+      host: '0.0.0.0',
       port: 5173,
-      allowedHosts: ['sat5w8-95-25-160-154.ru.tuna.am'],
-      hmr: {
-        host: 'sat5w8-95-25-160-154.ru.tuna.am',
-        protocol: 'wss',
-      },
+      allowedHosts: ['.trycloudflare.com'],
     },
     base: isProd ? `/${repoName}/` : '/',
     plugins: [react()],
