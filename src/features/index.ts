@@ -10,3 +10,4 @@ export * from './game';
 export * from './error/ErrorPage';
 export * from './profile/ProfileScreen';
 export * from './checks/lib/renderQrScannerModal';
+export * from './onboarding';
