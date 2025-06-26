@@ -50,7 +50,15 @@ export class ApiService {
   private hash = '';
 
   constructor(baseURL = import.meta.env.VITE_API_BASE_URL || '/api') {
-    this.axios = axios.create({ baseURL });
+    this.axios = axios.create({
+      baseURL,
+      timeout: 10000,
+      responseType: 'json',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest',
+      },
+    });
   }
 
   setHash(hash: string) {

@@ -1,11 +1,10 @@
 import { PageContainer, ZewaButton } from '@/shared/ui';
-import { useUserStore } from '@/shared/model';
+// import { useUserStore } from '@/shared/model';
 import { FlexBetweenDiv, FlexColumnDiv, GroupStyled } from './style';
-import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export function ProfileScreen() {
-  const user = useUserStore((s) => s.user);
+  // const user = useUserStore((s) => s.user);
   const navigate = useNavigate();
   
 
