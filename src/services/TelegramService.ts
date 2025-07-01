@@ -14,6 +14,7 @@ export interface TelegramWebApp {
     hash?: string;
     auth_date?: string;
   };
+  platform?: string;
   close: () => void;
   expand: () => void;
   disableVerticalSwipes?: () => void;

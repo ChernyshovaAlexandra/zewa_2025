@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { ZewaButton } from '@/shared/ui';
+import { Text, ZewaButton } from '@/shared/ui';
 import * as S from './OnboardingScreen.styles';
+import { applyNbsp } from '@/utils';
 
 interface OnboardingScreenProps {
   onFinish: () => void;
@@ -9,15 +10,25 @@ interface OnboardingScreenProps {
 const steps = [
   {
     image: './assets/images/onboarding/1.png',
-    text: 'Добро пожаловать в приложение Zewa',
+    header: `Добро пожаловать, ` /*${user.name}*/,
+    text: 'Помните меня? Я Домовёнок. Расскажу вам, как играть и получать призы.',
   },
   {
     image: './assets/images/onboarding/1.png',
-    text: 'Сканируйте чеки и получайте призы',
+    header: `Продвигайтесь по шкале и собирайте призы и купоны`,
+    text: `Покупайте товары Zewa в «Магните» и загружайте чеки. Ловите монеты в игре 
+    и приглашайте в приложение друзей. Участвуйте в розыгрышах ценных призов при заполнении от 25 %.
+    Каждую неделю шкала призов обнуляется и начинается новое соревнование!`,
   },
   {
     image: './assets/images/onboarding/1.png',
-    text: 'Играйте и участвуйте в турнирах',
+    header: `Проходите игру «Снова в школу» сколько угодно раз.`,
+    text: 'Без регистрации чека вы не продвинетесь по шкале призов, но лучший игрок недели получит небольшой подарок.',
+  },
+  {
+    image: './assets/images/onboarding/1.png',
+    header: `Покупайте товары Zewa в  магазинах «Магнит».`,
+    text: 'Для подтверждения покупки загружайте фото чека или сканируйте его QR-код камерой телефона и  получайте виртуальные монеты  для быстрого продвижения по шкале призов.',
   },
 ];
 
@@ -35,8 +46,11 @@ export function OnboardingScreen({ onFinish }: OnboardingScreenProps) {
   return (
     <S.Wrapper>
       <S.Image src={steps[step].image} alt="onboarding" />
-      <S.Text>{steps[step].text}</S.Text>
-      <ZewaButton variant="white" onClick={handleNext} style={{ marginTop: 'auto', width: "80%" }}>
+      <Text weight={700} align="center" color="#fff">
+        {steps[step].header}
+      </Text>
+      <S.Text>{applyNbsp(steps[step].text)}</S.Text>
+      <ZewaButton variant="white" onClick={handleNext} style={{ marginTop: 'auto', width: '80%' }}>
         Далее
       </ZewaButton>
       <S.Pagination>

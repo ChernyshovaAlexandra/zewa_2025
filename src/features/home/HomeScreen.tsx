@@ -9,6 +9,8 @@ import { PlayIcon, ScanIcon, TournamentIcon, UserIcon, ZewaButton } from '@/shar
 import { renderQrScannerModal } from '@/features';
 import { useNavigate } from 'react-router-dom';
 import { Flex } from 'antd';
+import PrizesScale from '../prizes-scale';
+import { Coins } from '../coins/Coins';
 
 export function HomeScreen() {
   const navigate = useNavigate();
@@ -17,12 +19,7 @@ export function HomeScreen() {
     <HomeWrapper>
       <Navigation>
         <Flex justify="space-between">
-          <ZewaButton variant="white">
-            <Flex gap="6px">
-              <img src="./assets/images/coin-icon.png" alt="монетка" />
-              745
-            </Flex>
-          </ZewaButton>
+          <Coins />
           <Flex gap="10px">
             <ZewaButton variant="white" onClick={() => navigate('/tournament')}>
               <TournamentIcon />
@@ -52,6 +49,7 @@ export function HomeScreen() {
           Правила участия
         </ZewaButton>
       </ButtonsWrapper>
+      <PrizesScale />
     </HomeWrapper>
   );
 }

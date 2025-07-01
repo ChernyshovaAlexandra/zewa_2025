@@ -8,8 +8,8 @@ export const TelegramContext = createContext(telegramService);
 
 export function TelegramProvider({ children }: { children: ReactNode }) {
   const setUser = useUserStore((s) => s.setUser);
-  const setStartData = useUserStore((s) => s.setStartData);
   const setStartStoreData = useStartDataStore((s) => s.setStartData);
+  const setUserData = useUserStore((s) => s.setUserData);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -40,8 +40,8 @@ export function TelegramProvider({ children }: { children: ReactNode }) {
               payload: webApp.initData,
             })
             .then((res) => {
-              setStartData(res.data.data);
               setStartStoreData(res.data.data);
+              setUserData(res.data.data);
             })
             .catch((err) => {
               console.error('start error', err);
@@ -51,7 +51,8 @@ export function TelegramProvider({ children }: { children: ReactNode }) {
     }, 100);
 
     return () => clearInterval(interval);
-  }, [setUser, setStartData, setStartStoreData]);
+  }, [setUser, setUserData, setStartStoreData]);
+  
 
   return <TelegramContext.Provider value={telegramService}>{children}</TelegramContext.Provider>;
 }

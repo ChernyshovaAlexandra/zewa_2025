@@ -1,23 +1,16 @@
 import React from 'react';
-import {
-  ArrowIcon,
-  DrawerContent,
-  DrawerHeader,
-  DrawerWrapper,
-  Gradient,
-  PaperRoll,
-  PaperUnrolled,
-  RollingLine,
-} from './styles';
+import { DrawerContent, DrawerWrapper, PaperRoll, PaperUnrolled, RollingLine } from './styles';
 import useGlobal from '@/contexts/GlobalProvider';
 import DomovenokImages from './DomovenokImages';
 import PrizesList from './PrizesList';
+import { Text } from '@/shared/ui';
+import { Vtylka } from './Vtylka';
 
 const PrizesScale: React.FC = () => {
-  const { prizes, audioManager } = useGlobal();
+  const { audioManager } = useGlobal();
 
-  const [isDrawerOpen, setDrawerOpen] = React.useState(false);
-  const [paperWidth, setPaperWidth] = React.useState('23%');
+  const [isDrawerOpen, setDrawerOpen] = React.useState(true);
+  const [paperWidth, setPaperWidth] = React.useState('0%');
 
   const toggleDrawer = React.useCallback(
     (e: React.SyntheticEvent) => {
@@ -33,26 +26,29 @@ const PrizesScale: React.FC = () => {
     setPaperWidth('95%');
   }, []);
 
-  if (!prizes) return null;
+  // if (!prizes) return null;
 
   return (
     <>
-      <DrawerWrapper $isOpen={isDrawerOpen}>
-        <Gradient $isOpen={isDrawerOpen} />
-        <RollingLine $isOpen={isDrawerOpen}>
-          <PaperUnrolled $width={paperWidth}>
-            <PaperRoll />
-          </PaperUnrolled>
-        </RollingLine>
-        <DrawerHeader onClick={toggleDrawer}>
-          <ArrowIcon $isOpen={isDrawerOpen} />
-          <h3>Шкала призов</h3>
-        </DrawerHeader>
-        <DrawerContent $isOpen={isDrawerOpen}>
-          <PrizesList isDrawerOpen={isDrawerOpen} />
-        </DrawerContent>
+      <DrawerWrapper $isOpen={isDrawerOpen} onClick={toggleDrawer}>
+        <Text align="center" size="p1" weight={900} color="#1235AB">
+          Шкала призов
+        </Text>
+        {isDrawerOpen && (
+          <RollingLine $isOpen={isDrawerOpen}>
+            <PaperUnrolled $width={paperWidth}>
+              <PaperRoll />
+              <Vtylka />
+            </PaperUnrolled>
+          </RollingLine>
+        )}
+        {isDrawerOpen && (
+          <DrawerContent $isOpen={isDrawerOpen}>
+            <PrizesList isDrawerOpen={isDrawerOpen} />
+          </DrawerContent>
+        )}
       </DrawerWrapper>
-      <DomovenokImages isDrawerOpen={isDrawerOpen} paperWidth={paperWidth} />
+      {isDrawerOpen && <DomovenokImages isDrawerOpen={isDrawerOpen} paperWidth={paperWidth} />}
     </>
   );
 };

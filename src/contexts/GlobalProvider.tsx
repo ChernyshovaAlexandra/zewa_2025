@@ -1,10 +1,12 @@
+/* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useState, FC, ReactNode, useContext, useEffect } from 'react';
-import { PrizeProps } from '@/types/IAuth';
+
 import AudioManager from '@/helpers/AudioManager';
+import { Prize } from '@/types';
 
 interface GlobalContextProps {
   isLogged: boolean;
-  prizes?: PrizeProps[];
+  prizes?: Prize[];
   status: string;
   modal: boolean;
   points: number;
@@ -33,7 +35,7 @@ export const GlobalProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [points, setPoints] = useState(0);
   const [activePanel, setActivePanel] = useState('main');
   const [activeView, setActiveView] = useState('view_initial');
-  const [prizes] = useState<PrizeProps[]>();
+  const [prizes] = useState<Prize[]>();
   const [animatedCoin, animateCoin] = useState(true);
 
   const [audio, turnOnAudio] = useState(false);

@@ -1,72 +1,70 @@
 import styled from 'styled-components';
 import { Card, HorizontalScroll } from '@vkontakte/vkui';
+import { ButtonProps, ButtonStyles } from '@/components';
 
 export const ContentWithDomovenok = styled.div`
-  position: fixed;
-  bottom: -2px;
+  position: absolute;
+  bottom: -55px;
   left: 0;
-  width: 100%;
+  width: 184px;
+  height: 179px;
   touch-action: none;
   z-index: 200;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 `;
 
 export const PaperUnrolled = styled.div<{ $width: string }>`
   width: ${(props) => props.$width};
   height: 100%;
   position: relative;
+  left: -2rem;
   transition: width 3s ease-in-out;
-  background: url(/images/paper-pattern.jpg);
-`;
-
-export const PaperRoll = styled.div`
-  width: 4rem;
-  height: 4.4rem;
-  background: url(/images/toilet-paper.png) no-repeat center;
-  position: absolute;
-  right: -1.5rem;
-  background-size: contain;
-  top: -2.25rem;
 
   &::after {
     content: '';
     position: absolute;
-    width: 3.25rem;
-    height: 3.25rem;
-    background: url(/images/vtulka.png) no-repeat center;
-    background-size: contain;
-    top: 1rem;
-    left: 0.8rem;
-    transform-origin: center;
+    left: 0%;
+    top: 0;
+    bottom: 0;
+    background:
+      url(/assets/images/paper-pattern.png) repeat-x,
+      linear-gradient(270deg, #cfd9eb 0%, #fff 5%, #fff 100%);
+    background-size: auto 100%;
+    display: block;
+    height: 100%;
+    width: 92%;
+    transition: none;
+    transform: skewX(40deg);
   }
 `;
 
-export const Gradient = styled.div<{ $isOpen: boolean }>`
-  background: linear-gradient(180deg, rgba(31, 67, 171, 0) 36%, #1f43ab 42.73%, #1c3ea3 100%);
-  width: 100%;
-  height: 7.5rem;
-  position: fixed;
-  bottom: ${({ $isOpen }) => ($isOpen ? '0rem' : '4rem')};
-  left: 0;
-  display: none;
-
-  @media screen and (min-width: 405px) {
-    display: block;
-  }
+export const PaperRoll = styled.div`
+  width: 4.5rem;
+  height: 5rem;
+  background: url(/assets/images/toilet-paper.png) no-repeat center;
+  position: absolute;
+  right: -20px;
+  background-size: contain;
+  bottom: -3px;
+  z-index: 2;
+  transition: all 4s ease-in-out;
 `;
 
 export const RollingLine = styled.div<{ $isOpen: boolean }>`
-  display: none;
-
   @media screen and (min-width: 405px) {
     display: block;
   }
   position: fixed;
-  bottom: 5.5rem;
-  visibility: ${({ $isOpen }) => ($isOpen ? 'hidden' : 'visible')};
+  bottom: 1.5rem;
   left: 0;
   width: 100%;
-  background: rgba(48, 84, 193, 1);
-  height: 2rem;
+  background: #3c68ee30;
+  height: 2.5rem;
 `;
 
 export const DomovenokInitial = styled.picture<{ $isOpen: boolean }>`
@@ -101,22 +99,22 @@ export const DomovenokOpened = styled.picture<{ $isOpen: boolean }>`
 `;
 
 export const DrawerWrapper = styled.div<{ $isOpen: boolean }>`
-  position: fixed;
-  left: 0;
-  width: 100%;
-  background: linear-gradient(180deg, #233a7c 0%, #182d6a 100%);
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
-  box-shadow: 0 -2px 20px rgba(0, 0, 0, 0.2);
-  transform: ${({ $isOpen }) => ($isOpen ? 'translateY(0%)' : 'translateY(calc(100% - 13.8rem))')};
-  transition: transform 0.3s ease-in-out;
+  position: absolute;
   bottom: 0;
-  z-index: 101;
-
-  @media screen and (max-width: 405px) {
-    bottom: -9rem;
-    height: ${({ $isOpen }) => ($isOpen ? '25rem' : '5rem')};
-  }
+  height: ${({ $isOpen }) => ($isOpen ? '40%' : `4rem`)};
+  width: 100%;
+  background: ${({ $isOpen }) =>
+    $isOpen
+      ? `#f4fcff linear-gradient(
+      180deg,
+      rgba(244, 252, 255, 0) 60%,
+      rgba(244, 252, 255, 0) 65%,
+      #cfd9eb 85%,
+      #cfd9eb 100%
+    )`
+      : `#f4fcff`};
+  border-radius: 20px 20px 0 0;
+  padding: 10px;
 `;
 
 export const DrawerHeader = styled.div`
@@ -129,19 +127,12 @@ export const DrawerHeader = styled.div`
 
 export const DrawerContent = styled.div<{ $isOpen: boolean }>`
   min-height: 14rem;
-
-  @media screen and (max-width: 404px) {
-    display: ${({ $isOpen }) => ($isOpen ? 'block' : 'none')};
-  }
+  background-color: #a4aac420;
 `;
 
 export const ArrowIcon = styled.div<{ $isOpen: boolean }>`
   width: 8rem;
   height: 4.2rem;
-  background: ${({ $isOpen }) =>
-    $isOpen
-      ? 'url("/images/prizes-scale/btn-down.png?resize&size=360&format=webp") no-repeat center'
-      : 'url("/images/prizes-scale/btn-up.png?resize&size=360&format=webp") no-repeat center'};
   background-size: 100% 105%;
   position: absolute;
   top: -3.5rem;
@@ -308,6 +299,7 @@ export const ScrollContainer = styled(HorizontalScroll)`
   width: 100%;
   position: relative;
   bottom: 0rem;
+  z-index: 100;
 
   > button {
     transform: translateY(-2.5rem);
@@ -345,7 +337,7 @@ export const StyledCell = styled.div<{
     height: 65px;
     visibility: ${({ $showPaper, $isFirstEmpty }) =>
       $showPaper || $isFirstEmpty ? 'visible' : 'hidden'};
-    background: url(/images/toilet-paper.png) no-repeat center;
+    background: url(/assets/images/toilet-paper.png) no-repeat center;
     left: ${({ $isFirstEmpty }) => ($isFirstEmpty ? '-20%' : ' 60%')};
     z-index: 100;
     background-size: contain;
@@ -357,7 +349,8 @@ export const StyledCell = styled.div<{
     visibility: ${({ $isActivated }) => ($isActivated ? 'visible' : 'hidden')};
     height: 40px;
     bottom: -40px;
-    background: url(/images/paper-pattern.jpg);
+    background: url(/assets/images/paper-pattern.jpg);
+    background-size: 200px;
     width: 120%;
     display: block;
     left: -45%;
@@ -368,3 +361,31 @@ export const StyledCell = styled.div<{
 `;
 
 export const SpanDraw = styled.span``;
+
+export const Button = styled.button<ButtonProps>`
+  ${ButtonStyles};
+  padding: 7px 15px !important;
+  font-size: 1rem !important;
+  margin: 0.3rem 0;
+  border: ${({ variant }) => (variant === 'accent' ? '3px solid #F23177' : '1px solid #ACD2FF')};
+  border-radius: 10px;
+  background-color: ${({ variant }) => (variant === 'accent' ? '' : '#D3E8FA')};
+  color: ${({ variant }) => (variant === 'accent' ? '' : '#2688EB')};
+  text-transform: none;
+  font-weight: 400;
+  text-shadow: none;
+
+  &:disabled {
+    filter: drop-shadow(0px 3px 0px #d4d7dc);
+    color: #2688eb;
+    background: #d3e8fa;
+    box-shadow: 0px 2px 0px 0.5px #81bbf9;
+
+    &:hover {
+      background: #d3e8fa;
+    }
+  }
+  @media screen and (min-width: 505px) {
+    padding: 0.7rem 1.3rem !important;
+  }
+`;

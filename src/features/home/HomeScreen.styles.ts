@@ -7,6 +7,7 @@ export const HomeWrapper = styled.div`
   padding: 24px 16px;
   background: url('./assets/images/bg.svg'), linear-gradient(180deg, #2d59df 0%, #1945cb 100%);
   min-height: 100vh;
+  position: relative;
 `;
 
 export const BackpackContainer = styled.div`
