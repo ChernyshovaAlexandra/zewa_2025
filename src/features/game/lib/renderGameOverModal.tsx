@@ -3,6 +3,7 @@ import { useModalStore } from '@/shared/model/modalStore';
 import { ReloadIcon, Text, ZewaButton } from '@/shared/ui';
 import { useNavigate } from 'react-router-dom';
 import { Flex } from 'antd';
+import { applyNbsp } from '@/utils';
 
 export const renderGameOverModal = (score: number, navigate: ReturnType<typeof useNavigate>) => {
   const { closeModal } = useModalStore.getState();
@@ -14,8 +15,9 @@ export const renderGameOverModal = (score: number, navigate: ReturnType<typeof u
     content: (
       <Flex vertical gap="20px">
         <Text size="p4" align="center" color="#596471">
-          Все жизни закончились.
-          <br /> Вы поймали <b style={{ color: '#f55496' }}>{score}</b> предметов.
+          {applyNbsp(`Все жизни закончились. Свой результат можно увидеть в Турнирной таблице. 
+        Чтобы заработать монеты в игре, загрузите чек из магазина с продукцией Zewa.`)}
+          {/* <br /> Вы поймали <b style={{ color: '#f55496' }}>{score}</b> предметов. */}
         </Text>
         <Flex vertical gap="10px">
           <ZewaButton

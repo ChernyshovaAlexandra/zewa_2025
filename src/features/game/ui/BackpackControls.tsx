@@ -42,6 +42,7 @@ export const BackpackControls = () => {
   return (
     <ControlsWrapper>
       <ArrowButton
+        style={{ color: '#F23177' }}
         onClick={() => {
           if (canMove) moveLeft();
         }}
@@ -49,6 +50,7 @@ export const BackpackControls = () => {
         <LeftIcon />
       </ArrowButton>
       <ArrowButton
+        style={{ color: '#F23177' }}
         onClick={() => {
           if (canMove) moveRight();
         }}

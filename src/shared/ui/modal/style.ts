@@ -14,7 +14,7 @@ export const Overlay = styled.div`
 
 export const ModalCardInner = styled.div`
   width: 100%;
-  padding: 24px;
+  padding: 12px;
   padding-top: 36px;
   flex: 1;
   border-radius: 11px;

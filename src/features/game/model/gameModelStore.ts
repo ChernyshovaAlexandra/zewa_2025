@@ -22,6 +22,7 @@ export const MAX_COINS_PER_GAME = 10;
 interface GameModelState {
   isGameStarted: boolean;
   score: number;
+  coins_available: number;
   coins: number;
   lives: number;
   isGameOver: boolean;
@@ -38,6 +39,7 @@ interface GameModelState {
   loseLife: () => void;
   resetLives: () => void;
   resetScore: () => void;
+  setAvailableCoins: (coins: number) => void;
 
   items: Item[];
   spawnCounts: Record<ItemKind, number>;
@@ -64,6 +66,7 @@ export const useGameModelStore = create<GameModelState>((set, get) => ({
   isGameStarted: false,
   score: 0,
   coins: 0,
+  coins_available: 0,
   lives: 3,
   isGameOver: false,
   isPaused: false,
@@ -80,8 +83,8 @@ export const useGameModelStore = create<GameModelState>((set, get) => ({
   loseLife: () => set((s) => ({ lives: Math.max(0, s.lives - 1) })),
   resetScore: () => set({ score: 0 }),
   resetLives: () => set({ lives: 3 }),
+  setAvailableCoins: (coins: number) => set({ coins_available: coins }),
 
-  // item slice state
   items: [],
   spawnCounts: {} as Record<ItemKind, number>,
   spawnedCoinsCount: 0,

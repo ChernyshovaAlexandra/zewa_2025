@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import styled from 'styled-components';
-import { MAX_COINS_PER_GAME, useGameModelStore } from '@/features/game/model/gameModelStore';
+import { useGameModelStore } from '@/features/game/model/gameModelStore';
 import { renderPauseModal } from '@/features/game/lib';
 import { HeartIcon, PauseIcon } from '@/shared/ui';
 import { Flex } from 'antd';
@@ -11,6 +11,7 @@ export const GameUIOverlay = () => {
   const score = useGameModelStore((s) => s.score);
   const lives = useGameModelStore((s) => s.lives);
   const coins = useGameModelStore((s) => s.coins);
+  const coins_available = useGameModelStore((s) => s.coins_available);
 
   const navigate = useNavigate();
   const coinTargetRef = useRef<HTMLDivElement>(null);
@@ -35,12 +36,14 @@ export const GameUIOverlay = () => {
         <Flex gap="10px">
           <InfoBlock>
             <Flex gap="15px">
-              <Flex gap="4px" align="center">
-                <div style={{ width: 'fit-content', height: 'fit-content' }} ref={coinTargetRef}>
-                  <img src="./assets/images/items/coin3.png" alt="иконка монета" />
-                </div>
-                {coins}/{MAX_COINS_PER_GAME}
-              </Flex>
+              {coins_available && (
+                <Flex gap="4px" align="center">
+                  <div style={{ width: 'fit-content', height: 'fit-content' }} ref={coinTargetRef}>
+                    <img src="./assets/images/items/coin3.png" alt="иконка монета" />
+                  </div>
+                  {coins}/{coins_available}
+                </Flex>
+              )}
               <Flex gap="4px" align="center">
                 <img src="./assets/images/backpack-icon.png" alt="иконка рюкзак" />
                 {score}

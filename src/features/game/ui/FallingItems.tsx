@@ -17,10 +17,11 @@ export const FallingItems = () => {
         const filters = !meta.isGood
           ? [
               new GlowFilter({
-                color: 0xff4646,
-                distance: 30,
-                outerStrength: 2,
+                color: 0xf23177,
+                distance: 20,
+                outerStrength: 1,
                 innerStrength: 0,
+                alpha: .9
               }),
             ]
           : [];
