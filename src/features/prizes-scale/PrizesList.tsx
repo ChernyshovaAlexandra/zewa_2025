@@ -45,7 +45,7 @@ const PrizesList: React.FC<PrizesListProps> = ({ isDrawerOpen }) => {
 
   const newCouponsArray = React.useMemo(
     () =>
-      userData?.user.this_period_new_coupons.map((i) => ({
+      userData?.user?.this_period_new_coupons?.map((i) => ({
         points: i.points_cost,
         value: i.value,
         type: 'coupon',

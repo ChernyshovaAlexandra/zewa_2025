@@ -34,7 +34,7 @@ export const GlowingCoin = ({ x, y, size = 36 }: { x: number; y: number; size?: 
       {/* Лучи */}
       <Sprite
         ref={raysRef}
-        image="/assets/images/coin-rays.png"
+        image="/assets/images/coin-rays2.png"
         width={size * 2}
         height={size * 2}
         anchor={0.5}
