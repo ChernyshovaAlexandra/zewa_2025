@@ -2,7 +2,7 @@ import { Game } from './Game';
 
 export interface Prize {
   name: string;
-  description: string | null;
+  description?: string;
   points: number;
   type: string;
   new: boolean;

@@ -127,7 +127,7 @@ export const DrawerHeader = styled.div`
 
 export const DrawerContent = styled.div<{ $isOpen: boolean }>`
   min-height: 14rem;
-  background-color: #a4aac420;
+  /* background-color: #a4aac420; */
 `;
 
 export const ArrowIcon = styled.div<{ $isOpen: boolean }>`

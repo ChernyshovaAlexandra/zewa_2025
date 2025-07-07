@@ -1,6 +1,5 @@
 import { UserData, UserInfo } from '@/types';
 import { create } from 'zustand';
-import type { StartResponse } from '@/types';
 
 interface UserStore {
   user: UserInfo | null;

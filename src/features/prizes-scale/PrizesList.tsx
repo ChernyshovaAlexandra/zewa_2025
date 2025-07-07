@@ -25,7 +25,6 @@ interface PrizesListProps {
 const PrizesList: React.FC<PrizesListProps> = ({ isDrawerOpen }) => {
   const { prizes, setActivePanel } = useGlobal();
   const userData = useUserStore((s) => s.userData);
-  console.info('userData: ', userData);
   const scrollContainerRef = React.useRef<HTMLDivElement>(null);
   const prizeRefs = React.useRef<Array<HTMLDivElement | null>>([]);
   const { isMobile } = useWindowSize();

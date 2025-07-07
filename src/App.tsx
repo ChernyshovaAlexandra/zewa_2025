@@ -1,6 +1,9 @@
-import { Suspense, useEffect, useState } from 'react';
+import {
+  Suspense,
+  /*  useEffect, useState*/
+} from 'react';
 import { SplashScreen } from './features/splash/SplashScreen';
-import { OnboardingScreen } from './features/onboarding';
+// import { OnboardingScreen } from './features/onboarding';
 import { AppRouter } from './router';
 import { ZewaModal } from './shared/ui';
 import { AdaptivityProvider, AppRoot, ConfigProvider, SafeAreaInsets } from '@vkontakte/vkui';
