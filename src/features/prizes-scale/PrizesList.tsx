@@ -23,12 +23,11 @@ interface PrizesListProps {
 }
 
 const PrizesList: React.FC<PrizesListProps> = ({ isDrawerOpen }) => {
-  const { prizes, setActivePanel } = useGlobal();
+  const { setActivePanel } = useGlobal();
   const userData = useUserStore((s) => s.userData);
   const scrollContainerRef = React.useRef<HTMLDivElement>(null);
   const prizeRefs = React.useRef<Array<HTMLDivElement | null>>([]);
   const { isMobile } = useWindowSize();
-
   // Активированные и новые купоны из данных пользователя
   const activatedCouponsArray = React.useMemo(
     () =>
@@ -55,7 +54,7 @@ const PrizesList: React.FC<PrizesListProps> = ({ isDrawerOpen }) => {
 
   // Обработка и модификация списка призов с учетом купонов
   const modifiedPrizes = React.useMemo(() => {
-    if (!prizes) return [];
+    if (!userData?.prizes) return [];
 
     // Добавляем пустой приз в начало массива
     const emptyPrize = {
@@ -66,7 +65,7 @@ const PrizesList: React.FC<PrizesListProps> = ({ isDrawerOpen }) => {
       activated: false,
     };
 
-    const result = prizes.reduce(
+    const result = userData?.prizes.reduce(
       (acc, prize) => {
         const matchingNewCoupons = newCouponsArray.filter(
           (coupon) => coupon.points === prize.points && prize.type === 'coupon',
@@ -102,14 +101,15 @@ const PrizesList: React.FC<PrizesListProps> = ({ isDrawerOpen }) => {
 
         return acc;
       },
-      [] as typeof prizes,
+      [] as typeof userData.prizes,
     );
 
     // Сортируем весь массив и добавляем пустой приз перед остальными
     return [emptyPrize, ...result.sort((a, b) => a.points - b.points)];
-  }, [prizes, newCouponsArray, activatedCouponsArray]);
+  }, [userData, newCouponsArray, activatedCouponsArray]);
 
-  const lastActivatedIndex = modifiedPrizes.reduce((lastIndex, prize, index) => {
+  const lastActivatedIndex = 5;
+  modifiedPrizes.reduce((lastIndex, prize, index) => {
     if (!userData) return 0;
     if (userData.user.points >= prize.points || prize.activated) {
       return index;
@@ -238,14 +238,16 @@ const PrizesList: React.FC<PrizesListProps> = ({ isDrawerOpen }) => {
 
     return () => clearTimeout(timer);
   }, [isDrawerOpen, modifiedPrizes, scrollToLastActivatedPrize, userData]);
+  console.info(lastActivatedIndex);
 
   return (
     <ScrollContainer
-      getRef={scrollContainerRef}
-      showArrows={isMobile ? false : true}
+      data-twa-scroll="true"
+      getRootRef={scrollContainerRef}
+      showArrows={false}
       getScrollToLeft={(i) => i - 250}
       getScrollToRight={(i) => i + 250}
-      scrollOnAnyWheel={true}
+      scrollOnAnyWheel
     >
       <div style={{ minWidth: '300px', position: 'relative', zIndex: 10 }}>{renderPrizeCells}</div>
     </ScrollContainer>

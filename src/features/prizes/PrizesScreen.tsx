@@ -2,8 +2,8 @@ import { PageContainer, Text } from '@/shared/ui';
 import { useState } from 'react';
 import * as S from '../tournament/TournamentScreen.styles';
 import { useUserStore } from '@/shared/model';
-import PrizeContainer from './prizes/PrizeContainer';
-import CouponContainer from './prizes/CouponContainer';
+import PrizeContainer from './components/PrizeContainer';
+import CouponContainer from './components/CouponContainer';
 
 export function PrizesScreen() {
   const [active, setActive] = useState<'promocodes' | 'prizes'>('promocodes');

@@ -43,10 +43,10 @@ export function HomeScreen() {
           icon={<ScanIcon />}
           onClick={renderQrScannerModal}
         >
-          Сканировать чек
+          Загрузить чек
         </ZewaButton>
         <ZewaButton style={{ padding: '14px' }} variant="white" onClick={() => navigate('/rules')}>
-          Правила участия
+          Правила участия и FAQ
         </ZewaButton>
       </ButtonsWrapper>
       <PrizesScale />

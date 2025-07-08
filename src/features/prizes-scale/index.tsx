@@ -1,5 +1,9 @@
 import React from 'react';
-import { DrawerContent, DrawerWrapper, PaperRoll, PaperUnrolled, RollingLine } from './styles';
+import {
+  DrawerContent,
+  DrawerWrapper,
+  PaperRoll, PaperUnrolled, RollingLine
+} from './styles';
 import useGlobal from '@/contexts/GlobalProvider';
 import DomovenokImages from './DomovenokImages';
 import PrizesList from './PrizesList';
@@ -9,14 +13,20 @@ import { Vtylka } from './Vtylka';
 const PrizesScale: React.FC = () => {
   const { audioManager } = useGlobal();
 
-  const [isDrawerOpen, setDrawerOpen] = React.useState(true);
+  const [isDrawerOpen, setDrawerOpen] = React.useState(false);
   const [paperWidth, setPaperWidth] = React.useState('0%');
 
   const toggleDrawer = React.useCallback(
     (e: React.SyntheticEvent) => {
-      audioManager.playClickSound();
-      // isDrawerOpen ? audioManager.playoOwSound() : audioManager.playLaughSound();
       e.stopPropagation();
+
+      audioManager.playClickSound();
+      if (isDrawerOpen) {
+        audioManager.playoOwSound();
+      } else {
+        audioManager.playLaughSound();
+      }
+
       setDrawerOpen(!isDrawerOpen);
     },
     [isDrawerOpen, audioManager],
@@ -26,22 +36,20 @@ const PrizesScale: React.FC = () => {
     setPaperWidth('95%');
   }, []);
 
-  // if (!prizes) return null;
-
   return (
     <>
       <DrawerWrapper $isOpen={isDrawerOpen} onClick={toggleDrawer}>
         <Text align="center" size="p1" weight={900} color="#1235AB">
           Шкала призов
         </Text>
-        {isDrawerOpen && (
+        {/* {isDrawerOpen && (
           <RollingLine $isOpen={isDrawerOpen}>
             <PaperUnrolled $width={paperWidth}>
               <PaperRoll />
               <Vtylka />
             </PaperUnrolled>
           </RollingLine>
-        )}
+        )} */}
         {isDrawerOpen && (
           <DrawerContent $isOpen={isDrawerOpen}>
             <PrizesList isDrawerOpen={isDrawerOpen} />

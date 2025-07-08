@@ -33,14 +33,14 @@ importers:
         specifier: ^3.11.0
         version: 3.11.0(react@18.3.1)
       '@vkontakte/vkui':
-        specifier: 6.5.0
-        version: 6.5.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^7.3.8
+        version: 7.4.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@yudiel/react-qr-scanner':
         specifier: ^2.0.8
         version: 2.3.1(@types/emscripten@1.40.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       antd:
         specifier: ^5.26.0
-        version: 5.26.0(date-fns@3.6.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 5.26.0(date-fns@4.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       axios:
         specifier: ^1.9.0
         version: 1.9.0
@@ -536,20 +536,20 @@ packages:
     resolution: {integrity: sha512-4SaFZCNfJqvk/kenHpI8xvN42DMaoycy4PzKc5otHxRswww1kAt82OlBuwRVLofCACCTZEcla2Ydxv8scMXaTg==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
-  '@floating-ui/core@1.7.1':
-    resolution: {integrity: sha512-azI0DrjMMfIug/ExbBaeDVJXcY0a7EPvPjb2xAJPa4HeimBX+Z18HK8QQR3jb6356SnDDdxx+hinMLcJEDdOjw==}
+  '@floating-ui/core@1.7.2':
+    resolution: {integrity: sha512-wNB5ooIKHQc+Kui96jE/n69rHFWAVoxn5CAzL1Xdd8FG03cgY3MLO+GF9U3W737fYDSgPWA6MReKhBQBop6Pcw==}
 
-  '@floating-ui/dom@1.7.1':
-    resolution: {integrity: sha512-cwsmW/zyw5ltYTUeeYJ60CnQuPqmGwuGVhG9w0PRaRKkAyi38BT5CKrpIbb+jtahSwUl04cWzSx9ZOIxeS6RsQ==}
+  '@floating-ui/dom@1.7.2':
+    resolution: {integrity: sha512-7cfaOQuCS27HD7DX+6ib2OrnW+b4ZBwDNnCcT0uTyidcmyWb03FnQqJybDBoCnpdxwBSfA94UAYlRCt7mV+TbA==}
 
-  '@floating-ui/react-dom@2.1.3':
-    resolution: {integrity: sha512-huMBfiU9UnQ2oBwIhgzyIiSpVgvlDstU8CX0AF+wS+KzmYMs0J2a3GwuFHV1Lz+jlrQGeC1fF+Nv0QoumyV0bA==}
+  '@floating-ui/react-dom@2.1.4':
+    resolution: {integrity: sha512-JbbpPhp38UmXDDAu60RJmbeme37Jbgsm7NrHGgzYYFKmblzRUh6Pa641dII6LsjwF4XlScDrde2UAzDo/b9KPw==}
     peerDependencies:
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
 
-  '@floating-ui/utils@0.2.9':
-    resolution: {integrity: sha512-MDWhGtE+eHw5JW7lq4qhc5yRLS11ERl1c7Z6Xd0a58DozHES6EnNNwUWbMiG4J9Cgj053Bhk8zvlhFYKVhULwg==}
+  '@floating-ui/utils@0.2.10':
+    resolution: {integrity: sha512-aGTxbpbg8/b5JfU1HXSrbH3wXZuLPJcNEcZQFMxLs3oSzgtVu6nFPkbbGGUvBcUjKV2YyB9Wxxabo+HEH9tcRQ==}
 
   '@humanfs/core@0.19.1':
     resolution: {integrity: sha512-5DyQ4+1JEUzejeK1JGICcideyfUbGixgS9jNgex5nqkW+cY7WZhxBigmieN5Qnw9ZosSNVC9KQKyb+GUaGyKUA==}
@@ -1249,41 +1249,33 @@ packages:
   '@vitest/utils@3.2.4':
     resolution: {integrity: sha512-fB2V0JFrQSMsCo9HiSq3Ezpdv4iYaXRG1Sx8edX3MwxfyNn83mKiGzOcH+Fkxt4MHxr3y42fQi1oeAInqgX2QA==}
 
-  '@vkontakte/icons-sprite@2.3.1':
-    resolution: {integrity: sha512-j7HB2Mqw2kJdWN/sTgiXDW7hXpsIM6l5MYYJ9OisxtzbitXH1wvl7aEXUc3NuR0JPVg7ImaZeot+HU4VjtMcag==}
-    peerDependencies:
-      react: ^16.9.34 || ^17 || ^18
-
   '@vkontakte/icons-sprite@3.1.0':
     resolution: {integrity: sha512-B8eEHyCT4C1WIozHTTPT1sxiKE7idTf3fS9gFmrR/47VaZ8BxEQ+Oxw7WUSvNS4ynxK8J7COwxmyUKZsovO7iA==}
     peerDependencies:
       react: ^18 || ^19
-
-  '@vkontakte/icons@2.170.0':
-    resolution: {integrity: sha512-AKGNJ1t99QrPg9BitcWdJ0H4OOHmXAwUWyVDTaR6csf05gYehCltrIyLd80waCzOvUQGi9q/BXgOg0oWTJSGcQ==}
-    peerDependencies:
-      react: ^16.9.34 || ^17 || ^18
 
   '@vkontakte/icons@3.11.0':
     resolution: {integrity: sha512-82sro+iWg57j2qCkKJ4EFefEAL8db5wC5gYIucMlCsFV/2Le23dR/gpcX6sLdDCuQTpjjAW6RVsyrACnFBX36Q==}
     peerDependencies:
       react: ^18 || ^19
 
-  '@vkontakte/vkjs@1.3.0':
-    resolution: {integrity: sha512-GfwCC2JNetiiFZcEWyK9LOy8PHUKK2+L8VSJMbXKnpi4LnkxXYMEBsun1rEKGliPITYZC50nLm7jhxbCgcxVuw==}
-    engines: {yarn: ^1.21.1}
+  '@vkontakte/vkjs@2.0.1':
+    resolution: {integrity: sha512-VPce+45X7mXpukkLwDaXwFfqfq0NZecoZ3Js3XwXFfhwNanetxMo/6XqG3sV319mxJoAqW8gMQoSv+ExLTlmYg==}
 
-  '@vkontakte/vkui-floating-ui@0.2.4':
-    resolution: {integrity: sha512-61YTYsKpOr07mzH5+NP0UYdlXmdjf1LSsE7OTT6/982Gmij37NUy2qZVCvaXIMBIRcnggbnJCTYCDHuFQbhFlg==}
+  '@vkontakte/vkui-date-fns-tz@0.0.4':
+    resolution: {integrity: sha512-0mLb/gS/P6xgDTH2m7ZVlP+QfJNDO/6jevRf43R8EH+4iTA2f9RZTXb5h9bab0VMDZ7stdXfKUhEN84gyFPVKw==}
+
+  '@vkontakte/vkui-floating-ui@0.2.5':
+    resolution: {integrity: sha512-KkazttQMiihBstvEkIDnpueU5ByioOCneuYFfnNnBuD1CBG1VTU3F65qAzt4rnKX4b35Zxmph/7HYyFbYznCUQ==}
     peerDependencies:
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
 
-  '@vkontakte/vkui@6.5.0':
-    resolution: {integrity: sha512-l/nwdoKgrtXcF4LrROYTXLGkbRNDxosZkOJ1FzwaR5Yc/xBQDKBA12RXQtEMOwoGimp9MUfgEuhwV0ABClwdXQ==}
+  '@vkontakte/vkui@7.4.2':
+    resolution: {integrity: sha512-HCJEQ23k0Y2scvK8zVfaCj81MfzoIPV6hPT3v6bCjaw2DHNfDAOLCLCZpR6JG5b8APj+nXgJMxAoQLRJML9JpA==}
     peerDependencies:
-      react: ^18.2.0
-      react-dom: ^18.2.0
+      react: ^18.2.0 || ^19.0.0
+      react-dom: ^18.2.0 || ^19.0.0
 
   '@yudiel/react-qr-scanner@2.3.1':
     resolution: {integrity: sha512-fE7217QvMKT/AxAEeKIheFhkKO13PSGHiqJfg4dLK/SGPpelpXNpZZ0Qeph1Cm08/AqMlGhvzQbCmoPeD/VVIg==}
@@ -1545,8 +1537,8 @@ packages:
     resolution: {integrity: sha512-BS8PfmtDGnrgYdOonGZQdLZslWIeCGFP9tpan0hi1Co2Zr2NKADsvGYA8XxuG/4UWgJ6Cjtv+YJnB6MM69QGlQ==}
     engines: {node: '>= 0.4'}
 
-  date-fns@3.6.0:
-    resolution: {integrity: sha512-fRHTG8g/Gif+kSh50gaGEdToemgfj74aRX3swtiouboip5JDLAyDE9F11nHMIcvOaXeOC6D7SpNhi7uFyB7Uww==}
+  date-fns@4.1.0:
+    resolution: {integrity: sha512-Ukq0owbQXxa/U3EGtsdVBkR1w7KOQ5gIBqdH2hkvknzZPYvBxb/aa6E8L7tmjFtkwZBu3UXBbjIgPo/Ez4xaNg==}
 
   dayjs@1.11.13:
     resolution: {integrity: sha512-oaMBel6gjolK862uaPQOVTA7q3TZhuSvuMQAAglQDOWYO9A91IrAOUJEyKVlqJlHE0vq5p5UXxzdPfMH/x6xNg==}
@@ -3698,22 +3690,22 @@ snapshots:
       '@eslint/core': 0.15.0
       levn: 0.4.1
 
-  '@floating-ui/core@1.7.1':
+  '@floating-ui/core@1.7.2':
     dependencies:
-      '@floating-ui/utils': 0.2.9
+      '@floating-ui/utils': 0.2.10
 
-  '@floating-ui/dom@1.7.1':
+  '@floating-ui/dom@1.7.2':
     dependencies:
-      '@floating-ui/core': 1.7.1
-      '@floating-ui/utils': 0.2.9
+      '@floating-ui/core': 1.7.2
+      '@floating-ui/utils': 0.2.10
 
-  '@floating-ui/react-dom@2.1.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@floating-ui/react-dom@2.1.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
-      '@floating-ui/dom': 1.7.1
+      '@floating-ui/dom': 1.7.2
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
-  '@floating-ui/utils@0.2.9': {}
+  '@floating-ui/utils@0.2.10': {}
 
   '@humanfs/core@0.19.1': {}
 
@@ -4449,19 +4441,9 @@ snapshots:
       loupe: 3.1.4
       tinyrainbow: 2.0.0
 
-  '@vkontakte/icons-sprite@2.3.1(react@18.3.1)':
-    dependencies:
-      '@swc/helpers': 0.5.17
-      react: 18.3.1
-
   '@vkontakte/icons-sprite@3.1.0(react@18.3.1)':
     dependencies:
       '@swc/helpers': 0.5.17
-      react: 18.3.1
-
-  '@vkontakte/icons@2.170.0(react@18.3.1)':
-    dependencies:
-      '@vkontakte/icons-sprite': 2.3.1(react@18.3.1)
       react: 18.3.1
 
   '@vkontakte/icons@3.11.0(react@18.3.1)':
@@ -4470,25 +4452,28 @@ snapshots:
       '@vkontakte/icons-sprite': 3.1.0(react@18.3.1)
       react: 18.3.1
 
-  '@vkontakte/vkjs@1.3.0':
+  '@vkontakte/vkjs@2.0.1':
     dependencies:
       '@swc/helpers': 0.5.17
       clsx: 2.1.1
 
-  '@vkontakte/vkui-floating-ui@0.2.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@vkontakte/vkui-date-fns-tz@0.0.4': {}
+
+  '@vkontakte/vkui-floating-ui@0.2.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
-      '@floating-ui/react-dom': 2.1.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@floating-ui/react-dom': 2.1.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@swc/helpers': 0.5.17
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
-  '@vkontakte/vkui@6.5.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@vkontakte/vkui@7.4.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@swc/helpers': 0.5.17
-      '@vkontakte/icons': 2.170.0(react@18.3.1)
-      '@vkontakte/vkjs': 1.3.0
-      '@vkontakte/vkui-floating-ui': 0.2.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      date-fns: 3.6.0
+      '@vkontakte/icons': 3.11.0(react@18.3.1)
+      '@vkontakte/vkjs': 2.0.1
+      '@vkontakte/vkui-date-fns-tz': 0.0.4
+      '@vkontakte/vkui-floating-ui': 0.2.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      date-fns: 4.1.0
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
@@ -4524,7 +4509,7 @@ snapshots:
 
   ansi-styles@5.2.0: {}
 
-  antd@5.26.0(date-fns@3.6.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+  antd@5.26.0(date-fns@4.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       '@ant-design/colors': 7.2.1
       '@ant-design/cssinjs': 1.23.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -4556,7 +4541,7 @@ snapshots:
       rc-motion: 2.9.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       rc-notification: 5.6.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       rc-pagination: 5.1.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      rc-picker: 4.11.3(date-fns@3.6.0)(dayjs@1.11.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      rc-picker: 4.11.3(date-fns@4.1.0)(dayjs@1.11.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       rc-progress: 4.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       rc-rate: 2.13.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       rc-resize-observer: 1.4.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -4853,7 +4838,7 @@ snapshots:
       es-errors: 1.3.0
       is-data-view: 1.0.2
 
-  date-fns@3.6.0: {}
+  date-fns@4.1.0: {}
 
   dayjs@1.11.13: {}
 
@@ -6114,7 +6099,7 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
-  rc-picker@4.11.3(date-fns@3.6.0)(dayjs@1.11.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+  rc-picker@4.11.3(date-fns@4.1.0)(dayjs@1.11.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       '@babel/runtime': 7.27.6
       '@rc-component/trigger': 2.2.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -6125,7 +6110,7 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
     optionalDependencies:
-      date-fns: 3.6.0
+      date-fns: 4.1.0
       dayjs: 1.11.13
 
   rc-progress@4.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1):

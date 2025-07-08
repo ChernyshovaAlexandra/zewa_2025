@@ -23,7 +23,7 @@
     "@telegram-apps/sdk-react": "^3.3.2",
     "@testing-library/dom": "^10.4.0",
     "@vkontakte/icons": "^3.11.0",
-    "@vkontakte/vkui": "6.5.0",
+    "@vkontakte/vkui": "^7.3.8",
     "@yudiel/react-qr-scanner": "^2.0.8",
     "antd": "^5.26.0",
     "axios": "^1.9.0",

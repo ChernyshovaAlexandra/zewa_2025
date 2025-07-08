@@ -142,14 +142,10 @@ export const ArrowIcon = styled.div<{ $isOpen: boolean }>`
 export const Bubble = styled.div<{ $activated: boolean; $isOpen: boolean }>`
   position: relative;
   flex-shrink: 0;
-  background: ${(props) => (props.$activated ? '#e5f6ff' : '#4D6EA7')};
   padding: 10px;
-  border: 3px solid;
-  border-color: ${(props) => (props.$activated ? '#F4FCFF' : '#668CC8')};
-  color: ${(props) => (props.$activated ? 'rgb(38, 136, 235)' : '#F2F2F2')};
-  border-radius: 15px;
-  filter: drop-shadow(0px 5px 0px #4e6c8f);
 
+  color: ${(props) => (props.$activated ? 'rgb(38, 136, 235)' : '#F2F2F2')};
+  filter: drop-shadow(0px 5px 0px #1235ab);
   text-align: center;
   display: grid;
   place-items: center;
@@ -162,35 +158,12 @@ export const Bubble = styled.div<{ $activated: boolean; $isOpen: boolean }>`
   padding-top: 10px;
 
   width: 155px;
-  /* height: 80px; */
-
-  &::before {
-    content: '';
-    position: absolute;
-    bottom: -12px;
-    width: 2rem;
-    height: 2rem;
-    border-radius: 7px;
-    background: ${(props) => (props.$activated ? '#e5f6ff' : '#4D6EA7')};
-    transform: rotate(45deg);
-    left: 0;
-    right: 0;
-    margin: auto;
-    border: 3px solid;
-    border-color: ${(props) => (props.$activated ? '#F4FCFF' : '#668CC8')};
-  }
-
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    margin: auto;
-    background: ${(props) => (props.$activated ? '#e5f6ff' : '#4D6EA7')};
-    width: 6rem;
-    height: 4rem;
-  }
+  border-radius: var(--14, 14px);
+  background: linear-gradient(180deg, #2d59df 0%, #0f3bc1 100%);
+  box-shadow:
+    0px 3px 0px 0px #002ab0,
+    0px 1px 2px 0px rgba(255, 255, 255, 0.4) inset,
+    0px -2px 3px 0px #002ab0 inset;
 
   span {
     font-family: 'Foco Trial';
@@ -199,7 +172,9 @@ export const Bubble = styled.div<{ $activated: boolean; $isOpen: boolean }>`
     line-height: 18px;
     text-align: center;
   }
-
+  video {
+    pointer-events: none;
+  }
   @media screen and (min-width: 560px) {
     width: 165px;
     height: 115px;
@@ -301,11 +276,6 @@ export const ScrollContainer = styled(HorizontalScroll)`
   bottom: 0rem;
   z-index: 100;
 
-  > button {
-    transform: translateY(-2.5rem);
-    z-index: 30;
-  }
-
   > div > div > div {
     &:first-child {
       display: flex;
@@ -343,6 +313,7 @@ export const StyledCell = styled.div<{
     background-size: contain;
     bottom: -40px;
   }
+
   &::before {
     content: '';
     position: absolute;

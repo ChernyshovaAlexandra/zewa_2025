@@ -25,7 +25,7 @@ export const BackpackContainer = styled.div`
 
 export const Backpack = styled.img`
   width: 100%;
-  max-width: 300px;
+  max-width: 250px;
 `;
 
 export const ButtonsWrapper = styled.div`
