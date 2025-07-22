@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { PageContainer, Text } from '@/shared/ui';
 import { useUserStore } from '@/shared/model';
 import { apiService } from '@/services';
@@ -26,8 +26,21 @@ export function HistoryScreen() {
   const [active, setActive] = useState<'checks' | 'coins'>('checks');
   const [checks, setChecks] = useState<HistoryCheck[]>([]);
   const [games, setGames] = useState<GameHistory[]>([]);
+  const [visibleChecks, setVisibleChecks] = useState(10);
+  const [visibleGames, setVisibleGames] = useState(10);
 
   const user = useUserStore((s) => s.user);
+
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
+    if (scrollTop + clientHeight >= scrollHeight - 10) {
+      if (active === 'checks') {
+        setVisibleChecks((v) => Math.min(v + 10, checks.length || mockChecks.length));
+      } else {
+        setVisibleGames((v) => Math.min(v + 10, games.length));
+      }
+    }
+  };
 
   useEffect(() => {
     if (!user) return;
@@ -45,7 +58,8 @@ export function HistoryScreen() {
   }, [user]);
 
   const renderChecks = () => {
-    if (!checks?.length && !mockChecks.length) {
+    const data = checks?.length ? checks : mockChecks;
+    if (!data.length) {
       return (
         <Text weight={700} color="white" align="center">
           Нет загруженных чеков
@@ -54,7 +68,7 @@ export function HistoryScreen() {
     }
     return (
       <>
-        {mockChecks.map((item, id) => (
+        {data.slice(0, visibleChecks).map((item, id) => (
           <CheckContainer
             key={id}
             subtitle={`Чек №${id + 1}`}
@@ -78,7 +92,7 @@ export function HistoryScreen() {
 
     return (
       <>
-        {games.map((item, id) => (
+        {games.slice(0, visibleGames).map((item, id) => (
           <GameContainer
             key={id}
             header={`Игра «Снова в школу»`}
@@ -92,7 +106,7 @@ export function HistoryScreen() {
   };
 
   return (
-    <PageContainer fullscreen title="Начисление монет">
+    <PageContainer fullscreen title="Начисление монет" onScroll={handleScroll}>
       <S.TabsWrapper>
         <S.Tabs>
           <S.TabButton $active={active === 'checks'} onClick={() => setActive('checks')}>
