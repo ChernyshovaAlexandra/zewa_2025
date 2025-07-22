@@ -3,6 +3,7 @@ import { PageContainer, Text } from '@/shared/ui';
 import { useUserStore } from '@/shared/model';
 import { apiService } from '@/services';
 import * as S from '../tournament/TournamentScreen.styles';
+import GameContainer from '../game-container';
 
 interface HistoryCheck {
   date_time_raw: string;
@@ -81,30 +82,17 @@ export function HistoryScreen() {
     }
 
     return (
-      <S.Table>
-        <thead>
-          <tr>
-            <th>Дата</th>
-            <th>ID игры</th>
-            <th>Очки</th>
-            <th>Потрачено монет</th>
-            <th>Заработано монет</th>
-            <th>Статус</th>
-          </tr>
-        </thead>
-        <tbody>
-          {games.map((g, i) => (
-            <tr key={i}>
-              <td>{g.day}</td>
-              <td>{g.game_id}</td>
-              <td>{g.points_earned}</td>
-              <td>{g.coins_spent}</td>
-              <td>{g.coins_earned}</td>
-              <td>{g.status}</td>
-            </tr>
-          ))}
-        </tbody>
-      </S.Table>
+      <>
+        {games.map((item, id) => (
+          <GameContainer
+            key={id}
+            header={`Игра «Снова в школу»`}
+            caption={item.day}
+            status={item.status}
+            points_earned={item.points_earned}
+          />
+        ))}
+      </>
     );
   };
 
