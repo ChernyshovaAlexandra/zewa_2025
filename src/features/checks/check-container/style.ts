@@ -31,7 +31,8 @@ export const CheckNumber = styled.span`
 export const StyledIconButton = styled(IconButton)`
   border-radius: 50%;
   height: fit-content;
-  padding: 0.5rem;
+  /* padding: 0.5rem; */
+
   &:hover {
     background: #ececec;
   }

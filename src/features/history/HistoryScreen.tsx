@@ -4,6 +4,8 @@ import { useUserStore } from '@/shared/model';
 import { apiService } from '@/services';
 import * as S from '../tournament/TournamentScreen.styles';
 import GameContainer from '../game-container';
+import { mockChecks } from './mocks';
+import CheckContainer from '../checks/check-container';
 
 interface HistoryCheck {
   date_time_raw: string;
@@ -43,7 +45,7 @@ export function HistoryScreen() {
   }, [user]);
 
   const renderChecks = () => {
-    if (!checks?.length) {
+    if (!checks?.length && !mockChecks.length) {
       return (
         <Text weight={700} color="white" align="center">
           Нет загруженных чеков
@@ -51,24 +53,17 @@ export function HistoryScreen() {
       );
     }
     return (
-      <S.Table>
-        <thead>
-          <tr>
-            <th>Дата</th>
-            <th>Монеты</th>
-            <th>Статус</th>
-          </tr>
-        </thead>
-        <tbody>
-          {checks.map((c, i) => (
-            <tr key={i}>
-              <td>{c.date_time_raw}</td>
-              <td>{c.coins_earned}</td>
-              <td>{c.status}</td>
-            </tr>
-          ))}
-        </tbody>
-      </S.Table>
+      <>
+        {mockChecks.map((item, id) => (
+          <CheckContainer
+            key={id}
+            subtitle={`Чек №${id + 1}`}
+            caption={item.date_time_raw}
+            coins_earned={item.coins_earned}
+            status={item.status}
+          />
+        ))}
+      </>
     );
   };
 

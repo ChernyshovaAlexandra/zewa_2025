@@ -1,285 +1,236 @@
-import * as THREE from 'three';
-import { DRACOLoader, GLTFLoader } from 'three/examples/jsm/Addons.js';
-
 interface LoadResourcesParams {
-    isMobile?: boolean;
-    imagePaths?: string[];
-    modelPaths?: string[];
+  isMobile?: boolean;
+  imagePaths?: string[];
+  modelPaths?: string[];
 }
 interface LoadedImageResources {
-    images: Record<string, HTMLImageElement>;
+  images: Record<string, HTMLImageElement>;
 }
 interface LoadResourcesParams {
-    audioPaths?: string[];
-}
-interface LoadedResources {
-    textures: Record<string, THREE.Texture>;
-    models: Record<string, THREE.Group | THREE.Object3D>;
+  audioPaths?: string[];
 }
 interface LoadedAudioResources {
-    audios: { [key: string]: HTMLAudioElement | string };
+  audios: { [key: string]: HTMLAudioElement | string };
 }
 
 class Helper {
-    static loadAudio = (url: string, res: () => void) => {
-        const audio = new Audio();
-        audio.oncanplaythrough = () => res();
-        audio.onerror = () => res();
-        audio.src = url;
-    };
+  static loadAudio = (url: string, res: () => void) => {
+    const audio = new Audio();
+    audio.oncanplaythrough = () => res();
+    audio.onerror = () => res();
+    audio.src = url;
+  };
 
-    static loadAudioResources = ({ audioPaths = [] }: LoadResourcesParams): Promise<LoadedAudioResources> => {
-        return new Promise((resolve, reject) => {
-            const resources: LoadedAudioResources = {
-                audios: {},
-            };
+  static loadAudioResources = ({
+    audioPaths = [],
+  }: LoadResourcesParams): Promise<LoadedAudioResources> => {
+    return new Promise((resolve) => {
+      const resources: LoadedAudioResources = {
+        audios: {},
+      };
 
-            let loadedCount = 0;
-            const totalResources = audioPaths.length;
+      let loadedCount = 0;
+      const totalResources = audioPaths.length;
 
-            if (totalResources === 0) {
-                resolve(resources);
-                return;
-            }
+      if (totalResources === 0) {
+        resolve(resources);
+        return;
+      }
 
-            audioPaths.forEach((path) => {
-                this.loadAudio(path, () => {
-                    loadedCount += 1;
+      audioPaths.forEach((path) => {
+        this.loadAudio(path, () => {
+          loadedCount += 1;
 
-                    resources.audios[path] = path;
+          resources.audios[path] = path;
 
-                    if (loadedCount === totalResources) {
-                        resolve(resources);
-                    }
-                })
-            })
-
+          if (loadedCount === totalResources) {
+            resolve(resources);
+          }
         });
-    };
+      });
+    });
+  };
 
-    static getCoinsForm(count: number): string {
-        const lastDigit = count % 10;
-        const lastTwoDigits = count % 100;
+  static getCoinsForm(count: number): string {
+    const lastDigit = count % 10;
+    const lastTwoDigits = count % 100;
 
-        if (lastTwoDigits >= 11 && lastTwoDigits <= 19) {
-            return 'монет';
-        }
-
-        if (lastDigit === 1) {
-            return 'монета';
-        }
-
-        if (lastDigit >= 2 && lastDigit <= 4) {
-            return 'монеты';
-        }
-
-        return 'монет';
+    if (lastTwoDigits >= 11 && lastTwoDigits <= 19) {
+      return 'монет';
     }
 
-    static getCorrectForm(tissues: number): string {
-        const lastDigit = tissues % 10;
-        const lastTwoDigits = tissues % 100;
-
-        // Проверяем числа от 11 до 19, которые всегда имеют окончание "полотенец"
-        if (lastTwoDigits >= 11 && lastTwoDigits <= 19) {
-            return 'листов';
-        }
-
-        // Определяем форму на основе последней цифры
-        switch (lastDigit) {
-            case 1:
-                return 'лист';
-            case 2:
-            case 3:
-            case 4:
-                return 'листа';
-            default:
-                return 'листов';
-        }
+    if (lastDigit === 1) {
+      return 'монета';
     }
 
-    static convertImageToBase64 = (file: File): Promise<string> => {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result as string);
-            reader.onerror = error => reject(error);
-        });
-    };
-
-    static loadAndConvertImage = async (imagePath: string) => {
-        try {
-            const response = await fetch(imagePath);
-            const blob = await response.blob();
-            const file = new File([blob], "image.png", { type: blob.type });
-            const base64 = await this.convertImageToBase64(file);
-            return base64;
-        } catch (error) {
-            console.error('Ошибка при загрузке и конвертации изображения:', error);
-            return null;
-        }
-    };
-
-
-    static getMeterText(count: number): string {
-        const isDecimal = count % 1 !== 0;
-
-        if (isDecimal) {
-            // Для десятичных дробей всегда "метра"
-            return 'метра';
-        }
-
-        // Приводим число к целому типу
-        const integerCount = Math.floor(Math.abs(count));
-
-        // Последняя цифра числа
-        const lastDigit = integerCount % 10;
-        // Последние две цифры числа
-        const lastTwoDigits = integerCount % 100;
-
-        // Для чисел, заканчивающихся на 11-19, всегда "метров"
-        if (lastTwoDigits >= 11 && lastTwoDigits <= 19) {
-            return 'метров';
-        }
-
-        // Определяем форму слова для остальных случаев
-        switch (lastDigit) {
-            case 1:
-                return 'метр';
-            case 2:
-            case 3:
-            case 4:
-                return 'метра';
-            default:
-                return 'метров';
-        }
+    if (lastDigit >= 2 && lastDigit <= 4) {
+      return 'монеты';
     }
 
-    static getPrizesText(count: number): string {
-        if (count === 1) return "приз";
+    return 'монет';
+  }
 
-        const lastDigit = count % 10;
-        const lastTwoDigits = count % 100;
+  static getCorrectForm(tissues: number): string {
+    const lastDigit = tissues % 10;
+    const lastTwoDigits = tissues % 100;
 
-        if (lastTwoDigits >= 11 && lastTwoDigits <= 19) {
-            return 'призов';
-        }
-       
-        switch (lastDigit) {
-            case 1:
-                return 'приз';
-            case 2:
-            case 3:
-            case 4:
-                return 'приза';
-            default:
-                return 'призов';
-        }
+    // Проверяем числа от 11 до 19, которые всегда имеют окончание "полотенец"
+    if (lastTwoDigits >= 11 && lastTwoDigits <= 19) {
+      return 'листов';
     }
 
-    static formatDate = (dateString: string) => {
-        if (dateString.length !== 13) {
-            return dateString
-        }
+    // Определяем форму на основе последней цифры
+    switch (lastDigit) {
+      case 1:
+        return 'лист';
+      case 2:
+      case 3:
+      case 4:
+        return 'листа';
+      default:
+        return 'листов';
+    }
+  }
 
-        const year = dateString.substring(0, 4);
-        const month = dateString.substring(4, 6);
-        const day = dateString.substring(6, 8);
+  static convertImageToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = (error) => reject(error);
+    });
+  };
 
-        return `${day}.${month}.${year}`;
+  static loadAndConvertImage = async (imagePath: string) => {
+    try {
+      const response = await fetch(imagePath);
+      const blob = await response.blob();
+      const file = new File([blob], 'image.png', { type: blob.type });
+      const base64 = await this.convertImageToBase64(file);
+      return base64;
+    } catch (error) {
+      console.error('Ошибка при загрузке и конвертации изображения:', error);
+      return null;
+    }
+  };
+
+  static getMeterText(count: number): string {
+    const isDecimal = count % 1 !== 0;
+
+    if (isDecimal) {
+      // Для десятичных дробей всегда "метра"
+      return 'метра';
     }
 
-    static deFormatDate = (dateValue: Date) => {
-        const year = dateValue.getFullYear();
-        const month = (dateValue.getMonth() + 1).toString().padStart(2, '0'); // Месяцы в JavaScript начинаются с 0
-        const day = dateValue.getDate().toString().padStart(2, '0');
-        const hour = dateValue.getHours().toString().padStart(2, '0');
-        const minute = dateValue.getMinutes().toString().padStart(2, '0');
+    // Приводим число к целому типу
+    const integerCount = Math.floor(Math.abs(count));
 
-        return `${year}${month}${day}T${hour}${minute}`;
-    };
+    // Последняя цифра числа
+    const lastDigit = integerCount % 10;
+    // Последние две цифры числа
+    const lastTwoDigits = integerCount % 100;
 
-    static loadResources = ({ isMobile, imagePaths = [], modelPaths = [] }: LoadResourcesParams): Promise<LoadedResources> => {
-        return new Promise((resolve, reject) => {
-            const manager = new THREE.LoadingManager();
-            const textureLoader = new THREE.TextureLoader(manager);
-
-            // Для хранения загруженных текстур и моделей
-            const resources: LoadedResources = {
-                textures: {},
-                models: {},
-            };
-
-            // Загружаем текстуры
-            imagePaths.forEach((path) => {
-                textureLoader.load(path, (texture) => {
-                    resources.textures[path] = texture;
-                });
-            });
-
-            if (!isMobile && modelPaths.length > 0) {
-                const gltfLoader = new GLTFLoader(manager);
-                const dracoLoader = new DRACOLoader();
-                dracoLoader.setDecoderPath('/libs/draco/');
-                gltfLoader.setDRACOLoader(dracoLoader);
-
-                modelPaths.forEach((path) => {
-                    gltfLoader.load(path, (gltf) => {
-                        resources.models[path] = gltf.scene;
-                    });
-                });
-            }
-
-            // Когда все загружено
-            manager.onLoad = () => {
-                resolve(resources); // Возвращаем загруженные ресурсы
-            };
-
-            // В случае ошибки загрузки
-            manager.onError = (url) => {
-                reject(new Error(`Ошибка загрузки: ${url}`));
-            };
-        });
-    };
-
-    static loadImageResources = ({ imagePaths = [] }: LoadResourcesParams): Promise<LoadedImageResources> => {
-        return new Promise((resolve, reject) => {
-            const resources: LoadedImageResources = {
-                images: {},
-            };
-
-            let loadedCount = 0;
-            const totalResources = imagePaths.length;
-
-            if (totalResources === 0) {
-                resolve(resources);
-                return;
-            }
-
-            imagePaths.forEach((path) => {
-                const img = new Image();
-                img.src = path;
-
-                img.onload = () => {
-                    resources.images[path] = img;
-                    loadedCount++;
-                    if (loadedCount === totalResources) {
-                        resolve(resources);
-                    }
-                };
-
-                img.onerror = () => {
-                    reject(new Error(`Ошибка загрузки изображения: ${path}`));
-                };
-            });
-        });
-    };
-
-    static getRandomBooleanWithProbability(probabilityOfTrue = 0.6) {
-        const random = Math.random() < probabilityOfTrue;
-        return random
+    // Для чисел, заканчивающихся на 11-19, всегда "метров"
+    if (lastTwoDigits >= 11 && lastTwoDigits <= 19) {
+      return 'метров';
     }
 
+    // Определяем форму слова для остальных случаев
+    switch (lastDigit) {
+      case 1:
+        return 'метр';
+      case 2:
+      case 3:
+      case 4:
+        return 'метра';
+      default:
+        return 'метров';
+    }
+  }
+
+  static getPrizesText(count: number): string {
+    if (count === 1) return 'приз';
+
+    const lastDigit = count % 10;
+    const lastTwoDigits = count % 100;
+
+    if (lastTwoDigits >= 11 && lastTwoDigits <= 19) {
+      return 'призов';
+    }
+
+    switch (lastDigit) {
+      case 1:
+        return 'приз';
+      case 2:
+      case 3:
+      case 4:
+        return 'приза';
+      default:
+        return 'призов';
+    }
+  }
+
+  static formatDate = (dateString: string) => {
+    if (dateString.length !== 13) {
+      return dateString;
+    }
+
+    const year = dateString.substring(0, 4);
+    const month = dateString.substring(4, 6);
+    const day = dateString.substring(6, 8);
+
+    return `${day}.${month}.${year}`;
+  };
+
+  static deFormatDate = (dateValue: Date) => {
+    const year = dateValue.getFullYear();
+    const month = (dateValue.getMonth() + 1).toString().padStart(2, '0'); // Месяцы в JavaScript начинаются с 0
+    const day = dateValue.getDate().toString().padStart(2, '0');
+    const hour = dateValue.getHours().toString().padStart(2, '0');
+    const minute = dateValue.getMinutes().toString().padStart(2, '0');
+
+    return `${year}${month}${day}T${hour}${minute}`;
+  };
+
+  static loadImageResources = ({
+    imagePaths = [],
+  }: LoadResourcesParams): Promise<LoadedImageResources> => {
+    return new Promise((resolve, reject) => {
+      const resources: LoadedImageResources = {
+        images: {},
+      };
+
+      let loadedCount = 0;
+      const totalResources = imagePaths.length;
+
+      if (totalResources === 0) {
+        resolve(resources);
+        return;
+      }
+
+      imagePaths.forEach((path) => {
+        const img = new Image();
+        img.src = path;
+
+        img.onload = () => {
+          resources.images[path] = img;
+          loadedCount++;
+          if (loadedCount === totalResources) {
+            resolve(resources);
+          }
+        };
+
+        img.onerror = () => {
+          reject(new Error(`Ошибка загрузки изображения: ${path}`));
+        };
+      });
+    });
+  };
+
+  static getRandomBooleanWithProbability(probabilityOfTrue = 0.6) {
+    const random = Math.random() < probabilityOfTrue;
+    return random;
+  }
 }
 
 export default Helper;

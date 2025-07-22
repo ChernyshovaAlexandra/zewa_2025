@@ -1,16 +1,14 @@
-import { ModalHeading } from '@/components/UI/heading';
 import { CheckProps } from '@/features/checks/check-container';
 import Helper from '@/helpers/Helper';
 import { Text } from '@/shared/ui';
 import React from 'react';
 
-const CheckDataModal: React.FC<CheckProps> = ({ subtitle, caption, coins_earned, status }) => {
+const CheckDataModal: React.FC<CheckProps> = ({ caption, coins_earned, status }) => {
   return (
     <>
-      <ModalHeading level={2}>{subtitle}</ModalHeading>
       {!coins_earned && (
         <>
-          <Text>
+          <Text style={{ color: '#596471' }}>
             {status === 'Ждёт проверки'
               ? status
               : `Загружен ${caption ? Helper.formatDate(caption) : 'и ждёт проверки.'}`}
@@ -18,21 +16,21 @@ const CheckDataModal: React.FC<CheckProps> = ({ subtitle, caption, coins_earned,
           <br />
         </>
       )}
-
+      {coins_earned && caption ? (
+        <Text style={{ color: '#596471', textAlign: 'center' }}>
+          Загружен {Helper.formatDate(caption)}
+        </Text>
+      ) : (
+        <></>
+      )}
       {status === 'Засчитан' ? (
-        <Text>
-          В вашем чеке есть товар бренда Zewa, и вы получили в награду {coins_earned}{' '}
+        <Text style={{ color: '#596471',margin: 0 }}>
+          В вашем чеке есть товар бренда Zewa, и вам начислено {coins_earned}{' '}
           {Helper.getCoinsForm(coins_earned)}.
-          <br />
-          <br />
-          <b>Удачи в игре!</b>
         </Text>
       ) : coins_earned ? (
-        <Text>
-          Вы получили в награду {coins_earned} {Helper.getCoinsForm(coins_earned)}.
-          <br />
-          <br />
-          <b>Удачи в игре!</b>
+        <Text style={{ color: '#596471', margin: 0 }}>
+          Вам начислено {coins_earned} {Helper.getCoinsForm(coins_earned)}.
         </Text>
       ) : (
         <></>

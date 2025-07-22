@@ -3,7 +3,6 @@ import {
   CheckData,
   FlexBetween,
   CheckNumber,
-  StyledIconButton,
   Date,
   SeparatorStyled,
   Total,
@@ -15,6 +14,7 @@ import Helper from '@/helpers/Helper';
 
 import CheckDataModal from '@/components/modals/check-data-modal';
 import { useModalStore } from '@/shared/model';
+import { Text } from '@/shared/ui';
 
 export type CheckProps = {
   subtitle: string;
@@ -44,9 +44,7 @@ const CheckContainer: React.FC<CheckProps> = ({ subtitle, caption, coins_earned,
     <CheckData>
       <FlexBetween>
         <CheckNumber>{subtitle}</CheckNumber>
-        <StyledIconButton onClick={showModalInfo}>
-          <Icon20InfoCircleOutline color="#7E97B4" />
-        </StyledIconButton>
+        <Icon20InfoCircleOutline color="#7E97B4" onClick={showModalInfo} />
       </FlexBetween>
       <FlexBetween>{caption ? <Date> {Helper.formatDate(caption)}</Date> : <></>}</FlexBetween>
       <Spacing size={24}>
@@ -56,8 +54,13 @@ const CheckContainer: React.FC<CheckProps> = ({ subtitle, caption, coins_earned,
         <Total>Статус</Total>
         {status === 'Засчитан' || coins_earned ? (
           <StyledCoins>
-            <p>+{coins_earned}</p>
-            <img src={'/images/coin-icon.png'} width="17.8" alt="coin icon" />
+            <Text style={{ fontSize: '14px' }}> +{coins_earned} </Text>
+            <img
+              src={`/public/assets/images/coins-icon.png`}
+              width="24"
+              alt="coins-icon"
+              loading="lazy"
+            />
           </StyledCoins>
         ) : (
           <Total>{status}</Total>
@@ -68,11 +71,3 @@ const CheckContainer: React.FC<CheckProps> = ({ subtitle, caption, coins_earned,
 };
 
 export default React.memo(CheckContainer);
-
-// <CheckContainer
-// key={id}
-// subtitle={`Чек №${id + 1}`}
-// caption={item.date_time_raw}
-// coins_earned={item.coins_earned}
-// status={item.status}
-// />
