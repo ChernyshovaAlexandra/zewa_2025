@@ -49,7 +49,9 @@ export interface GameResultRequest {
 
 export class ApiService {
   private axios: AxiosInstance;
-  public hash = '';
+  private hash = '';
+  private payload = '';
+  private ts = 0;
 
   constructor(baseURL = import.meta.env.VITE_API_BASE_URL + 'api') {
     this.axios = axios.create({
@@ -63,12 +65,16 @@ export class ApiService {
     });
   }
 
-  setHash(hash: string) {
+  setHash(hash: string, payload: string, ts: number) {
     this.hash = hash;
+    this.payload = payload;
+    this.ts = ts;
   }
 
-  private withHash<T extends Record<string, unknown>>(data: T): T & { hash: string } {
-    return { ...data, hash: this.hash };
+  private withHash<T extends Record<string, unknown>>(
+    data: T,
+  ): T & { hash: string; payload: string; ts: number } {
+    return { ...data, hash: this.hash, payload: this.payload, ts: this.ts };
   }
 
   start(data: Omit<StartRequest, 'hash'>) {

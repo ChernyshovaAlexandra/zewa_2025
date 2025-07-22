@@ -31,7 +31,11 @@ export function TelegramProvider({ children }: { children: ReactNode }) {
             photoUrl: user.photo_url,
           });
 
-          apiService.setHash(webApp.initDataUnsafe?.hash ?? '');
+          apiService.setHash(
+            webApp.initDataUnsafe?.hash ?? '',
+            webApp.initData,
+            parseInt(webApp.initDataUnsafe?.auth_date ?? '', 10),
+          );
           apiService
             .start({
               telegram_id: user.id,
@@ -52,7 +56,6 @@ export function TelegramProvider({ children }: { children: ReactNode }) {
 
     return () => clearInterval(interval);
   }, [setUser, setUserData, setStartStoreData]);
-  
 
   return <TelegramContext.Provider value={telegramService}>{children}</TelegramContext.Provider>;
 }

@@ -25,7 +25,7 @@ export function ProfileScreen() {
           <ZewaButton onClick={() => navigate('/prizes')} variant="white">
             <PrizeIcon /> Мои призы
           </ZewaButton>
-          <ZewaButton variant="white">
+          <ZewaButton variant="white" onClick={() => navigate('/history')}>
             <HistoryIcon />
             История начислений
           </ZewaButton>
