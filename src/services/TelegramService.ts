@@ -21,12 +21,13 @@ export interface TelegramWebApp {
   ready: () => void;
   sendData: (data: string) => void;
   onEvent: (eventType: string, callback: (...args: unknown[]) => void) => void;
-  showScanQrPopup?: () => void;
+  showScanQrPopup?: (params: { text?: string }) => void;
   allowVerticalSwipe?: boolean;
 }
 
 export class TelegramService {
   private tg?: TelegramWebApp;
+  private isScanPopupOpen = false;
 
   init() {
     this.tg = window?.Telegram?.WebApp;
@@ -55,6 +56,11 @@ export class TelegramService {
     this.tg?.onEvent(eventType, callback);
   }
 
+  offEvent(eventType: string, callback: (...args: unknown[]) => void) {
+    // @ts-expect-error – offEvent есть в TelegramMiniApp, но не в типах
+    this.tg?.offEvent?.(eventType, callback);
+  }
+
   expand() {
     this.tg?.expand?.();
   }
@@ -75,11 +81,29 @@ export class TelegramService {
     }
   }
 
-  showScanQrPopup() {
+  showScanQrPopup(text = 'Наведите камеру на QR-код'): boolean {
+
+    if (!this.tg?.showScanQrPopup) {
+      console.warn('showScanQrPopup недоступен');
+      return false;
+    }
+
+    if (this.isScanPopupOpen) {
+      return false;
+    }
+
     try {
-      this.tg?.showScanQrPopup?.();
+      this.tg.showScanQrPopup({ text });
+      this.isScanPopupOpen = true;
+      // сбрасываем флаг после закрытия
+      this.tg.onEvent?.('scanQrPopupClosed', () => (this.isScanPopupOpen = false));
+      this.tg.onEvent?.('qrCodeReceived', () => (this.isScanPopupOpen = false));
+      this.tg.onEvent?.('onScanError', () => (this.isScanPopupOpen = false));
+      return true;
     } catch (err) {
+      // сюда попадёт WebAppScanQrPopupOpened и любые другие ошибки
       console.error('Failed to open QR popup:', err);
+      return false;
     }
   }
 }

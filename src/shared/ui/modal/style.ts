@@ -33,7 +33,6 @@ export const ModalCard = styled.div`
   border: 6px solid #1235ab;
   background: #c5dfe9;
   filter: drop-shadow(0px 4px 0px #00098f);
-  /* overflow: hidden; */
   position: relative;
 `;
 
@@ -67,9 +66,12 @@ export const CloseBtn = styled.button`
   position: absolute;
   top: 0%;
   right: 0;
-  width: 2rem;
-  height: 2rem;
+  width: 1.1rem;
+  height: 1.1rem;
   z-index: 20;
+  display: grid;
+  place-items: center;
+  
 
   &::before {
     content: '';
@@ -84,9 +86,10 @@ export const CloseBtn = styled.button`
 
   svg {
     position: relative;
-    right: -8px;
+    z-index: 30;
+    /* right: -8px;
     top: -8px;
     width: 10px;
-    height: 10px;
+    height: 10px; */
   }
 `;

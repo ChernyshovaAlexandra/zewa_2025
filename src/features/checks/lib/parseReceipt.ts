@@ -1,34 +1,50 @@
-export interface Receipt {
-  date: string;
-  totalSum: number;
-  shopId: string;
-  [key: string]: unknown;
+// features/checks/lib/parseReceipt.ts
+export interface ParsedReceipt {
+  fn: string; // номер ФН
+  fd: string; // номер ФД (i)
+  fp: string; // ФПД
+  sum: string; // копейки без точки: 24050
+  date: string; // YYYY-MM-DD
 }
 
-export const SHOP_ID_PATTERN = /^\d{6}$/;
+// ────────────────────────────────────────────────────────────
+// Регулярки для валидации
+const FN_RE = /^\d{10,16}$/; // ФН 16-значный, иногда 10-12
+const FD_RE = /^\d+$/; // ФД
+const FP_RE = /^\d+$/; // ФПД
+const DATE_RE = /^(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})$/; // t=YYYYMMDDThhmm
+const SUM_RE = /^\d+\.\d{2}$/; // s=xxx.xx
+// ────────────────────────────────────────────────────────────
 
-export function parseReceipt(raw: string): Receipt {
-  let data: unknown;
-  try {
-    data = JSON.parse(raw);
-  } catch {
-    throw new Error('Некорректный формат данных');
+export function parseReceipt(raw: string): ParsedReceipt {
+  // 1️⃣   извлекаем query-часть
+  const query = raw.includes('?') ? raw.split('?')[1] : raw;
+  const params = new URLSearchParams(query);
+
+  // 2️⃣   базовая проверка
+  const required = ['t', 's', 'fn', 'i', 'fp'];
+  const missing = required.filter((p) => !params.has(p));
+  if (missing.length) {
+    throw new Error(`Отсутствуют поля: ${missing.join(', ')}`);
   }
 
-  if (
-    typeof data !== 'object' ||
-    data === null ||
-    !('date' in data) ||
-    !('totalSum' in data) ||
-    !('shopId' in data)
-  ) {
-    throw new Error('Отсутствуют обязательные поля');
-  }
+  const t = params.get('t')!;
+  const s = params.get('s')!;
+  const fn = params.get('fn')!;
+  const fd = params.get('i')!;
+  const fp = params.get('fp')!;
 
-  const receipt = data as Receipt;
-  if (!SHOP_ID_PATTERN.test(receipt.shopId)) {
-    throw new Error('shopId не соответствует формату');
-  }
+  // 3️⃣   валидация значений
+  if (!DATE_RE.test(t)) throw new Error('Некорректная дата в параметре t');
+  if (!SUM_RE.test(s)) throw new Error('Некорректная сумма в параметре s');
+  if (!FN_RE.test(fn)) throw new Error('fn не соответствует формату');
+  if (!FD_RE.test(fd)) throw new Error('i (fd) – только цифры');
+  if (!FP_RE.test(fp)) throw new Error('fp – только цифры');
 
-  return receipt;
+  // 4️⃣   преобразования
+  const [, yyyy, mm, dd] = t.match(DATE_RE)!; // берём только дату
+  const date = `${yyyy}-${mm}-${dd}`; // → YYYY-MM-DD
+  const sum = s.replace('.', ''); // убираем точку: "24050"
+
+  return { fn, fd, fp, sum, date };
 }

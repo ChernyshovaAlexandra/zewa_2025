@@ -7,6 +7,8 @@ export interface StartRequest {
   payload: string;
 }
 
+export type ApiData<T> =
+  T extends Promise<infer R> ? (R extends { data: infer D } ? D : never) : never;
 export interface HistoryRequest {
   telegram_id: number;
 }

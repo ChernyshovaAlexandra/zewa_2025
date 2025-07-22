@@ -108,8 +108,7 @@ const PrizesList: React.FC<PrizesListProps> = ({ isDrawerOpen }) => {
     return [emptyPrize, ...result.sort((a, b) => a.points - b.points)];
   }, [userData, newCouponsArray, activatedCouponsArray]);
 
-  const lastActivatedIndex = 5;
-  modifiedPrizes.reduce((lastIndex, prize, index) => {
+  const lastActivatedIndex = modifiedPrizes.reduce((lastIndex, prize, index) => {
     if (!userData) return 0;
     if (userData.user.points >= prize.points || prize.activated) {
       return index;
@@ -238,7 +237,6 @@ const PrizesList: React.FC<PrizesListProps> = ({ isDrawerOpen }) => {
 
     return () => clearTimeout(timer);
   }, [isDrawerOpen, modifiedPrizes, scrollToLastActivatedPrize, userData]);
-  console.info(lastActivatedIndex);
 
   return (
     <ScrollContainer
