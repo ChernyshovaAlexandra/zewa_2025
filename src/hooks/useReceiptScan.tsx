@@ -17,10 +17,14 @@ export interface UseReceiptScanReturn {
   onQrScanned: (raw: string) => void;
   /** true – мы что-то отправляем на сервер */
   pending: boolean;
+  hideModal: () => void;
+  setScannerNotAllowed: (arg: boolean) => void;
+  scanerNotAllowed: boolean;
 }
 
 export function useReceiptScan(): UseReceiptScanReturn {
   const [pending, setPending] = useState(false);
+  const [scanerNotAllowed, setScannerNotAllowed] = useState(false);
   const apiAbort = useRef<AbortController | null>(null);
 
   const renderManualInputModal = useCallback(() => {
@@ -160,9 +164,14 @@ export function useReceiptScan(): UseReceiptScanReturn {
     }
   }, [renderScanErrorModal]);
 
+  const hideModal = useCallback(() => {}, []);
+
   return {
     openTelegramScanner,
     onQrScanned: sendReceipt,
     pending,
+    hideModal,
+    setScannerNotAllowed,
+    scanerNotAllowed,
   };
 }

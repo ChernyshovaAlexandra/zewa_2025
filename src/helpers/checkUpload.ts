@@ -1,11 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import ApiHelper, { CheckData } from '@/helpers/ApiHelper';
-import { useModal } from '@/contexts/ModalContext';
-import useAuth from '@/contexts/AuthProvider';
-import bridge from '@vkontakte/vk-bridge';
 import useGlobal from '@/contexts/GlobalProvider';
 import { IDetectedBarcode } from '@yudiel/react-qr-scanner';
 import Helper from './Helper';
+import { useReceiptScan } from '@/hooks';
+import { useTelegram } from '@/contexts/TelegramContext';
+import { telegramService } from '@/services';
 
 type UseCheckUploadReturn = {
   handleScanCheck: (scanData: CheckData) => void;
@@ -63,9 +64,11 @@ const useCheckUpload = (): UseCheckUploadReturn => {
   });
   const [isFormValid, setIsFormValid] = React.useState(false);
   const { setActivePanel } = useGlobal();
-  const { hideModal, setScannerNotAllowed, scanerNotAllowed } = useModal();
-  const { vkUserData, authData } = useAuth();
-  const [cameraStream, setCameraStream] = React.useState<MediaStream | null>(null); // Управление потоком камеры
+  const { hideModal, setScannerNotAllowed, scanerNotAllowed } = useReceiptScan();
+  // const { vkUserData } = useAuth();
+  const authData = useTelegram().getWebApp();
+  const user = telegramService.getUser();
+  const [cameraStream, setCameraStream] = React.useState<MediaStream | null>(null);
 
   // Функция остановки камеры
   const stopCamera = React.useCallback(() => {
@@ -122,14 +125,14 @@ const useCheckUpload = (): UseCheckUploadReturn => {
 
   const handleScanCheck = React.useCallback(
     async (scanData: CheckData) => {
-      if (!vkUserData) {
+      if (!user) {
         setError('Пользователь не авторизован');
         return;
       }
       setPending(true);
       try {
-        scanData.telegram_id = authData.id;
-        scanData.hash = authData.hash;
+        scanData.telegram_id = user.id;
+        scanData.hash = authData?.initDataUnsafe?.hash || '';
         scanData.payload = authData.payload;
         scanData.ts = authData.ts;
 
