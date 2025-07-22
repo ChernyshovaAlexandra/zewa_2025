@@ -9,6 +9,7 @@ interface PageContainerProps {
   withPadding?: boolean;
   scrollable?: boolean;
   fullscreen?: boolean;
+  onScroll?: (e: React.UIEvent<HTMLDivElement>) => void;
 }
 
 export const PageContainer = ({
@@ -18,11 +19,18 @@ export const PageContainer = ({
   withPadding = true,
   scrollable = true,
   fullscreen = false,
+  onScroll,
 }: PageContainerProps) => {
   return (
     <Wrapper $fullscreen={fullscreen}>
       <PageHeader title={title} onBack={onBack} />
-      {scrollable ? <ScrollArea $withPadding={withPadding}>{children}</ScrollArea> : children}
+      {scrollable ? (
+        <ScrollArea $withPadding={withPadding} onScroll={onScroll}>
+          {children}
+        </ScrollArea>
+      ) : (
+        children
+      )}
     </Wrapper>
   );
 };
