@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { PageContainer, Text } from '@/shared/ui';
-import { maskName } from '@/utils';
+import { applyNbsp, maskName } from '@/utils';
 import * as S from './TournamentScreen.styles';
 
 interface Player {
@@ -47,31 +47,42 @@ export function TournamentScreen() {
             Лучшие игроки
           </S.TabButton>
           <S.TabButton $active={active === 'winners'} onClick={() => setActive('winners')}>
-            Выигрыши
+            Победители
           </S.TabButton>
         </S.Tabs>
       </S.TabsWrapper>
       {active === 'players' ? (
-        <S.Table>
-          <thead>
-            <tr>
-              <th>Место</th>
-              <th>Имя</th>
-              <th>Очки</th>
-            </tr>
-          </thead>
-          <tbody>
-            {topPlayers.map((p) => (
-              <tr key={p.place}>
-                <td>{p.place}</td>
-                <td>{maskName(p.name)}</td>
-                <td>{p.points}</td>
+        <>
+          <Text style={{ color: '#fff', lineHeight: 1.4, fontSize: '14px', textAlign: 'center' }}>
+            {applyNbsp(
+              `Результаты участников текущей недели по максимальному количеству пойманных предметов.`,
+            )}
+          </Text>
+          <S.Table>
+            <thead>
+              <tr>
+                <th>Место</th>
+                <th>Имя</th>
+                <th>Очки</th>
               </tr>
-            ))}
-          </tbody>
-        </S.Table>
+            </thead>
+            <tbody>
+              {topPlayers.map((p) => (
+                <tr key={p.place}>
+                  <td>{p.place}</td>
+                  <td>{maskName(p.name)}</td>
+                  <td>{p.points}</td>
+                </tr>
+              ))}
+            </tbody>
+          </S.Table>
+        </>
       ) : (
         <div>
+          <Text style={{ color: '#fff', lineHeight: 1.4, fontSize: '14px', textAlign: 'center' }}>
+            <b>Неделя 1</b>
+            <br />С 01.08 по 10.08
+          </Text>
           {winners.map((w, i) => (
             <S.PrizeItem key={i}>
               <div>
