@@ -13,19 +13,19 @@ export const Wrapper = styled.div`
 export const Image = styled.img`
   width: 100%;
   background-color: #fff;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 370 / 430;
   object-fit: cover;
   object-position: center;
   border-radius: 20px;
-  margin-bottom: 24px;
+  margin-bottom: 15px;
 `;
 
 export const Text = styled.p`
   text-align: center;
   font-family: 'Foco Trial';
-  font-size: 18px;
+  font-size: 15px;
   line-height: 130%;
-  margin-bottom: 24px;
+  margin-bottom: 15px;
   color: #fff;
 `;
 

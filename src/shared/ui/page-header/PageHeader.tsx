@@ -12,7 +12,15 @@ export function PageHeader({ title, onBack }: PageHeaderProps) {
 
   const handleBack = () => {
     if (onBack) return onBack();
-    navigate(-1);
+
+    const state = window.history.state as { idx?: number } | null;
+    const canGoBack =
+      state && typeof state.idx === 'number' ? state.idx > 0 : window.history.length > 1;
+    if (canGoBack) {
+      navigate(-1);
+    } else {
+      navigate('/');
+    }
   };
 
   return (

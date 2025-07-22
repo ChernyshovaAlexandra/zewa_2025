@@ -1,21 +1,18 @@
-import {
-  Suspense,
-  /*  useEffect, useState*/
-} from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { SplashScreen } from './features/splash/SplashScreen';
-// import { OnboardingScreen } from './features/onboarding';
 import { AppRouter } from './router';
 import { ZewaModal } from './shared/ui';
 import { AdaptivityProvider, AppRoot, ConfigProvider, SafeAreaInsets } from '@vkontakte/vkui';
 import { GlobalProvider } from './contexts/GlobalProvider';
+import { OnboardingScreen } from './features';
 
 export default function App() {
-  // const [stage, setStage] = useState<'splash' | 'onboarding' | 'app'>('splash');
+  const [stage, setStage] = useState<'splash' | 'onboarding' | 'app'>('splash');
 
-  // useEffect(() => {
-  //   const id = setTimeout(() => setStage('onboarding'), 1500);
-  //   return () => clearTimeout(id);
-  // }, []);
+  useEffect(() => {
+    const id = setTimeout(() => setStage('onboarding'), 1500);
+    return () => clearTimeout(id);
+  }, []);
 
   const insets: SafeAreaInsets = {
     top: 20,
@@ -24,8 +21,8 @@ export default function App() {
     right: 0,
   };
 
-  // if (stage === 'splash') return <SplashScreen />;
-  // if (stage === 'onboarding') return <OnboardingScreen onFinish={() => setStage('app')} />;
+  if (stage === 'splash') return <SplashScreen />;
+  if (stage === 'onboarding') return <OnboardingScreen onFinish={() => setStage('app')} />;
 
   return (
     <GlobalProvider>

@@ -1,11 +1,16 @@
-export const rulesText = `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+export const rulesText = `<b>С 1 августа по 14 сентября 2025 года участвуйте в игре «Снова в школу».</b>
 
-Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+1. Ловите полезные предметы и избегайте лишнего. Количество попыток не ограничено даже без покупки продукции Zewa. Победитель недели, поймавший больше всех предметов в одной игре, получит небольшой подарок. За результатами следите в Турнирной таблице.
+2. Для участия в розыгрышах ценных призов зарабатывайте монеты. Их количество отображается в Личном кабинете.
+3. Монеты начисляются за загрузку чеков и приглашение друзей по реферальной ссылке. Дополнительно можно ловить монеты, падающие в игре.
+4. За каждый товар Zewa в чеке участник получает 25 монет и — дополнительно — возможность поймать 10 летящих монет в игре.
+5. За каждого друга, перешедшего по реферальной ссылке и сыгравшего хотя бы в одну игру, участник получает 5 монет.
+6. Каждая монета автоматически продвигает участника по шкале призов на 1 %.
+7. Без регистрации чеков каждую неделю любой участник может поймать в игре только 10 монет.
+8. После заполнения шкалы призов на 10 % игрок автоматически получает скидку от 10 до 40 % на покупку Zewa в «Магните». Штрих-коды распределяются случайным образом.
+9. При заполнении шкалы призов от 25 до 100 % игрок участвует в еженедельных розыгрышах всё более ценных призов: сертификатов, годового запаса продукции Zewa, бытовой техники и умной колонки.
+10. После каждого розыгрыша прогресс обнуляется.
 
-1. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-2. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-3. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-4. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.
+<b>22 сентября 2025 года</b>
+Среди всех, кто зарегистрировал хотя бы один чек, будет разыгран главный приз — 100 000 ₽.
 `;
