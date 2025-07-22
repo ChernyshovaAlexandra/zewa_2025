@@ -3,6 +3,7 @@ import { PageContainer, Text } from '@/shared/ui';
 import { useUserStore } from '@/shared/model';
 import { apiService } from '@/services';
 import * as S from '../tournament/TournamentScreen.styles';
+import { mockChecks } from './mocks';
 
 interface HistoryCheck {
   date_time_raw: string;
@@ -33,7 +34,7 @@ export function HistoryScreen() {
       .then((res) => {
         const { data } = res.data ?? [];
         console.info(data);
-        setChecks(data?.checks);
+        setChecks(data?.checks?.length ? data.checks : mockChecks);
         setGames(data?.games);
       })
       .catch((err) => {
