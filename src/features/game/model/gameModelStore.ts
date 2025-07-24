@@ -61,6 +61,7 @@ interface GameModelState {
 
   resetGame: () => void;
 }
+export const game_id = 6;
 
 export const useGameModelStore = create<GameModelState>((set, get) => ({
   isGameStarted: false,

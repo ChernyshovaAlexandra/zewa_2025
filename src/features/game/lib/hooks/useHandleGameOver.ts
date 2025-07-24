@@ -2,7 +2,7 @@
 import { useEffect } from 'react';
 import type { NavigateFunction } from 'react-router-dom';
 import { apiService } from '@/services';
-import { useGameModelStore } from '../../model/gameModelStore';
+import { game_id, useGameModelStore } from '../../model/gameModelStore';
 import { renderGameOverModal } from '../renderGameOverModal';
 
 export function useHandleGameOver(navigate: NavigateFunction) {
@@ -16,7 +16,7 @@ export function useHandleGameOver(navigate: NavigateFunction) {
         // берём score и coins из стора на момент финиша
         const { score, coins } = useGameModelStore.getState();
         await apiService.gameResult({
-          game: 1,
+          game: game_id,
           result: 1,
           points: score,
           coins,
@@ -24,7 +24,6 @@ export function useHandleGameOver(navigate: NavigateFunction) {
       } catch (error) {
         console.error('gameResult error', error);
       } finally {
-        // рендерим модалку после следующего кадра
         requestAnimationFrame(() => {
           const { score } = useGameModelStore.getState();
           renderGameOverModal(score, navigate);

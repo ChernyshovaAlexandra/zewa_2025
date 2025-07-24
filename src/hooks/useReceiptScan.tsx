@@ -4,12 +4,14 @@ import { useCallback, useRef, useState } from 'react';
 import { useModalStore } from '@/shared/model/modalStore';
 import { telegramService } from '@/services/TelegramService';
 import { AddCheckResponse } from '@/services/ApiService';
-import { ZewaButton, Text, KeyboardIcon, ScreenshotIcon } from '@/shared/ui';
+import { Text } from '@/shared/ui';
 import { Flex } from 'antd';
 import { parseReceipt } from '@/features/checks/lib/parseReceipt';
 import { apiService } from '@/services/ApiService';
 import { applyNbsp } from '../utils/nbsp';
 import { useUserStore } from '@/shared/model';
+import { ButtonManualAddCheck } from '@/features/checks/ButtonManualAddCheck';
+import { ButtonUploadCheck } from '@/features/checks/ButtonUploadCheck';
 
 export function useReceiptScan() {
   const [pending, setPending] = useState(false);
@@ -25,26 +27,8 @@ export function useReceiptScan() {
           <Text size="p4" align="center">
             {applyNbsp(message)}
           </Text>
-          <ZewaButton
-            variant="blue-b"
-            onClick={() => {
-              /* ручной ввод */
-            }}
-          >
-            <Flex align="center" gap="5px">
-              <KeyboardIcon /> Ввести вручную
-            </Flex>
-          </ZewaButton>
-          <ZewaButton
-            variant="blue-b"
-            onClick={() => {
-              /* загрузка фото */
-            }}
-          >
-            <Flex align="center" gap="5px">
-              <ScreenshotIcon /> Загрузить фото
-            </Flex>
-          </ZewaButton>
+          <ButtonManualAddCheck />
+          <ButtonUploadCheck />
         </Flex>
       ),
     });
@@ -54,12 +38,15 @@ export function useReceiptScan() {
     (data: AddCheckResponse) => {
       if (data.success) {
         useModalStore.getState().openModal({
-          title: 'Успех',
+          title: 'Проверка чека',
           closable: true,
           content: (
-            <Text size="p4" align="center">
-              Чек отправлен на модерацию
-            </Text>
+            <>
+              <Text size="p4" align="center">
+                {data.message ??
+                  `После проверки мы зарегистрируем чек, начислим вам монеты и пришлём уведомление об этом.`}
+              </Text>
+            </>
           ),
         });
       } else {

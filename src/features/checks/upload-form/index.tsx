@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { File, FormItem, Group, Spinner } from '@vkontakte/vkui';
 import { Icon24Camera } from '@vkontakte/icons';
 import { useUploadForm } from './useUploadForm';
+import { Text } from '@/shared/ui';
 
 export function UploadForm() {
   const { handleFileChange, pending } = useUploadForm();
@@ -11,7 +12,10 @@ export function UploadForm() {
     <Group>
       <StyledFormItem top={pending ? '' : 'Загрузите фото чека'}>
         {pending ? (
-          <Spinner size="m" style={{ margin: '0 auto' }} />
+          <>
+            <Text>Отправляем чек на проверку. Это займёт какое-то время.</Text>
+            <Spinner size="m" style={{ margin: '0 auto' }} />
+          </>
         ) : (
           <File
             before={<Icon24Camera role="presentation" />}

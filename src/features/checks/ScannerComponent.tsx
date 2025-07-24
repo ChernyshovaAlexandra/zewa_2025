@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Flex } from 'antd';
 
-import { KeyboardIcon, ScanWhiteIcon, ScreenshotIcon, Text, ZewaButton } from '@/shared/ui';
+import { ScanWhiteIcon, Text, ZewaButton } from '@/shared/ui';
 import { useModalStore } from '@/shared/model/modalStore';
-import { ManualInputForm } from './ManualInputForm';
-import { renderUploadFormModal } from './lib/renderUploadFormModal';
 import { useReceiptScan } from '@/hooks';
 import { ScannerBox } from './style';
 import { Scanner } from '@yudiel/react-qr-scanner';
 import useWindowSize from '@/hooks/useWindowSize';
+import { ButtonManualAddCheck } from './ButtonManualAddCheck';
+import { ButtonUploadCheck } from './ButtonUploadCheck';
 
 export function ScannerComponent() {
   const { openTelegramScanner, pending, onQrScanned, setScannerNotAllowed, scanerNotAllowed } =
@@ -75,14 +75,6 @@ export function ScannerComponent() {
     }
   };
 
-  const renderManualInputModal = () => {
-    useModalStore.getState().openModal({
-      title: 'Ручной ввод',
-      closable: true,
-      content: <ManualInputForm />,
-    });
-  };
-
   return (
     <Flex vertical gap="10px">
       <ZewaButton
@@ -94,18 +86,8 @@ export function ScannerComponent() {
           <ScanWhiteIcon /> Сканировать
         </Flex>
       </ZewaButton>
-
-      <ZewaButton variant="blue-b" onClick={renderUploadFormModal}>
-        <Flex align="center" gap="5px">
-          <ScreenshotIcon /> Загрузить скриншот
-        </Flex>
-      </ZewaButton>
-
-      <ZewaButton variant="blue-b" onClick={renderManualInputModal}>
-        <Flex align="center" gap="5px">
-          <KeyboardIcon /> Ввести вручную
-        </Flex>
-      </ZewaButton>
+      <ButtonUploadCheck />
+      <ButtonManualAddCheck />
     </Flex>
   );
 }

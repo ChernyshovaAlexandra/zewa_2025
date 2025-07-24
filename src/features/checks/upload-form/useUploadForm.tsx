@@ -3,7 +3,6 @@ import { ChangeEvent, useRef, useState, useCallback } from 'react';
 import { useModalStore } from '@/shared/model/modalStore';
 import { validateQRCode } from '@/utils/qr';
 import ScanPromptModal from './ScanPromptModal';
-import { ManualInputForm } from '../ManualInputForm';
 import { useReceiptScan } from '@/hooks';
 
 export function useUploadForm() {
@@ -35,19 +34,7 @@ export function useUploadForm() {
         openModal({
           title: 'Чек не распознан',
           closable: true,
-          content: (
-            <ScanPromptModal
-              onClose={() => hideModal()}
-              onManual={() => {
-                hideModal();
-                openModal({
-                  title: 'Ручной ввод',
-                  closable: true,
-                  content: <ManualInputForm />,
-                });
-              }}
-            />
-          ),
+          content: <ScanPromptModal onClose={() => hideModal()} />,
         });
         setPending(false);
         return;

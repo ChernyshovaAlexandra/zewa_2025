@@ -2,7 +2,7 @@ import { Form, Input, DatePicker, TimePicker } from 'antd';
 import styled from 'styled-components';
 import { ZewaButton, Text } from '@/shared/ui';
 
-const FIELD_HEIGHT = '52px';
+const FIELD_HEIGHT = '45px';
 const FIELD_BORDER = '1px solid #5C82C6';
 const FIELD_RADIUS = '10px';
 
@@ -88,41 +88,76 @@ export function ManualInputForm() {
         Введите код из чека в нужное поле
       </Text>
 
-      <Form.Item label="ФН" name="fn" rules={[{ required: true, message: 'Введите ФН' }]}>
+      <Form.Item
+        label="ФН"
+        name="fn"
+        rules={[{ required: true, message: 'Введите ФН' }]}
+        style={{ marginBottom: '8px' }}
+      >
         <StyledInput allowClear placeholder="Введите данные" />
       </Form.Item>
 
-      <Form.Item label="ФД" name="fd" rules={[{ required: true, message: 'Введите ФД' }]}>
+      <Form.Item
+        label="ФД"
+        name="fd"
+        rules={[{ required: true, message: 'Введите ФД' }]}
+        style={{ marginBottom: '8px' }}
+      >
         <StyledInput allowClear placeholder="Введите данные" />
       </Form.Item>
 
-      <Form.Item label="ФП" name="fp" rules={[{ required: true, message: 'Введите ФП' }]}>
+      <Form.Item
+        label="ФП"
+        name="fp"
+        rules={[{ required: true, message: 'Введите ФП' }]}
+        style={{ marginBottom: '8px' }}
+      >
         <StyledInput allowClear placeholder="Введите данные" />
       </Form.Item>
 
-      <Form.Item label="Сумма">
+      <Form.Item label="Сумма" style={{ marginBottom: '8px' }}>
         <SumWrapper>
-          <Form.Item name="sumRub" noStyle rules={[{ required: true, message: 'Рубли' }]}>
+          <Form.Item
+            name="sumRub"
+            noStyle
+            rules={[{ required: true, message: 'Рубли' }]}
+            style={{ marginBottom: '8px' }}
+          >
             <StyledInput className="sum-rub" placeholder="руб." />
           </Form.Item>
-          <Form.Item name="sumKop" noStyle rules={[{ required: true, message: 'Копейки' }]}>
+          <Form.Item
+            name="sumKop"
+            noStyle
+            rules={[{ required: true, message: 'Копейки' }]}
+            style={{ marginBottom: '8px' }}
+          >
             <StyledInput className="sum-kop" placeholder="коп." />
           </Form.Item>
         </SumWrapper>
       </Form.Item>
 
-      <Form.Item label="Дата и время">
+      <Form.Item label="Дата и время" style={{ marginBottom: '8px' }}>
         <DateTimeWrapper>
-          <Form.Item name="date" noStyle rules={[{ required: true, message: 'Выберите дату' }]}>
+          <Form.Item
+            name="date"
+            noStyle
+            rules={[{ required: true, message: 'Выберите дату' }]}
+            style={{ marginBottom: '8px' }}
+          >
             <StyledDatePicker className="date-field" allowClear format="DD.MM.YYYY" />
           </Form.Item>
-          <Form.Item name="time" noStyle rules={[{ required: true, message: 'Выберите время' }]}>
+          <Form.Item
+            name="time"
+            noStyle
+            rules={[{ required: true, message: 'Выберите время' }]}
+            style={{ marginBottom: '8px' }}
+          >
             <StyledTimePicker className="time-field" allowClear format="HH:mm" />
           </Form.Item>
         </DateTimeWrapper>
       </Form.Item>
 
-      <Form.Item style={{ textAlign: 'center', marginTop: 16 }}>
+      <Form.Item style={{ textAlign: 'center', marginTop: 16, marginBottom: '8px' }}>
         <ZewaButton style={{ margin: 'auto' }} variant="blue-b" type="submit">
           Отправить
         </ZewaButton>

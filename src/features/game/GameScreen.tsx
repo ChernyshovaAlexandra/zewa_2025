@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import {  renderPauseModal, useHowToPlayEntry } from './lib';
+import { renderPauseModal, useHowToPlayEntry } from './lib';
 import { useGameModelStore } from './model/gameModelStore';
 import { BackpackControls, GameUIOverlay, GameCanvas, OnboardingOverlay } from './ui';
 import { useModalStore } from '@/shared/model/modalStore';
@@ -9,7 +9,7 @@ import { useHandleGameOver } from './lib/hooks/useHandleGameOver';
 export function GameScreen() {
   const navigate = useNavigate();
 
-  useHowToPlayEntry();
+  useHowToPlayEntry(navigate);
   useHandleGameOver(navigate);
 
   useEffect(() => {
