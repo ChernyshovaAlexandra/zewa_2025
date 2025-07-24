@@ -38,21 +38,10 @@ export const GlowingCoin = ({ x, y, size = 36 }: { x: number; y: number; size?: 
         width={size * 2}
         height={size * 2}
         anchor={0.5}
-        alpha={0.4}
-        blendMode={PIXI.BLEND_MODES.ADD}
+        // blendMode={PIXI.BLEND_MODES.ADD}
       />
-      {/* Свечение */}
-      <Sprite
-        ref={glowRef}
-        image="/assets/images/coin-glow.png"
-        width={size * 1.5}
-        height={size * 1.5}
-        anchor={0.5}
-        alpha={0.6}
-        blendMode={PIXI.BLEND_MODES.ADD}
-      />
+
       {/* Монетка */}
-      {/* <Sprite image="/assets/images/items/coin3.png" width={size} height={size} anchor={0.5} /> */}
       <AnimatedSprite
         ref={coinRef}
         textures={textures}

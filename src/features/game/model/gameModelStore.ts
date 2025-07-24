@@ -17,7 +17,6 @@ import { BACKPACK_HEIGHT, BACKPACK_WIDTH } from './backpack';
 import { useGameProgressStore } from './useGameProgressStore';
 
 export type SpecialItemKind = 'coin';
-export const MAX_COINS_PER_GAME = 10;
 
 interface GameModelState {
   isGameStarted: boolean;
@@ -104,8 +103,8 @@ export const useGameModelStore = create<GameModelState>((set, get) => ({
     }));
   },
   spawnCoin: (canvasWidth) => {
-    const { spawnedCoinsCount } = get();
-    if (spawnedCoinsCount >= MAX_COINS_PER_GAME) return;
+    const { spawnedCoinsCount, coins_available } = get();
+    if (spawnedCoinsCount >= coins_available) return;
     const radius = 24;
     const x = Math.random() * (canvasWidth - radius * 2) + radius;
     const y = -radius;

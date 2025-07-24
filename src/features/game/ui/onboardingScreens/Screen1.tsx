@@ -2,10 +2,21 @@ import styled from 'styled-components';
 import { InfoBlock } from '@/features/game/ui/GameUIOverlay';
 import { BACKPACK_WIDTH } from '@/features/game/model/backpack';
 import { ForwardIcon, LeftIcon } from '@/shared/ui';
+import { Stage } from '@pixi/react';
+import { GlowingCoin } from '../GlowingCoin';
 
 export const Screen1 = () => {
   return (
     <>
+      <Stage
+        width={200}
+        options={{
+          backgroundAlpha: 0,
+          autoDensity: true,
+        }}
+      >
+        <GlowingCoin x={100} y={50} size={30 * 2} />
+      </Stage>
       <Domovenok src={'./assets/images/onboarding/domovenok1.png'} alt={`domovenok`} />
       <BackPack
         width={BACKPACK_WIDTH}

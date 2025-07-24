@@ -72,14 +72,18 @@ export function processCoinCatch(
   item: Item,
   state: ReturnType<typeof useGameModelStore.getState>,
 ): void {
-  state.addCoin();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const targetEl = (window as any).__coinTarget as HTMLElement | undefined;
-  if (!targetEl) return;
+  const { coins, coins_available } = state;
 
-  const from = { x: item.x, y: item.y };
-  const to = getPixiCoordsFromDOM(targetEl);
-  useCoinAnimationStore.getState().launchCoin(from, to);
+  if (coins < coins_available) {
+    state.addCoin();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const targetEl = (window as any).__coinTarget as HTMLElement | undefined;
+    if (!targetEl) return;
+
+    const from = { x: item.x, y: item.y };
+    const to = getPixiCoordsFromDOM(targetEl);
+    useCoinAnimationStore.getState().launchCoin(from, to);
+  }
 }
 
 export function applyLifeLoss(state: ReturnType<typeof useGameModelStore.getState>): void {
