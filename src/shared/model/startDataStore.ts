@@ -7,6 +7,7 @@ interface StartDataState {
   games: StartResponse['data']['games'];
   prizes: StartResponse['data']['prizes'];
   userCanPlay: StartResponse['data']['user_can_play'];
+  tg_referral_link: string;
   setStartData: (data: StartResponse['data']) => void;
   reset: () => void;
 }
@@ -17,6 +18,7 @@ export const useStartDataStore = create<StartDataState>((set) => ({
   games: [],
   prizes: [],
   userCanPlay: {},
+  tg_referral_link: '',
   setStartData: (data) =>
     set({
       gameDay: data.game_day,
@@ -24,6 +26,7 @@ export const useStartDataStore = create<StartDataState>((set) => ({
       games: data.games,
       prizes: data.prizes,
       userCanPlay: data.user_can_play,
+      tg_referral_link: data.user.tg_referral_link
     }),
   reset: () =>
     set({ gameDay: null, coupons: [], games: [], prizes: [], userCanPlay: {} }),

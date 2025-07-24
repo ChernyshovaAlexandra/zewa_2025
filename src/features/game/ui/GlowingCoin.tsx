@@ -3,7 +3,7 @@ import { useMemo, useRef, useState } from 'react';
 import * as PIXI from 'pixi.js';
 
 export const GlowingCoin = ({ x, y, size = 36 }: { x: number; y: number; size?: number }) => {
-  const glowRef = useRef<PIXI.Sprite>(null);
+  // const glowRef = useRef<PIXI.Sprite>(null);
   const raysRef = useRef<PIXI.Sprite>(null);
   const coinRef = useRef<PIXI.AnimatedSprite>(null);
 

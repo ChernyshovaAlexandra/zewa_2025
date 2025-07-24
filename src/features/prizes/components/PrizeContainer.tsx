@@ -1,11 +1,12 @@
 import React from 'react';
 import { StyledCard, MainCardContainer } from './style';
-import { prize_types_data } from './mocks';
+
 import ImageContainer from './ImageContainer';
 import { Flex } from '@vkontakte/vkui';
 import BarcodeComponent from './BarcodeComponent';
 import NotificationContainer from './NotificationContainer';
 import TextContainer from './TextContainer';
+import { prize_types_data } from '../mocks';
 
 type PrizeProps = {
   name: string;

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Card, HorizontalScroll } from '@vkontakte/vkui';
+import { Card, EllipsisText, HorizontalScroll } from '@vkontakte/vkui';
 import { ButtonProps, ButtonStyles } from '@/components';
 
 export const ContentWithDomovenok = styled.div`
@@ -220,10 +220,11 @@ export const StyledCard = styled(Card)`
   background: transparent;
 `;
 
-export const StyledSpan = styled.span`
+export const StyledSpan = styled(EllipsisText)`
   position: relative;
   z-index: 16;
   font-weight: bold;
+  color: #fff;
 `;
 
 export const StyledSpanPink = styled(StyledSpan)`
@@ -238,7 +239,7 @@ export const StyledSpanPink = styled(StyledSpan)`
   }
 `;
 
-export const PrizeImg = styled.picture`
+export const PrizeImg = styled.img`
   position: relative;
   z-index: 2;
   width: 55px;
@@ -331,7 +332,9 @@ export const StyledCell = styled.div<{
   }
 `;
 
-export const SpanDraw = styled.span``;
+export const SpanDraw = styled.span`
+  color: #fff;
+`;
 
 export const Button = styled.button<ButtonProps>`
   ${ButtonStyles};

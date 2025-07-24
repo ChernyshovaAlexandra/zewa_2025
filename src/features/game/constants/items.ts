@@ -9,12 +9,10 @@ export type ItemKind =
   | 'palette'
   | 'ruler'
   | 'triangle-ruler'
-  | 'apple'
   | 'sharpener'
   | 'sharpener2'
   | 'scissors'
   | 'pen'
-  | 'marker'
   | 'zewa1'
   | 'zewa2'
   | 'zewa3'
@@ -28,7 +26,12 @@ export type ItemKind =
   | 'tennis-racket'
   | 'gamepad'
   | 'skateboard'
-  | 'headphones';
+  | 'girya'
+  | 'iron'
+  | 'icecream'
+  | 'headphones'
+  | 'kettle'
+  | 'hairdryer';
 
 export interface ItemMeta {
   kind: ItemKind;
@@ -60,6 +63,51 @@ export const ITEM_CATALOG: Record<ItemKind, ItemMeta> = {
     height: 84,
     isGood: true,
   },
+  girya: {
+    kind: 'girya',
+    texture: './assets/images/items/girya.png',
+    radius: 1,
+    scale: 1,
+    width: 64,
+    height: 85,
+    isGood: false,
+  },
+  icecream: {
+    kind: 'icecream',
+    texture: './assets/images/items/icecream.png',
+    radius: 1,
+    scale: 1,
+    width: 41,
+    height: 85,
+    isGood: false,
+  },
+  iron: {
+    kind: 'iron',
+    texture: './assets/images/items/iron.png',
+    radius: 1,
+    scale: 1,
+    width: 100,
+    height: 85,
+    isGood: false,
+  },
+  kettle: {
+    kind: 'kettle',
+    texture: './assets/images/items/kettle.png',
+    radius: 1,
+    scale: 1,
+    width: 84,
+    height: 85,
+    isGood: false,
+  },
+  hairdryer: {
+    kind: 'hairdryer',
+    texture: './assets/images/items/hairdryer.png',
+    radius: 1,
+    scale: 1,
+    width: 94,
+    height: 85,
+    isGood: false,
+  },
   palette: {
     kind: 'palette',
     texture: './assets/images/items/palette.png',
@@ -67,24 +115,6 @@ export const ITEM_CATALOG: Record<ItemKind, ItemMeta> = {
     scale: 1,
     width: 80,
     height: 69,
-    isGood: true,
-  },
-  marker: {
-    kind: 'marker',
-    texture: './assets/images/items/marker.png',
-    radius: 1,
-    scale: 1,
-    width: 68,
-    height: 63,
-    isGood: true,
-  },
-  apple: {
-    kind: 'apple',
-    texture: './assets/images/items/apple.png',
-    radius: 1,
-    scale: 1,
-    width: 54,
-    height: 58,
     isGood: true,
   },
   scissors: {

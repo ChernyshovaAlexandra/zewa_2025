@@ -123,7 +123,7 @@ const PrizesList: React.FC<PrizesListProps> = ({ isDrawerOpen }) => {
     return modifiedPrizes.map((prize, id) => {
       const isActivated = prize.activated;
       const isNewCoupon = prize.new;
-
+      console.info(prize);
       return (
         <StyledCell
           $isFirstEmpty={id === 1 && points < 2}
@@ -163,14 +163,11 @@ const PrizesList: React.FC<PrizesListProps> = ({ isDrawerOpen }) => {
                   />
                 )}
 
-                <PrizeImg>
-                  <source srcSet={prize_types_data[prize.name]?.img_thumb} type="image/webp" />
-                  <img src={prize_types_data[prize.name]?.img_thumb} alt={prize.name} />
-                </PrizeImg>
+                <PrizeImg src={prize_types_data[prize.name]?.img_thumb} alt={prize.name} />
               </>
             )}
 
-            <StyledSpan>
+            <StyledSpan maxWidth={100} maxLines={2}>
               {prize.type !== 'coupon' && prize.name.includes('Сертификат')
                 ? 'Сертификат'
                 : prize.name}
