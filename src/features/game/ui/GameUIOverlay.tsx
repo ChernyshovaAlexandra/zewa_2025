@@ -36,14 +36,14 @@ export const GameUIOverlay = () => {
         <Flex gap="10px">
           <InfoBlock>
             <Flex gap="15px">
-              {coins_available && (
+              {coins_available ? (
                 <Flex gap="4px" align="center">
                   <div style={{ width: 'fit-content', height: 'fit-content' }} ref={coinTargetRef}>
                     <img src="./assets/images/items/coin3.png" alt="иконка монета" />
                   </div>
                   {coins}/{coins_available}
                 </Flex>
-              )}
+              ) : <></>}
               <Flex gap="4px" align="center">
                 <img src="./assets/images/backpack-icon.png" alt="иконка рюкзак" />
                 {score}

@@ -19,6 +19,7 @@ export function useHowToPlayEntry(navigate: NavigateFunction) {
 
   useEffect(() => {
     const cameFromRules = sessionStorage.getItem('cameFromRules') === 'true';
+    
     if (!cameFromRules) {
       resetSession();
       resetGame();

@@ -47,10 +47,10 @@ export const renderHowToPlayModal = async (game_coins: number) => {
         </Text>
         <Flex vertical gap="10px">
           <ZewaButton variant="blue-b" onClick={handleStart}>
-            Начать
+            Правила
           </ZewaButton>
           <ZewaButton variant="blue-b" onClick={handleSkip}>
-            Пропустить
+            Начать
           </ZewaButton>
         </Flex>
       </Flex>
