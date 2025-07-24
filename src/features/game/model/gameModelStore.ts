@@ -179,7 +179,10 @@ export const useGameModelStore = create<GameModelState>((set, get) => ({
       set({ x: x + dx / speed });
     }
   },
-  resetBackpack: () => set({ x: 0, targetX: 0, canvasWidth: 0 }),
+  resetBackpack: () => {
+    const width = get().canvasWidth;
+    set({ x: 0, targetX: 0, canvasWidth: width });
+  },
 
   resetGame: () => {
     get().resetItems();

@@ -123,7 +123,7 @@ const PrizesList: React.FC<PrizesListProps> = ({ isDrawerOpen }) => {
     return modifiedPrizes.map((prize, id) => {
       const isActivated = prize.activated;
       const isNewCoupon = prize.new;
-      console.info(prize);
+
       return (
         <StyledCell
           $isFirstEmpty={id === 1 && points < 2}
@@ -168,9 +168,10 @@ const PrizesList: React.FC<PrizesListProps> = ({ isDrawerOpen }) => {
             )}
 
             <StyledSpan maxWidth={100} maxLines={2}>
-              {prize.type !== 'coupon' && prize.name.includes('Сертификат')
+              {/* {prize.type !== 'coupon' && prize.name.includes('Сертификат')
                 ? 'Сертификат'
-                : prize.name}
+                : prize.name} */}
+              {prize.name}
             </StyledSpan>
             <div style={{ position: 'relative', zIndex: 16 }}>
               {isNewCoupon && (

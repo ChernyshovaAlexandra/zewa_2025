@@ -81,4 +81,22 @@ export const prize_types_data: Record<
     description: `Погружной блендер Polaris`,
     manager: true,
   },
+  'Умные часы Honor Choice InFoWear 2i 5504ACGM ': {
+    img: `/public/assets/images/prizes/watch.jpg`,
+    img_thumb: `/public/assets/images/prizes/watch.png`,
+    description: `Умные часы Honor Choice InFoWear 2i 5504ACGM `,
+    manager: true,
+  },
+  'Умные весы XIAOMI Body Composition Scale S400 BHR7793GL': {
+    img: `/public/assets/images/prizes/scale.jpg`,
+    img_thumb: `/public/assets/images/prizes/scale.png`,
+    description: `Умные весы XIAOMI Body Composition Scale S400 BHR7793GL`,
+    manager: true,
+  },
+  'Беспроводные наушники JBL Tune 520BT, USB Type-C ': {
+    img: `/public/assets/images/prizes/headphones.jpg`,
+    img_thumb: `/public/assets/images/prizes/headphones.png`,
+    description: `Беспроводные наушники JBL Tune 520BT, USB Type-C `,
+    manager: true,
+  },
 };
