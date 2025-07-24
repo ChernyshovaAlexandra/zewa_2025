@@ -29,16 +29,21 @@ export const renderHowToPlayModal = async (game_coins: number) => {
 
     return (
       <Flex vertical gap="20px">
-        <Text size="p4" align="center" color="#596471">
-          {applyNbsp('Добро пожаловать!')}
-          <br />
-          {game_coins && (
+        <Text style={{ textAlign: 'center' }} size="p4" align="center" color="#596471">
+          {applyNbsp(`Добро пожаловать!
+          Сейчас расскажем подробнее, как играть. `)}
+          {game_coins ? (
             <>
-              {applyNbsp(`Вам доступно ${game_coins} монет за загрузку чека.`)}
               <br />
+              {applyNbsp(`Вам доступны монеты за загрузку чека.`)}
+              <Flex justify='center' gap={'5px'}>
+                <p>+{game_coins} </p>
+                <img width='22px' height="22px" src="./assets/images/items/coin3.png" alt="иконка монета" />
+              </Flex>
             </>
+          ) : (
+            <></>
           )}
-          {applyNbsp('Сейчас подробнее расскажем, как играть.')}
         </Text>
         <Flex vertical gap="10px">
           <ZewaButton variant="blue-b" onClick={handleStart}>

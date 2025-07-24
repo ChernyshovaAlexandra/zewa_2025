@@ -12,6 +12,7 @@ interface HistoryCheck {
   date_time_raw: string;
   coins_earned: number;
   status: string;
+  created_at: string
 }
 
 interface GameHistory {
@@ -75,6 +76,7 @@ export function HistoryScreen() {
             caption={item.date_time_raw}
             coins_earned={item.coins_earned}
             status={item.status}
+            check={item}
           />
         ))}
       </>
@@ -98,6 +100,7 @@ export function HistoryScreen() {
             header={`Игра «Снова в школу»`}
             caption={item.day}
             status={item.status}
+            coins_earned={item.coins_earned}
             points_earned={item.points_earned}
           />
         ))}

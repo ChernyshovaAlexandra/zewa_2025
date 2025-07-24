@@ -19,9 +19,11 @@ type GameProps = {
   caption: string;
   status: string;
   points_earned: number;
+  coins_earned: number;
 };
 
-const GameContainer: React.FC<GameProps> = ({ header, caption, status, points_earned }) => {
+const GameContainer: React.FC<GameProps> = ({ header, caption, status, points_earned, coins_earned }) => {
+  if (status === 'started') return null;
   return (
     <CheckData>
       <FlexBetween>
@@ -41,17 +43,23 @@ const GameContainer: React.FC<GameProps> = ({ header, caption, status, points_ea
         <SeparatorStyled />
       </Spacing>
       <StyledFlex>
-        <Total>Статус</Total>
+        <Total>Результат</Total>
         <ResultContainer>
+          {coins_earned ? (
+            <StyledCoins>
+              <Text style={{ fontSize: '14px' }}> +{coins_earned} </Text>
+              <img
+                src={`/public/assets/images/coins-icon.png`}
+                width="24"
+                alt="coins-icon"
+                loading="lazy"
+              />
+            </StyledCoins>
+          ) : null}
           <StyledCoins>
             <Text style={{ fontSize: '14px' }}> +{points_earned} </Text>
-            <img
-              src={`/public/assets/images/coins-icon.png`}
-              width="24"
-              alt="coins-icon"
-              loading="lazy"
-            />
-          </StyledCoins>
+            <img src="./assets/images/backpack-icon.png" alt="иконка рюкзак" />
+          </StyledCoins> 
         </ResultContainer>
       </StyledFlex>
     </CheckData>

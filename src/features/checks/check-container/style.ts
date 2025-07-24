@@ -83,7 +83,7 @@ export const SeparatorStyled = styled.div`
 
 export const StyledCoins = styled.div`
   display: flex;
-  gap: 5px;
+  gap: 2px;
   align-items: center;
 
   p {

@@ -8,7 +8,7 @@ export const base = css`
   justify-content: center;
   border-radius: 10px;
   font-weight: 700;
-  font-size: 21px;
+  font-size: 18px;
   line-height: 1;
   gap: 10px;
   border: none;
@@ -59,9 +59,9 @@ export const StyledButton = styled.button<{ $variant: ZewaButtonVariant }>`
         `;
       case 'blue-b':
         return css`
-          padding: 0 24px;
+          padding: 12px 24px;
           min-width: 200px;
-          height: 48px;
+          height: auto;
           background: linear-gradient(180deg, #2d59df 0%, #1945cb 100%);
           color: white;
           box-shadow: 0px -1px 2px 0px #001da3;

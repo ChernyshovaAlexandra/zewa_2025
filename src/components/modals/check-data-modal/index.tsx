@@ -3,15 +3,16 @@ import Helper from '@/helpers/Helper';
 import { Text } from '@/shared/ui';
 import React from 'react';
 
-const CheckDataModal: React.FC<CheckProps> = ({ caption, coins_earned, status }) => {
+const CheckDataModal: React.FC<CheckProps> = ({ caption, coins_earned, status, check }) => {
+  
   return (
     <>
       {!coins_earned && (
         <>
           <Text style={{ color: '#596471' }}>
             {status === 'Ждёт проверки'
-              ? status
-              : `Загружен ${caption ? Helper.formatDate(caption) : 'и ждёт проверки.'}`}
+              ? `Загружен ${Helper.formatDate(check.created_at)} и ждёт проверки.`
+              : status}
           </Text>
           <br />
         </>
@@ -24,7 +25,7 @@ const CheckDataModal: React.FC<CheckProps> = ({ caption, coins_earned, status })
         <></>
       )}
       {status === 'Засчитан' ? (
-        <Text style={{ color: '#596471',margin: 0 }}>
+        <Text style={{ color: '#596471', margin: 0 }}>
           В вашем чеке есть товар бренда Zewa, и вам начислено {coins_earned}{' '}
           {Helper.getCoinsForm(coins_earned)}.
         </Text>

@@ -1,16 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Flex } from '@vkontakte/vkui';
-import { Button, StyledCard, MainCardContainer, PromoCodeCopyContainer } from './style';
-// import Promo from '../modals/promo';
-
-import Code from './Code';
+import {
+  StyledCard,
+  MainCardContainer,
+  Description,
+  // PromoCodeCopyContainer
+} from './style';
+// import Code from './Code';
 import BarcodeComponent from './BarcodeComponent';
 
-import ImageContainer from './ImageContainer';
 import TextContainer from './TextContainer';
-import NotificationContainer from './NotificationContainer';
+import { applyNbsp } from '@/utils';
+import { ZewaButton } from '@/shared/ui';
+import { ToggleIcon } from '@/shared/ui/icons/ToggleIcon';
 
-const end_coupon_date = '';
+// const end_coupon_date = '';
 
 interface PrizeContainerProps {
   coupon: {
@@ -22,70 +26,49 @@ interface PrizeContainerProps {
   activated?: boolean;
   showSnackbar?: (message: string) => void;
 }
-const CouponContainer: React.FC<PrizeContainerProps> = ({ coupon, activated, showSnackbar }) => {
-  const img = `/images/coupon-${coupon.value}.png`;
-
-  const handleActivateModal = React.useCallback(() => {
-    // showModal(<Promo initial={true} coupon={coupon.id} />);
-  }, []);
-
+const CouponContainer: React.FC<PrizeContainerProps> = ({ coupon }) => {
   const renderPromoContent = () => `Скидка -${coupon.value}%`;
+  console.info(coupon);
 
+  const [toggledContent, setToggled] = useState(false);
   return (
     <StyledCard mode="shadow">
-      {!activated && (
-        <MainCardContainer>
-          <div>
-            <Flex noWrap style={{ gap: '.7rem' }}>
-             
-              <TextContainer
-                title={renderPromoContent()}
-                description={`Скидка на покупку в магазинах «Магнит» товаров бренда Zewa.`}
-              />
-            </Flex>
-          </div>
-          <Button style={{ alignSelf: 'center' }} onClick={handleActivateModal} variant="accent">
-            Активировать
-          </Button>
-        </MainCardContainer>
-      )}
-      {coupon.code && (
-        <MainCardContainer>
-          <div>
-            <Flex noWrap style={{ gap: '.7rem' }}>
-              <ImageContainer img={img} />
-              <TextContainer
-                title={renderPromoContent()}
-                description={`Скидка на покупку в приложении «Магнит: акции и доставка».`}
-              />
-            </Flex>
-            <PromoCodeCopyContainer>
-              <NotificationContainer
-                text={`Скопируйте код и используйте его при оформлении заказа онлайн. Скидка действительна до ${end_coupon_date} включительно.`}
-              />
-              <Code showSnackbar={showSnackbar ? showSnackbar : () => {}} code={coupon.code} />
-            </PromoCodeCopyContainer>
-          </div>
-        </MainCardContainer>
-      )}
-
-      {coupon.barcode && (
-        <MainCardContainer>
-          <div>
-            <Flex noWrap style={{ gap: '.7rem' }}>
-              <ImageContainer img={img} />
-              <TextContainer
-                title={renderPromoContent()}
-                description={`Скидка на покупку в магазинах «Магнит» товаров бренда Zewa.`}
-              />
-            </Flex>
-            <NotificationContainer
-              text={`Покажите на кассе этот штрих-код. Скидка действительна до ${end_coupon_date} включительно.`}
+      <MainCardContainer>
+        <div>
+          <Flex noWrap style={{ gap: '.7rem' }}>
+            <TextContainer
+              title={renderPromoContent()}
+              description={applyNbsp(`Скидка на покупку продукции Zewa в сети магазинов «Магнит».
+                
+  Покажите на кассе полученный штрих-код.`)}
             />
-          </div>
-          <BarcodeComponent barcode={coupon.barcode} />
-        </MainCardContainer>
-      )}
+          </Flex>
+          <ZewaButton variant="blue-b">Поменять на онлайн</ZewaButton>
+          {coupon.barcode && <BarcodeComponent barcode={coupon.barcode} />}
+          <br />
+          <Flex justify="space-between">
+            <Description style={{ marginBottom: 0 }}>Скидка действует до 24.09.2025</Description>
+            <div
+              style={{ cursor: 'pointer' }}
+              onClick={() => {
+                setToggled(!toggledContent);
+              }}
+            >
+              <ToggleIcon />
+            </div>
+          </Flex>
+          {toggledContent && (
+            <>
+              <br />
+              <Description>
+                {applyNbsp(
+                  `Акция действует в приложении «Магнит: акции и доставка» (6+) в разделе «Доставка», в котором реализуется Продукция в период с 01.08.2025 по 24.09.2025. Скидка предоставляется в приложении на все позиции бренда Zewa при применении промокода. Скидка распространяется также на жёлтые ценники и не суммируется с другими скидками и предложениями. Количество акционных товаров ограничено. В период проведения акции не гарантируется постоянное наличие полного ассортимента акционных товаров.`,
+                )}
+              </Description>
+            </>
+          )}
+        </div>
+      </MainCardContainer>
     </StyledCard>
   );
 };

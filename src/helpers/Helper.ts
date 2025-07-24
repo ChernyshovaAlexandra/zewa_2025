@@ -171,14 +171,10 @@ class Helper {
   }
 
   static formatDate = (dateString: string) => {
-    if (dateString.length !== 13) {
-      return dateString;
-    }
+    const match = dateString.match(/^(\d{4})-(\d{2})-(\d{2})/);
+    if (!match) return dateString;
 
-    const year = dateString.substring(0, 4);
-    const month = dateString.substring(4, 6);
-    const day = dateString.substring(6, 8);
-
+    const [, year, month, day] = match;
     return `${day}.${month}.${year}`;
   };
 

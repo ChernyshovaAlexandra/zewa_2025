@@ -21,9 +21,16 @@ export type CheckProps = {
   caption: string;
   coins_earned: number;
   status: string;
+  check: { created_at: string };
 };
 
-const CheckContainer: React.FC<CheckProps> = ({ subtitle, caption, coins_earned, status }) => {
+const CheckContainer: React.FC<CheckProps> = ({
+  subtitle,
+  caption,
+  coins_earned,
+  status,
+  check,
+}) => {
   const { openModal } = useModalStore.getState();
 
   const showModalInfo = () => {
@@ -35,6 +42,7 @@ const CheckContainer: React.FC<CheckProps> = ({ subtitle, caption, coins_earned,
           caption={caption}
           coins_earned={coins_earned}
           status={status}
+          check={check}
         />
       ),
     });

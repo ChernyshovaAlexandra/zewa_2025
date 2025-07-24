@@ -5,12 +5,10 @@ import { ButtonProps, ButtonStyles } from '@/components';
 
 export const StyledCard = styled(Card)`
   margin-top: 1rem;
-  background: #e3f7ff;
-  border: 5px solid #bee1fb;
+  padding:15px;
   border-radius: 14px;
-  box-shadow: inset 0px -2px 0px #9ab1c5;
-  filter: drop-shadow(0px 5px 0px #6e8aa9);
-  padding: 10px;
+  background: linear-gradient(180deg, #f4fcff 0%, #e3f7ff 100%);
+  box-shadow: 0px -2px 3px 0px #b3c7e9 inset;
 `;
 
 export const HeadingStyled = styled(Text)`
@@ -19,7 +17,7 @@ export const HeadingStyled = styled(Text)`
 
 export const Description = styled.p`
   font-family: 'Foco Trial';
-  font-size: 1rem;
+  font-size: .9rem;
   font-weight: 400;
   line-height: 1.5;
   white-space: break-spaces;
@@ -184,16 +182,7 @@ export const PrizeContFlex = styled(Flex)`
   flex-direction: row;
   flex-wrap: wrap;
   gap: 0.5rem;
-  /* >div{
-    flex-wrap: wrap!important;
-    max-width: 100% !important;
-    >div{
-      display: flex;
-      gap: 0.5rem;;
-      flex-wrap: nowrap;
-      flex-direction: row;
-    }
-  } */
+
   @media screen and (min-width: 505px) {
     flex-wrap: nowrap;
   }
