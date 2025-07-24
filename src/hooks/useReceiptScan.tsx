@@ -1,80 +1,58 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import axios from 'axios';
+import { useCallback, useRef, useState } from 'react';
 import { useModalStore } from '@/shared/model/modalStore';
 import { telegramService } from '@/services/TelegramService';
-// import { renderUploadFormModal } from './lib/renderUploadFormModal';
-// import { ManualInputForm } from './ManualInputForm';
-import { KeyboardIcon, ScreenshotIcon, ZewaButton, Text } from '@/shared/ui';
+import { AddCheckResponse } from '@/services/ApiService';
+import { ZewaButton, Text, KeyboardIcon, ScreenshotIcon } from '@/shared/ui';
 import { Flex } from 'antd';
 import { parseReceipt } from '@/features/checks/lib/parseReceipt';
-import { ApiData, apiService, ApiService } from '@/services';
+import { apiService } from '@/services/ApiService';
+import { applyNbsp } from '../utils/nbsp';
+import { useUserStore } from '@/shared/model';
 
-type UploadResponse = ApiData<ReturnType<ApiService['addCheck']>>;
-
-export interface UseReceiptScanReturn {
-  /** запустить VK Code Reader */
-  openTelegramScanner: () => void;
-  /** будет вызвано из компонента `Scanner` при локальном сканировании камеры */
-  onQrScanned: (raw: string) => void;
-  /** true – мы что-то отправляем на сервер */
-  pending: boolean;
-  hideModal: () => void;
-  setScannerNotAllowed: (arg: boolean) => void;
-  scanerNotAllowed: boolean;
-}
-
-export function useReceiptScan(): UseReceiptScanReturn {
+export function useReceiptScan() {
   const [pending, setPending] = useState(false);
-  const [scanerNotAllowed, setScannerNotAllowed] = useState(false);
   const apiAbort = useRef<AbortController | null>(null);
+  const { user } = useUserStore.getState();
 
-  const renderManualInputModal = useCallback(() => {
+  const renderScanErrorModal = useCallback((message: string) => {
     useModalStore.getState().openModal({
-      title: 'Ручной ввод',
+      title: 'Сканер QR-кодов',
       closable: true,
-      content: <></>,
+      content: (
+        <Flex vertical gap="10px">
+          <Text size="p4" align="center">
+            {applyNbsp(message)}
+          </Text>
+          <ZewaButton
+            variant="blue-b"
+            onClick={() => {
+              /* ручной ввод */
+            }}
+          >
+            <Flex align="center" gap="5px">
+              <KeyboardIcon /> Ввести вручную
+            </Flex>
+          </ZewaButton>
+          <ZewaButton
+            variant="blue-b"
+            onClick={() => {
+              /* загрузка фото */
+            }}
+          >
+            <Flex align="center" gap="5px">
+              <ScreenshotIcon /> Загрузить фото
+            </Flex>
+          </ZewaButton>
+        </Flex>
+      ),
     });
   }, []);
 
-  /** общий рендер для ошибок сканирования / парсинга */
-  const renderScanErrorModal = useCallback(
-    (message: string) => {
-      useModalStore.getState().openModal({
-        title: 'Чек не распознан',
-        closable: true,
-        content: (
-          <Flex vertical gap="10px">
-            <Text size="p4" align="center">
-              {message}
-            </Text>
-            <ZewaButton variant="blue-b" onClick={renderManualInputModal}>
-              <Flex align="center" gap="5px">
-                <KeyboardIcon /> Ввести вручную
-              </Flex>
-            </ZewaButton>
-            <ZewaButton
-              variant="blue-b"
-              onClick={
-                () => {}
-                // renderUploadFormModal
-              }
-            >
-              <Flex align="center" gap="5px">
-                <ScreenshotIcon /> Загрузить фото
-              </Flex>
-            </ZewaButton>
-          </Flex>
-        ),
-      });
-    },
-    [renderManualInputModal],
-  );
-
-  /** универсальный обработчик ответа */
   const handleApiResponse = useCallback(
-    (resp: UploadResponse) => {
-      setPending(false);
-
-      if (resp.success) {
+    (data: AddCheckResponse) => {
+      if (data.success) {
         useModalStore.getState().openModal({
           title: 'Успех',
           closable: true,
@@ -85,27 +63,32 @@ export function useReceiptScan(): UseReceiptScanReturn {
           ),
         });
       } else {
-        renderScanErrorModal(resp.message ?? 'Ошибка при отправке чека');
+        console.info(data);
+        renderScanErrorModal(data?.message ?? 'Ошибка при отправке чека');
       }
     },
     [renderScanErrorModal],
   );
 
-  /** отправить данные на сервер */
   const sendReceipt = useCallback(
     async (raw: string) => {
-      let parsed;
+      const qrPattern = /t=\d{8}T\d{4}&s=\d+\.\d{2}&fn=\d{16}&i=\d+&fp=\d+&n=\d+/;
+      if (!qrPattern.test(raw)) {
+        renderScanErrorModal('Некорректный формат QR-кода. Пожалуйста, используйте валидный чек.');
+        return;
+      }
 
+      let parsed;
       try {
-        parsed = parseReceipt(raw); // { fn, fd, fp, sum, date }
-      } catch (e) {
-        renderScanErrorModal((e as Error).message);
+        parsed = parseReceipt(raw);
+      } catch (e: any) {
+        renderScanErrorModal(e.message);
         return;
       }
 
       const userId = telegramService.getUser()?.id;
       if (!userId) {
-        renderScanErrorModal('Не удалось определить telegram_id');
+        renderScanErrorModal('Не удалось определить id пользователя');
         return;
       }
 
@@ -123,55 +106,61 @@ export function useReceiptScan(): UseReceiptScanReturn {
             sum: parsed.sum,
             date: parsed.date,
           },
-          // Axios 1.x принимает объект вторым аргументом как data,
-          // а signal кладется третьим, поэтому оборачиваем в config:
-          // apiService.addCheck(data, { signal }) ❌
+          { signal: apiAbort.current.signal },
         );
-
-        handleApiResponse(resp.data); // ✅ resp.data — то, что вернул сервер
-      } catch {
-        renderScanErrorModal('Сеть недоступна или сервер не отвечает');
+        handleApiResponse(resp.data);
+      } catch (err: any) {
+        if (!axios.isCancel(err)) {
+          renderScanErrorModal('Сеть недоступна или сервер не отвечает');
+        }
+      } finally {
         setPending(false);
       }
     },
     [handleApiResponse, renderScanErrorModal],
   );
 
-  /** обработчик Telegram-событий */
-  useEffect(() => {
-    const qrListener = (...args: unknown[]) => {
-      const code = String(args[0] ?? '');
-      void sendReceipt(code);
-    };
-    const handleError = () => renderScanErrorModal('Сканирование отменено');
+  const handlePhotoUpload = useCallback(
+    async (photoFile: File) => {
+      try {
+        setPending(true);
+        const reader = new FileReader();
 
-    telegramService.onEvent('qrCodeReceived', qrListener);
-    telegramService.onEvent('onScanError', handleError);
-    telegramService.onEvent('scanQrPopupClosed', handleError);
+        reader.onloadend = async () => {
+          const imgBase64 = reader.result as string;
+          const resp = await apiService.addCheckImageManual({
+            telegram_id: user?.id || 0,
+            img: imgBase64,
+          });
+          handleApiResponse(resp.data);
+        };
 
-    return () => {
-      telegramService.offEvent('qrCodeReceived', qrListener);
-      telegramService.offEvent('onScanError', handleError);
-      telegramService.offEvent('scanQrPopupClosed', handleError);
-      apiAbort.current?.abort();
-    };
-  }, [sendReceipt, renderScanErrorModal]);
+        reader.onerror = () => {
+          renderScanErrorModal('Ошибка при конвертации файла.');
+          setPending(false);
+        };
 
-  const openTelegramScanner = useCallback(() => {
-    const ok = telegramService.showScanQrPopup();
-    if (!ok) {
-      renderScanErrorModal('Сканер Telegram недоступен в этой среде');
-    }
-  }, [renderScanErrorModal]);
-
-  const hideModal = useCallback(() => {}, []);
+        reader.readAsDataURL(photoFile);
+      } catch (err: any) {
+        if (!axios.isCancel(err)) {
+          renderScanErrorModal('Сеть недоступна или сервер не отвечает');
+        }
+      } finally {
+        setPending(false);
+      }
+    },
+    [handleApiResponse, renderScanErrorModal, user?.id],
+  );
 
   return {
-    openTelegramScanner,
+    openTelegramScanner: () => {
+      /* … */
+    },
+    handlePhotoUpload,
     onQrScanned: sendReceipt,
     pending,
-    hideModal,
-    setScannerNotAllowed,
-    scanerNotAllowed,
+    hideModal: () => {},
+    setScannerNotAllowed: () => {},
+    scanerNotAllowed: false,
   };
 }

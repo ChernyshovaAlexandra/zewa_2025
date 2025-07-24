@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useNavigationType } from 'react-router-dom';
 import { HeaderWrapper, BackButton, Title } from './PageHeader.styles';
 import { BackIcon } from '@/shared/ui/icons';
 
@@ -9,14 +9,15 @@ interface PageHeaderProps {
 
 export function PageHeader({ title, onBack }: PageHeaderProps) {
   const navigate = useNavigate();
+  const navigationType = useNavigationType();
 
   const handleBack = () => {
-    if (onBack) return onBack();
+    if (onBack) {
+      console.info('onBack');
+      return onBack();
+    }
 
-    const state = window.history.state as { idx?: number } | null;
-    const canGoBack =
-      state && typeof state.idx === 'number' ? state.idx > 0 : window.history.length > 1;
-    if (canGoBack) {
+    if (navigationType === 'PUSH') {
       navigate(-1);
     } else {
       navigate('/');

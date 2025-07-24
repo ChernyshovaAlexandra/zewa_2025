@@ -1,4 +1,5 @@
 @import "./reset.css";
+@import '@vkontakte/vkui/dist/vkui.css';
 
 html,
 body {

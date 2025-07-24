@@ -8,7 +8,13 @@ export const Coins = () => {
   const navigate = useNavigate();
 
   return (
-    <ZewaButton variant="white" onClick={() => navigate('/history')}>
+    <ZewaButton
+      variant="white"
+      onClick={() => {
+        console.info('navigate');
+        navigate('/history');
+      }}
+    >
       <Flex
         gap="6px"
         style={{

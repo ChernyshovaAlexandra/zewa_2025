@@ -104,3 +104,38 @@ export const prize_types_data: Record<
     manager: true,
   },
 };
+import type { Coupon } from '@/types';
+
+export const activatedCouponsMock: Coupon[] = [
+  {
+    // сколько баллов стоил этот промокод
+    points_cost: 100,
+    // процент скидки
+    value: '10',
+    // тип отображения в UI: code → код, barcode → штрих-код
+    type: 'code',
+    // если нужна доп. информация (например, сколько ещё осталось баллов)
+    points: 0,
+  },
+  {
+    points_cost: 150,
+    value: '15',
+    type: 'barcode',
+    points: 0,
+  },
+];
+
+export const newCouponsMock: Coupon[] = [
+  {
+    points_cost: 120,
+    value: '20',
+    type: 'code',
+    points: 0,
+  },
+  {
+    points_cost: 180,
+    value: '25',
+    type: 'barcode',
+    points: 0,
+  },
+];

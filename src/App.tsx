@@ -6,11 +6,18 @@ import { AdaptivityProvider, AppRoot, ConfigProvider, SafeAreaInsets } from '@vk
 import { GlobalProvider } from './contexts/GlobalProvider';
 import { OnboardingScreen } from './features';
 
+type Stage = 'splash' | 'onboarding' | 'app';
+const ONBOARDING_KEY = 'onboardingCompleted';
+
 export default function App() {
-  const [stage, setStage] = useState<'splash' | 'onboarding' | 'app'>('splash');
+  const [stage, setStage] = useState<Stage>('splash');
 
   useEffect(() => {
-    const id = setTimeout(() => setStage('onboarding'), 1500);
+    const id = setTimeout(() => {
+      const hasSeen = localStorage.getItem(ONBOARDING_KEY) === 'true';
+      setStage(hasSeen ? 'app' : 'onboarding');
+    }, 1500);
+
     return () => clearTimeout(id);
   }, []);
 
@@ -21,8 +28,20 @@ export default function App() {
     right: 0,
   };
 
-  if (stage === 'splash') return <SplashScreen />;
-  if (stage === 'onboarding') return <OnboardingScreen onFinish={() => setStage('app')} />;
+  if (stage === 'splash') {
+    return <SplashScreen />;
+  }
+
+  if (stage === 'onboarding') {
+    return (
+      <OnboardingScreen
+        onFinish={() => {
+          localStorage.setItem(ONBOARDING_KEY, 'true');
+          setStage('app');
+        }}
+      />
+    );
+  }
 
   return (
     <GlobalProvider>
@@ -32,7 +51,7 @@ export default function App() {
         customPanelHeaderAfterMinWidth={50}
       >
         <AdaptivityProvider>
-          <AppRoot mode="full" safeAreaInsets={insets} scroll={'contain'} userSelectMode="disabled">
+          <AppRoot mode="full" safeAreaInsets={insets} scroll="contain" userSelectMode="disabled">
             <Suspense fallback={<SplashScreen />}>
               <AppRouter />
             </Suspense>

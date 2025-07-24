@@ -2,7 +2,7 @@ import React from 'react';
 import { Flex } from '@vkontakte/vkui';
 import { Button, StyledCard, MainCardContainer, PromoCodeCopyContainer } from './style';
 // import Promo from '../modals/promo';
-// import useAuth from '@/contexts/AuthProvider';
+
 import Code from './Code';
 import BarcodeComponent from './BarcodeComponent';
 
@@ -29,7 +29,7 @@ const CouponContainer: React.FC<PrizeContainerProps> = ({ coupon, activated, sho
     // showModal(<Promo initial={true} coupon={coupon.id} />);
   }, []);
 
-  const renderPromoContent = () => `Промокод на скидку ${coupon.value}%`;
+  const renderPromoContent = () => `Скидка -${coupon.value}%`;
 
   return (
     <StyledCard mode="shadow">
@@ -37,7 +37,7 @@ const CouponContainer: React.FC<PrizeContainerProps> = ({ coupon, activated, sho
         <MainCardContainer>
           <div>
             <Flex noWrap style={{ gap: '.7rem' }}>
-              <ImageContainer img={img} />
+             
               <TextContainer
                 title={renderPromoContent()}
                 description={`Скидка на покупку в магазинах «Магнит» товаров бренда Zewa.`}

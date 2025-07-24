@@ -1,4 +1,5 @@
-import axios, { type AxiosInstance } from 'axios';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import axios, { AxiosResponse, type AxiosInstance, type AxiosRequestConfig } from 'axios';
 
 export interface StartRequest {
   telegram_id: number;
@@ -11,6 +12,20 @@ export type ApiData<T> =
   T extends Promise<infer R> ? (R extends { data: infer D } ? D : never) : never;
 export interface HistoryRequest {
   telegram_id: number;
+}
+export interface AddCheckResponse {
+  success: boolean;
+  message?: string;
+}
+
+export interface AddCheckRequest {
+  telegram_id: number;
+  img?: File;
+  fn?: string;
+  fd?: string;
+  fp?: string;
+  sum?: string;
+  date?: string;
 }
 
 export type CouponType = 'barcode' | 'code';
@@ -38,9 +53,6 @@ export interface GameStartRequest {
 }
 
 export interface GameResultRequest {
-  telegram_id: number;
-  ts: number;
-  payload: string;
   game: number;
   result: number;
   points: number;
@@ -89,16 +101,27 @@ export class ApiService {
     return this.axios.post('/activate-coupon', this.withHash(data));
   }
 
-  addCheck(data: Omit<AddCheckRequest, 'hash'>) {
+  addCheck(
+    data: Omit<AddCheckRequest, 'hash'>,
+    config?: AxiosRequestConfig,
+  ): Promise<AxiosResponse<AddCheckResponse>> {
     const form = new FormData();
     Object.entries(data).forEach(([key, value]) => {
-      if (value !== undefined && value !== null) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      if (value != null) {
         form.append(key, value as any);
       }
     });
     form.append('hash', this.hash);
-    return this.axios.post('/add-check', form);
+    form.append('payload', this.payload);
+
+    return this.axios.post<AddCheckResponse>('/add-check', form, config);
+  }
+
+  addCheckImageManual(data: {
+    telegram_id: number;
+    img: string;
+  }): Promise<{ data: AddCheckResponse }> {
+    return this.axios.post('/add-check', this.withHash(data));
   }
 
   gameStart(data: Omit<GameStartRequest, 'hash'>) {

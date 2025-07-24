@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Flex } from 'antd';
 
-import { KeyboardIcon, ScanWhiteIcon, ScreenshotIcon, ZewaButton } from '@/shared/ui';
+import { KeyboardIcon, ScanWhiteIcon, ScreenshotIcon, Text, ZewaButton } from '@/shared/ui';
 import { useModalStore } from '@/shared/model/modalStore';
 import { ManualInputForm } from './ManualInputForm';
 import { renderUploadFormModal } from './lib/renderUploadFormModal';
@@ -10,28 +11,70 @@ import { Scanner } from '@yudiel/react-qr-scanner';
 import useWindowSize from '@/hooks/useWindowSize';
 
 export function ScannerComponent() {
-  const { openTelegramScanner, pending, onQrScanned } = useReceiptScan();
+  const { openTelegramScanner, pending, onQrScanned, setScannerNotAllowed, scanerNotAllowed } =
+    useReceiptScan();
   const { isMobile } = useWindowSize();
   navigator.mediaDevices.enumerateDevices().then(console.table);
   console.log('supports', OffscreenCanvas);
 
-  const showLocalScanner = () => {
-    useModalStore.getState().openModal({
-      title: 'Сканер qr-кодов',
-      closable: true,
-      content: (
-        <ScannerBox>
-          <Scanner
-            onScan={(codes) => {
-              onQrScanned(codes[0].rawValue);
-              console.log('SCAN', codes);
-            }}
-            onError={(e) => console.log('ERR', e)}
-            scanDelay={500}
-          />
-        </ScannerBox>
-      ),
-    });
+  const showLocalScanner = async () => {
+    try {
+
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      stream.getTracks().forEach((t) => t.stop());
+
+      useModalStore.getState().openModal({
+        title: 'Сканер qr-кодов',
+        closable: true,
+        content: (
+          <ScannerBox>
+            <Scanner
+              onScan={(codes) => onQrScanned(codes[0].rawValue)}
+              onError={(e) => handleScannerError(e)}
+              scanDelay={500}
+            />
+          </ScannerBox>
+        ),
+      });
+    } catch (e: any) {
+      if (e.name === 'NotAllowedError' || e.name === 'SecurityError') {
+        setScannerNotAllowed();
+        useModalStore.getState().openModal({
+          title: 'Ошибка доступа',
+          content: (
+            <Text size="p4" align="center">
+              Пожалуйста, разрешите доступ к камере в настройках браузера, чтобы использовать сканер
+              QR-кодов.
+            </Text>
+          ),
+        });
+      } else {
+        useModalStore.getState().openModal({
+          title: 'Ошибка камеры',
+          content: (
+            <Text size="p4" align="center">
+              Не удалось получить доступ к камере: {e.message}
+            </Text>
+          ),
+        });
+      }
+    }
+  };
+
+  const handleScannerError = (error: any) => {
+    if (error?.name === 'NotAllowedError') {
+      setScannerNotAllowed();
+      useModalStore.getState().openModal({
+        title: 'Ошибка доступа',
+        content: (
+          <Text size="p4" align="center">
+            Разрешите доступ к камере в браузере.
+          </Text>
+        ),
+      });
+    } else {
+      console.error(error);
+    }
   };
 
   const renderManualInputModal = () => {
@@ -47,7 +90,7 @@ export function ScannerComponent() {
       <ZewaButton
         variant="blue-b"
         onClick={isMobile ? openTelegramScanner : showLocalScanner}
-        disabled={pending}
+        disabled={pending || scanerNotAllowed}
       >
         <Flex align="center" gap="5px">
           <ScanWhiteIcon /> Сканировать

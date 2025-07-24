@@ -41,9 +41,7 @@ export function parseReceipt(raw: string): ParsedReceipt {
   if (!FD_RE.test(fd)) throw new Error('i (fd) – только цифры');
   if (!FP_RE.test(fp)) throw new Error('fp – только цифры');
 
-  // 4️⃣   преобразования
-  const [, yyyy, mm, dd] = t.match(DATE_RE)!; // берём только дату
-  const date = `${yyyy}-${mm}-${dd}`; // → YYYY-MM-DD
+  const date = t;
   const sum = s.replace('.', ''); // убираем точку: "24050"
 
   return { fn, fd, fp, sum, date };
