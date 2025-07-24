@@ -4,6 +4,7 @@ import { renderHowToPlayModal } from './renderHowToPlayModal';
 import { useGameModelStore } from '@/features/game/model/gameModelStore';
 import { apiService, telegramService } from '@/services';
 import { useUserStore } from '@/shared/model';
+import { showModal } from '@/features/checks/lib/showModal';
 
 const game_id = 1;
 
@@ -32,9 +33,17 @@ export function useHowToPlayEntry() {
               game: game_id,
             })
             .then((res) => {
-              const { game_coins, user_can_play } = res.data.data;
-              setAvailableCoins(game_coins);
-              if (user_can_play[game_id]) renderHowToPlayModal(game_coins);
+              if (res.data.success) {
+                const { game_coins, user_can_play } = res.data.data;
+                setAvailableCoins(game_coins);
+                if (user_can_play[game_id]) renderHowToPlayModal(game_coins);
+              } else {
+                showModal(
+                  'Упс!',
+                  'Эта игра сейчас недоступна. Возвращайся позже',
+                  true,
+                );
+              }
             });
         }
       } catch (err) {
