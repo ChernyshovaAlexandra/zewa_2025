@@ -23,6 +23,9 @@ export interface TelegramWebApp {
   onEvent: (eventType: string, callback: (...args: unknown[]) => void) => void;
   showScanQrPopup?: (params: { text?: string }) => void;
   allowVerticalSwipe?: boolean;
+  // openTelegramLink is available in Telegram Web App but missing in types
+  openTelegramLink?: (url: string) => void;
+  openLink?: (url: string) => void;
 }
 
 export class TelegramService {
@@ -104,6 +107,18 @@ export class TelegramService {
       // сюда попадёт WebAppScanQrPopupOpened и любые другие ошибки
       console.error('Failed to open QR popup:', err);
       return false;
+    }
+  }
+
+  openTelegramLink(url: string) {
+    try {
+      this.tg?.openTelegramLink?.(url);
+    } catch (err) {
+      try {
+        this.tg?.openLink?.(url);
+      } catch (err2) {
+        console.error('Failed to open Telegram link:', err2);
+      }
     }
   }
 }
