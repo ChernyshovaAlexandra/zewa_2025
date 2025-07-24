@@ -32,16 +32,14 @@ export function TelegramProvider({ children }: { children: ReactNode }) {
           });
 
           apiService.setHash(
+            user.id,
             webApp.initDataUnsafe?.hash ?? '',
             webApp.initData,
             parseInt(webApp.initDataUnsafe?.auth_date ?? '', 10),
           );
           apiService
             .start({
-              telegram_id: user.id,
               username: user.username ?? '',
-              ts: parseInt(webApp.initDataUnsafe?.auth_date ?? '0', 10),
-              payload: webApp.initData,
             })
             .then((res) => {
               setStartStoreData(res.data.data);

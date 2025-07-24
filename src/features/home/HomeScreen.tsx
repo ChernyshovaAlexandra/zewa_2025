@@ -31,7 +31,7 @@ export function HomeScreen() {
         </Flex>
       </Navigation>
       <BackpackContainer>
-        <Backpack src="./assets/images/backpack.png" alt="Backpack" />
+        <Backpack src="./assets/images/backpack.png" alt="Backpack" loading='lazy' />
         <ZewaButton variant="play" icon={<PlayIcon />} onClick={() => navigate('/game')}>
           ИГРАТЬ
         </ZewaButton>

@@ -2,10 +2,7 @@
 import axios, { AxiosResponse, type AxiosInstance, type AxiosRequestConfig } from 'axios';
 
 export interface StartRequest {
-  telegram_id: number;
   username: string;
-  ts: number;
-  payload: string;
 }
 
 export type ApiData<T> =
@@ -46,9 +43,6 @@ export interface AddCheckRequest {
 }
 
 export interface GameStartRequest {
-  telegram_id: number;
-  ts: number;
-  payload: string;
   game: number;
 }
 
@@ -64,6 +58,7 @@ export class ApiService {
   private hash = '';
   private payload = '';
   private ts = 0;
+  private telegram_id = 0;
 
   constructor(baseURL = import.meta.env.VITE_API_BASE_URL + 'api') {
     this.axios = axios.create({
@@ -77,16 +72,23 @@ export class ApiService {
     });
   }
 
-  setHash(hash: string, payload: string, ts: number) {
+  setHash(telegram_id: number, hash: string, payload: string, ts: number) {
     this.hash = hash;
     this.payload = payload;
     this.ts = ts;
+    this.telegram_id = telegram_id;
   }
 
   private withHash<T extends Record<string, unknown>>(
     data: T,
   ): T & { hash: string; payload: string; ts: number } {
-    return { ...data, hash: this.hash, payload: this.payload, ts: this.ts };
+    return {
+      ...data,
+      telegram_id: this.telegram_id,
+      hash: this.hash,
+      payload: this.payload,
+      ts: this.ts,
+    };
   }
 
   start(data: Omit<StartRequest, 'hash'>) {

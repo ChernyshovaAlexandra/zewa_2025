@@ -6,6 +6,7 @@ import * as S from '../tournament/TournamentScreen.styles';
 import GameContainer from '../game-container';
 import { mockChecks } from './mocks';
 import CheckContainer from '../checks/check-container';
+import { useNavigate } from 'react-router-dom';
 
 interface HistoryCheck {
   date_time_raw: string;
@@ -30,7 +31,7 @@ export function HistoryScreen() {
   const [visibleGames, setVisibleGames] = useState(10);
 
   const user = useUserStore((s) => s.user);
-
+  const navigate = useNavigate();
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
     const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
     if (scrollTop + clientHeight >= scrollHeight - 10) {
@@ -48,7 +49,6 @@ export function HistoryScreen() {
       .history({ telegram_id: user.id })
       .then((res) => {
         const { data } = res.data ?? [];
-        console.info(data);
         setChecks(data?.checks);
         setGames(data?.games);
       })
@@ -58,7 +58,7 @@ export function HistoryScreen() {
   }, [user]);
 
   const renderChecks = () => {
-    const data = checks?.length ? checks : mockChecks;
+    const data = checks?.length ? checks : [];
     if (!data.length) {
       return (
         <Text weight={700} color="white" align="center">
@@ -106,7 +106,12 @@ export function HistoryScreen() {
   };
 
   return (
-    <PageContainer fullscreen title="Начисление монет" onScroll={handleScroll}>
+    <PageContainer
+      fullscreen
+      title="Начисление монет"
+      onScroll={handleScroll}
+      onBack={() => navigate('/profile')}
+    >
       <S.TabsWrapper>
         <S.Tabs>
           <S.TabButton $active={active === 'checks'} onClick={() => setActive('checks')}>

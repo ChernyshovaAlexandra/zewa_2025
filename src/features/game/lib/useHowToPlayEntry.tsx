@@ -29,9 +29,6 @@ export function useHowToPlayEntry() {
         if (user && webApp) {
           apiService
             .gameStart({
-              telegram_id: user.id,
-              ts: parseInt(webApp.initDataUnsafe?.auth_date ?? '0', 10),
-              payload: webApp.initData,
               game: game_id,
             })
             .then((res) => {

@@ -15,11 +15,9 @@ export function ScannerComponent() {
     useReceiptScan();
   const { isMobile } = useWindowSize();
   navigator.mediaDevices.enumerateDevices().then(console.table);
-  console.log('supports', OffscreenCanvas);
 
   const showLocalScanner = async () => {
     try {
-
       const stream = await navigator.mediaDevices.getUserMedia({ video: true });
       stream.getTracks().forEach((t) => t.stop());
 

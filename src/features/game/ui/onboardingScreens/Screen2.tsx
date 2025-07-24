@@ -4,6 +4,7 @@ export const Screen2 = () => {
   return (
     <>
       <Items src="./assets/images/onboarding/items.png" />
+
       <Domovenok src="./assets/images/onboarding/domovenok2.png" />
       <Bubble>
         <img src={'./assets/images/onboarding/bubble2.png'} alt={`Bubble`} />

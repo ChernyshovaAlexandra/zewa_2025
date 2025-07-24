@@ -32,7 +32,7 @@ export const Screen1 = () => {
   );
 };
 
-const BackpackCounter = styled.div`
+export const BackpackCounter = styled.div`
   position: absolute;
   top: 12px;
   right: 70px;
@@ -43,7 +43,7 @@ const BackpackCounter = styled.div`
   }
 `;
 
-const BackPack = styled.img`
+export const BackPack = styled.img`
   position: absolute;
   left: 0;
   right: 0;
@@ -52,7 +52,7 @@ const BackPack = styled.img`
   z-index: 4;
 `;
 
-const ArrowButton = styled.div`
+export const ArrowButton = styled.div`
   display: flex;
   width: 60px;
   height: 56px;
@@ -63,7 +63,7 @@ const ArrowButton = styled.div`
   flex-shrink: 0;
 `;
 
-const ControlsWrapper = styled.div`
+export const ControlsWrapper = styled.div`
   position: absolute;
   bottom: 50px;
   left: 0;
