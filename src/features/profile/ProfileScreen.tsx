@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { Coins } from '../coins/Coins';
 import { HistoryIcon } from '@/shared/ui/icons/HistoryIcon';
 import PrizesScale from '../prizes-scale';
+import { telegramService } from '@/services/TelegramService';
 
 export function ProfileScreen() {
   // const user = useUserStore((s) => s.user);
@@ -29,7 +30,18 @@ export function ProfileScreen() {
             <HistoryIcon />
             История начислений
           </ZewaButton>
-          <ZewaButton variant="white">Поделиться игрой</ZewaButton>
+          <ZewaButton
+            variant="white"
+            onClick={() =>
+              telegramService.openTelegramLink(
+                `https://t.me/share/url?text=${encodeURIComponent(
+                  'Присоединяйся к игре',
+                )}`,
+              )
+            }
+          >
+            Поделиться игрой
+          </ZewaButton>
         </FlexColumnDiv>
       </GroupStyled>
       <PrizesScale />
