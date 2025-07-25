@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from 'react';
 import { PageContainer, Text } from '@/shared/ui';
 import { useUserStore } from '@/shared/model';
@@ -12,7 +13,7 @@ interface HistoryCheck {
   date_time_raw: string;
   coins_earned: number;
   status: string;
-  created_at: string
+  created_at: string;
 }
 
 interface GameHistory {
@@ -54,16 +55,14 @@ export function HistoryScreen() {
         const sortedChecks = (data?.checks ?? [])
           .slice()
           .sort(
-            (a, b) =>
+            (a: any, b: any) =>
               new Date(b.created_at ?? b.date_time_raw).getTime() -
               new Date(a.created_at ?? a.date_time_raw).getTime(),
           );
 
         const sortedGames = (data?.games ?? [])
           .slice()
-          .sort(
-            (a, b) => new Date(b.day).getTime() - new Date(a.day).getTime(),
-          );
+          .sort((a: any, b: any) => new Date(b.day).getTime() - new Date(a.day).getTime());
 
         setChecks(sortedChecks);
         setGames(sortedGames);
@@ -106,17 +105,17 @@ export function HistoryScreen() {
         </Text>
       );
     }
-
+    console.info(games);
     return (
       <>
         {games.slice(0, visibleGames).map((item, id) => (
           <GameContainer
             key={id}
-            header={`Игра «Снова в школу»`}
+            header={item.game_id !== 4 ? `Игра «Снова в школу»` : `Реферальная ссылка`}
             caption={item.day}
             status={item.status}
             coins_earned={item.coins_earned}
-            points_earned={item.points_earned}
+            points_earned={item.game_id !== 4 ? item.points_earned : 0}
           />
         ))}
       </>
