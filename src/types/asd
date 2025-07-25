@@ -1,0 +1,10 @@
+declare module 'react-copy-to-clipboard' {
+    import { ComponentType } from 'react';
+    const CopyToClipboard: ComponentType<{
+      text: string;
+      onCopy?: (text: string, result: boolean) => void;
+      options?: unknown;
+    }>;
+    export default CopyToClipboard;
+  }
+  

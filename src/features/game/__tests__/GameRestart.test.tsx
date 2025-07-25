@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { renderHook } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { useGameTicker } from '../lib/hooks/useGameTicker';
@@ -19,7 +20,7 @@ const ADD_STEPS = 97; // ~1600ms
 
 const createItem = (y: number) => ({
   id: `item${spawnCount}`,
-  kind: 'marker' as const,
+  kind: 'ball' as const,
   x: 50,
   y,
   radius: 10,

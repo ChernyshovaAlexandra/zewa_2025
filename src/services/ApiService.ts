@@ -43,11 +43,11 @@ export interface AddCheckRequest {
 }
 
 export interface GameStartRequest {
-  game: number;
+  game: string;
 }
 
 export interface GameResultRequest {
-  game: number;
+  game: string;
   result: number;
   points: number;
   coins: number;
