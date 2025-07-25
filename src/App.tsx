@@ -51,22 +51,20 @@ export default function App() {
         customPanelHeaderAfterMinWidth={50}
       >
         <AdaptivityProvider>
-          <AppRoot
-            style={{
-              maxWidth: 360,
-              width: '100%',
-              margin: '0 auto',
-              height: '100vh',
-            }}
-            mode="full"
-            safeAreaInsets={insets}
-            scroll="contain"
-            userSelectMode="disabled"
-          >
-            <Suspense fallback={<SplashScreen />}>
-              <AppRouter />
-            </Suspense>
-            <ZewaModal />
+          <AppRoot mode="full" safeAreaInsets={insets} scroll="contain" userSelectMode="disabled">
+            <div
+              style={{
+                maxWidth: 360,
+                width: '100%',
+                margin: '0 auto',
+                height: '100vh',
+              }}
+            >
+              <Suspense fallback={<SplashScreen />}>
+                <AppRouter />
+              </Suspense>
+              <ZewaModal />
+            </div>
           </AppRoot>
         </AdaptivityProvider>
       </ConfigProvider>
