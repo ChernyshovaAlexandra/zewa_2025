@@ -96,7 +96,13 @@ export const useGameModelStore = create<GameModelState>((set, get) => ({
   spawnCounts: {} as Record<ItemKind, number>,
   spawnedCoinsCount: 0,
   resetItems: () =>
-    set({ items: [], spawnCounts: {} as Record<ItemKind, number>, spawnedCoinsCount: 0 }),
+    set({
+      items: [],
+      spawnCounts: {} as Record<ItemKind, number>,
+      spawnedCoinsCount: 0,
+      flashOverlay: false,
+      flashCount: 0,
+    }),
   addItem: (canvasWidth) => {
     const others = get().items.map(({ x, y, radius }) => ({ x, y, radius }));
     const spawnCounts = get().spawnCounts;
