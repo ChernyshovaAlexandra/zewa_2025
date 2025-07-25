@@ -53,9 +53,10 @@ export const PromoCodeContainer = styled.div`
 
 export const PromoText = styled.span`
   font-size: 18px;
-  color: #2761c6;
+  color: #1235AB;
   font-weight: bold;
   margin-right: 10px;
+  text-align: left;
   display: block;
   width: 100%;
 `;

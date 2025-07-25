@@ -31,6 +31,9 @@ export interface ActivateCouponRequest {
   type: CouponType;
   coupon_id: string | number;
 }
+export interface ChangeCouponRequest {
+  barcode: string;
+}
 
 export interface AddCheckRequest {
   telegram_id: number;
@@ -89,6 +92,10 @@ export class ApiService {
       payload: this.payload,
       ts: this.ts,
     };
+  }
+
+  changeCoupon(data: Omit<ChangeCouponRequest, 'hash'>) {
+    return this.axios.post('/change-coupon', this.withHash(data));
   }
 
   start(data: Omit<StartRequest, 'hash'>) {
