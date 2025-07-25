@@ -15,6 +15,8 @@ export interface Item {
 import { handleItemCatch } from './itemLogic';
 import { BACKPACK_HEIGHT, BACKPACK_WIDTH } from './backpack';
 import { useGameProgressStore } from './useGameProgressStore';
+import { useOnboardingStore } from './onboardingStore';
+import { useCoinAnimationStore } from './coinAnimationStore';
 
 export type SpecialItemKind = 'coin';
 
@@ -187,6 +189,8 @@ export const useGameModelStore = create<GameModelState>((set, get) => ({
   resetGame: () => {
     get().resetItems();
     get().resetBackpack();
+    useOnboardingStore.getState().reset();
+    useCoinAnimationStore.getState().reset();
     useGameProgressStore.getState().resetSession();
     sessionStorage.removeItem('cameFromRules');
     set(() => ({
