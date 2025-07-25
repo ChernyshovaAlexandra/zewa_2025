@@ -28,10 +28,12 @@ export function useHowToPlayEntry(navigate: NavigateFunction) {
   }, [resetGame, resetSession]);
 
   useEffect(() => {
+    let isMounted = true;
     if (hasHydrated && !hasPlayedSession && user) {
       apiService
         .gameStart({ game: game_id })
         .then((res) => {
+          if (!isMounted) return;
           if (res.data) {
             if (res.data.success) {
               const { game_coins, user_can_play } = res.data.data;
@@ -71,6 +73,7 @@ export function useHowToPlayEntry(navigate: NavigateFunction) {
           }
         })
         .catch((err) => {
+          if (!isMounted) return;
           console.error('gameStart error', err);
           openModal({
             title: 'Упс!',
@@ -86,5 +89,9 @@ export function useHowToPlayEntry(navigate: NavigateFunction) {
           });
         });
     }
+
+    return () => {
+      isMounted = false;
+    };
   }, [hasHydrated, hasPlayedEver, hasPlayedSession, navigate, openModal, setAvailableCoins, user]);
 }
