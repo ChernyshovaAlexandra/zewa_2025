@@ -1,6 +1,10 @@
-import { Form, Input, DatePicker, TimePicker } from 'antd';
+import { Form, Input, DatePicker, TimePicker, Flex } from 'antd';
+import { Spinner } from '@vkontakte/vkui';
 import styled from 'styled-components';
 import { ZewaButton, Text } from '@/shared/ui';
+import { useModalStore } from '@/shared/model/modalStore';
+import { apiService, telegramService } from '@/services';
+import Helper from '@/helpers/Helper';
 
 const FIELD_HEIGHT = '45px';
 const FIELD_BORDER = '1px solid #5C82C6';
@@ -78,8 +82,80 @@ const DateTimeWrapper = styled(RowWrapper)`
 export function ManualInputForm() {
   const [form] = Form.useForm();
 
-  const handleSubmit = (values: unknown) => {
-    console.log(values);
+  const handleSubmit = async (values: any) => {
+    const { openModal } = useModalStore.getState();
+
+    const userId = telegramService.getUser()?.id;
+    if (!userId) {
+      openModal({
+        title: 'Ошибка',
+        closable: true,
+        content: (
+          <Text size="p4" align="center">
+            Не удалось определить id пользователя
+          </Text>
+        ),
+      });
+      return;
+    }
+
+    const date: Date = values.date?.toDate();
+    const time: Date = values.time?.toDate();
+    const finalDate = new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate(),
+      time.getHours(),
+      time.getMinutes(),
+    );
+
+    const formattedDate = Helper.deFormatDate(finalDate);
+    const sum = `${values.sumRub}${String(values.sumKop).padStart(2, '0')}`;
+
+    openModal({
+      title: 'Проверка чека',
+      closable: false,
+      content: (
+        <Flex vertical gap="10px" align="center">
+          <Text size="p4" align="center">
+            Отправляем чек на проверку. Это займёт какое-то время.
+          </Text>
+          <Spinner size="m" style={{ margin: '0 auto' }} />
+        </Flex>
+      ),
+    });
+
+    try {
+      const resp = await apiService.addCheck({
+        telegram_id: userId,
+        fn: values.fn,
+        fd: values.fd,
+        fp: values.fp,
+        sum,
+        date: formattedDate,
+      });
+
+      openModal({
+        title: 'Проверка чека',
+        closable: true,
+        content: (
+          <Text size="p4" align="center">
+            {resp.data.message ??
+              'После проверки мы зарегистрируем чек, начислим вам монеты и пришлём уведомление об этом.'}
+          </Text>
+        ),
+      });
+    } catch (err) {
+      openModal({
+        title: 'Ошибка',
+        closable: true,
+        content: (
+          <Text size="p4" align="center">
+            Сеть недоступна или сервер не отвечает
+          </Text>
+        ),
+      });
+    }
   };
 
   return (
@@ -91,7 +167,10 @@ export function ManualInputForm() {
       <Form.Item
         label="ФН"
         name="fn"
-        rules={[{ required: true, message: 'Введите ФН' }]}
+        rules={[
+          { required: true, message: 'Введите ФН' },
+          { pattern: /^\d{10,16}$/, message: 'Только цифры' },
+        ]}
         style={{ marginBottom: '8px' }}
       >
         <StyledInput allowClear placeholder="Введите данные" />
@@ -100,7 +179,10 @@ export function ManualInputForm() {
       <Form.Item
         label="ФД"
         name="fd"
-        rules={[{ required: true, message: 'Введите ФД' }]}
+        rules={[
+          { required: true, message: 'Введите ФД' },
+          { pattern: /^\d+$/, message: 'Только цифры' },
+        ]}
         style={{ marginBottom: '8px' }}
       >
         <StyledInput allowClear placeholder="Введите данные" />
@@ -109,7 +191,10 @@ export function ManualInputForm() {
       <Form.Item
         label="ФП"
         name="fp"
-        rules={[{ required: true, message: 'Введите ФП' }]}
+        rules={[
+          { required: true, message: 'Введите ФП' },
+          { pattern: /^\d+$/, message: 'Только цифры' },
+        ]}
         style={{ marginBottom: '8px' }}
       >
         <StyledInput allowClear placeholder="Введите данные" />
@@ -120,7 +205,10 @@ export function ManualInputForm() {
           <Form.Item
             name="sumRub"
             noStyle
-            rules={[{ required: true, message: 'Рубли' }]}
+            rules={[
+              { required: true, message: 'Рубли' },
+              { pattern: /^\d+$/, message: 'Только цифры' },
+            ]}
             style={{ marginBottom: '8px' }}
           >
             <StyledInput className="sum-rub" placeholder="руб." />
@@ -128,7 +216,10 @@ export function ManualInputForm() {
           <Form.Item
             name="sumKop"
             noStyle
-            rules={[{ required: true, message: 'Копейки' }]}
+            rules={[
+              { required: true, message: 'Копейки' },
+              { pattern: /^\d{2}$/, message: 'Две цифры' },
+            ]}
             style={{ marginBottom: '8px' }}
           >
             <StyledInput className="sum-kop" placeholder="коп." />
