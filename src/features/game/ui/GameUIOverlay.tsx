@@ -17,14 +17,13 @@ export const GameUIOverlay = () => {
   const coinTargetRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // сохраняем ссылку глобально
     if (coinTargetRef.current) {
       (window as any).__coinTarget = coinTargetRef.current;
     }
   }, []);
 
   return (
-    <Wrapper>
+    <Wrapper style={{ maxWidth: '360px', margin: 'auto' }}>
       <TopRow>
         <InfoBlock>
           <Flex gap="4px">
@@ -43,7 +42,9 @@ export const GameUIOverlay = () => {
                   </div>
                   {coins}/{coins_available}
                 </Flex>
-              ) : <></>}
+              ) : (
+                <></>
+              )}
               <Flex gap="4px" align="center">
                 <img src="./assets/images/backpack-icon.png" alt="иконка рюкзак" />
                 {score}

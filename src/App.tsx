@@ -46,12 +46,23 @@ export default function App() {
   return (
     <GlobalProvider>
       <ConfigProvider
-        isWebView={false}
+        isWebView={true}
         hasCustomPanelHeaderAfter={true}
         customPanelHeaderAfterMinWidth={50}
       >
         <AdaptivityProvider>
-          <AppRoot mode="full" safeAreaInsets={insets} scroll="contain" userSelectMode="disabled">
+          <AppRoot
+            style={{
+              maxWidth: 360,
+              width: '100%',
+              margin: '0 auto',
+              height: '100vh',
+            }}
+            mode="full"
+            safeAreaInsets={insets}
+            scroll="contain"
+            userSelectMode="disabled"
+          >
             <Suspense fallback={<SplashScreen />}>
               <AppRouter />
             </Suspense>

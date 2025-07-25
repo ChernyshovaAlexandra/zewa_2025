@@ -10,7 +10,7 @@ export function useContainerSize() {
 
     const resize = () => {
       setSize({
-        width: el.clientWidth,
+        width: el.clientWidth > 360 ? 360 : el.clientWidth,
         height: el.clientHeight,
       });
     };

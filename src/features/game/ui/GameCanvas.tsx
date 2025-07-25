@@ -35,7 +35,7 @@ export const GameCanvas = () => {
             autoDensity: true,
           }}
         >
-          <Container>
+          <Container width={width}>
             <Background width={width} height={height} />
             <BackpackBack x={centerX} y={bottomY} width={BACKPACK_WIDTH} height={BACKPACK_HEIGHT} />
             <BackpackAnimator />

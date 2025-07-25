@@ -16,15 +16,17 @@ export const Coins = () => {
       }}
     >
       <Flex
-        gap="6px"
+        gap="3px"
         style={{
           verticalAlign: 'middle',
           alignItems: 'center',
           justifyContent: 'center',
         }}
       >
-        <img src="./assets/images/coin-icon.png" alt="монетка" />
-        {userData?.user?.coins || 0}
+        <img width="22" src="./assets/images/items/coin3.png" alt="иконка монета" />
+        <span style={{ fontWeight: 900, letterSpacing: '-0.7px' }}>
+          {userData?.user?.coins || 0}
+        </span>
       </Flex>
     </ZewaButton>
   );

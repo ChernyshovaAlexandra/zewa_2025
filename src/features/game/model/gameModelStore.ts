@@ -65,7 +65,7 @@ interface GameModelState {
   resetBackpack: () => void;
   resetGame: () => void;
 }
-export const game_id = 6;
+export const game_id = 'back_to_school';
 
 export const useGameModelStore = create<GameModelState>((set, get) => ({
   isGameStarted: false,
