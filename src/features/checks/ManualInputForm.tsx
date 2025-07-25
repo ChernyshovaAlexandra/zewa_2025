@@ -1,130 +1,105 @@
-import { Form, Input, DatePicker, TimePicker, Flex } from 'antd';
-import { Spinner } from '@vkontakte/vkui';
-import styled from 'styled-components';
-import { ZewaButton, Text } from '@/shared/ui';
+import {
+  Group,
+  FormItem,
+  FormLayoutGroup,
+  Input,
+  DateInput as DatePicker,
+  Button,
+  Text,
+  Spinner,
+  Div,
+} from '@vkontakte/vkui';
+import { FormEvent, useState } from 'react';
 import { useModalStore } from '@/shared/model/modalStore';
 import { apiService, telegramService } from '@/services';
 import Helper from '@/helpers/Helper';
 
-const FIELD_HEIGHT = '45px';
-const FIELD_BORDER = '1px solid #5C82C6';
-const FIELD_RADIUS = '10px';
+interface State {
+  fn: string;
+  fd: string;
+  fp: string;
+  sumRub: string;
+  sumKop: string;
+  date: Date | null;
+  time: string;
+}
 
-const StyledInput = styled(Input)`
-  width: 100%;
-  height: ${FIELD_HEIGHT};
-  background: #fff;
-  border: ${FIELD_BORDER};
-  border-radius: ${FIELD_RADIUS};
-  padding: 11px 12px;
-  font-size: 16px;
-  line-height: 20px;
+export const ManualInputForm = () => {
+  const { openModal } = useModalStore.getState();
 
-  .ant-input-clear-icon {
-    top: 50%;
-    transform: translateY(-50%);
-  }
-`;
+  const [values, setValues] = useState<State>({
+    fn: '',
+    fd: '',
+    fp: '',
+    sumRub: '',
+    sumKop: '',
+    date: null,
+    time: '',
+  });
+  const [errors, setErrors] = useState<Record<keyof State, string | null>>({
+    fn: null,
+    fd: null,
+    fp: null,
+    sumRub: null,
+    sumKop: null,
+    date: null,
+    time: null,
+  });
+  const [pending, setPending] = useState(false);
 
-const StyledDatePicker = styled(DatePicker)`
-  width: 100%;
-  height: ${FIELD_HEIGHT};
-  background: #fff;
-  border: ${FIELD_BORDER};
-  border-radius: ${FIELD_RADIUS};
-  padding: 11px 12px;
 
-  .ant-picker-input > input {
-    height: ${FIELD_HEIGHT};
-    line-height: ${FIELD_HEIGHT};
-    padding: 0;
-  }
-`;
+  const handleChange = (field: keyof State, value: string | Date | null) => {
+    setValues((prev) => ({ ...prev, [field]: value }));
+    setErrors((prev) => ({ ...prev, [field]: null }));
+  };
 
-const StyledTimePicker = styled(TimePicker)`
-  width: 100%;
-  height: ${FIELD_HEIGHT};
-  background: #fff;
-  border: ${FIELD_BORDER};
-  border-radius: ${FIELD_RADIUS};
-  padding: 11px 12px;
+  const validate = (): boolean => {
+    const next: typeof errors = {
+      fn: /^\d{10,16}$/.test(values.fn) ? null : 'Введите корректный ФН',
+      fd: /^\d+$/.test(values.fd) ? null : 'Введите корректный ФД',
+      fp: /^\d+$/.test(values.fp) ? null : 'Введите корректный ФП',
+      sumRub: /^\d+$/.test(values.sumRub) ? null : 'Рубли — только цифры',
+      sumKop: /^\d{2}$/.test(values.sumKop) ? null : 'Копейки — две цифры',
+      date: values.date ? null : 'Выберите дату',
+      time: values.time ? null : 'Выберите время',
+    };
+    setErrors(next);
+    return Object.values(next).every((v) => v === null);
+  };
 
-  .ant-picker-input > input {
-    height: ${FIELD_HEIGHT};
-    line-height: ${FIELD_HEIGHT};
-    padding: 0;
-  }
-`;
-
-const RowWrapper = styled.div`
-  display: flex;
-  gap: 8px;
-`;
-
-const SumWrapper = styled(RowWrapper)`
-  & > .sum-rub {
-    flex: 1 1 70%;
-  }
-  & > .sum-kop {
-    flex: 1 1 30%;
-  }
-`;
-
-const DateTimeWrapper = styled(RowWrapper)`
-  & > .date-field {
-    flex: 1 1 50%;
-  }
-  & > .time-field {
-    flex: 1 1 50%;
-  }
-`;
-
-export function ManualInputForm() {
-  const [form] = Form.useForm();
-
-  const handleSubmit = async (values: any) => {
-    const { openModal } = useModalStore.getState();
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    if (!validate()) return;
 
     const userId = telegramService.getUser()?.id;
     if (!userId) {
       openModal({
         title: 'Ошибка',
         closable: true,
-        content: (
-          <Text size="p4" align="center">
-            Не удалось определить id пользователя
-          </Text>
-        ),
+        content: <Text>Не удалось определить id пользователя</Text>,
       });
       return;
     }
 
-    const date: Date = values.date?.toDate();
-    const time: Date = values.time?.toDate();
-    const finalDate = new Date(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate(),
-      time.getHours(),
-      time.getMinutes(),
-    );
-
+    const [hours, minutes] = values.time.split(':').map(Number);
+    const d = values.date as Date;
+    const finalDate = new Date(d.getFullYear(), d.getMonth(), d.getDate(), hours, minutes);
     const formattedDate = Helper.deFormatDate(finalDate);
-    const sum = `${values.sumRub}${String(values.sumKop).padStart(2, '0')}`;
+    const sum = `${values.sumRub}${values.sumKop}`;
 
+    /* прелоадер */
     openModal({
       title: 'Проверка чека',
       closable: false,
       content: (
-        <Flex vertical gap="10px" align="center">
-          <Text size="p4" align="center">
-            Отправляем чек на проверку. Это займёт какое-то время.
-          </Text>
-          <Spinner size="m" style={{ margin: '0 auto' }} />
-        </Flex>
+        <Div style={{ textAlign: 'center' }}>
+          <Text>Отправляем чек на проверку. Это займёт какое-то время.</Text>
+          <Spinner size="m" style={{ marginTop: 8 }} />
+        </Div>
       ),
     });
 
+    setPending(true);
     try {
       const resp = await apiService.addCheck({
         telegram_id: userId,
@@ -139,120 +114,122 @@ export function ManualInputForm() {
         title: 'Проверка чека',
         closable: true,
         content: (
-          <Text size="p4" align="center">
+          <Text>
             {resp.data.message ??
               'После проверки мы зарегистрируем чек, начислим вам монеты и пришлём уведомление об этом.'}
           </Text>
         ),
       });
-    } catch (err) {
+    } catch {
       openModal({
         title: 'Ошибка',
         closable: true,
-        content: (
-          <Text size="p4" align="center">
-            Сеть недоступна или сервер не отвечает
-          </Text>
-        ),
+        content: <Text>Сеть недоступна или сервер не отвечает</Text>,
       });
+    } finally {
+      setPending(false);
     }
   };
 
   return (
-    <Form form={form} layout="vertical" onFinish={handleSubmit}>
-      <Text size="p4" align="center" style={{ marginBottom: 12 }}>
-        Введите код из чека в нужное поле
-      </Text>
+    <Group mode="plain">
+      <form style={{ textAlign: 'left' }} onSubmit={handleSubmit}>
+        <FormItem>
+          <Text weight="3" style={{ textAlign: 'center', marginBottom: 12 }}>
+            Введите код из чека в нужное поле
+          </Text>
+        </FormItem>
 
-      <Form.Item
-        label="ФН"
-        name="fn"
-        rules={[
-          { required: true, message: 'Введите ФН' },
-          { pattern: /^\d{10,16}$/, message: 'Только цифры' },
-        ]}
-        style={{ marginBottom: '8px' }}
-      >
-        <StyledInput allowClear placeholder="Введите данные" />
-      </Form.Item>
+        <FormItem top="ФН" status={errors.fn ? 'error' : 'default'} bottom={errors.fn ?? undefined}>
+          <Input
+            type="number"
+            value={values.fn}
+            placeholder="Введите данные"
+            onChange={(e) => handleChange('fn', e.target.value)}
+          />
+        </FormItem>
 
-      <Form.Item
-        label="ФД"
-        name="fd"
-        rules={[
-          { required: true, message: 'Введите ФД' },
-          { pattern: /^\d+$/, message: 'Только цифры' },
-        ]}
-        style={{ marginBottom: '8px' }}
-      >
-        <StyledInput allowClear placeholder="Введите данные" />
-      </Form.Item>
+        <FormItem top="ФД" status={errors.fd ? 'error' : 'default'} bottom={errors.fd ?? undefined}>
+          <Input
+            type="number"
+            value={values.fd}
+            placeholder="Введите данные"
+            onChange={(e) => handleChange('fd', e.target.value)}
+          />
+        </FormItem>
 
-      <Form.Item
-        label="ФП"
-        name="fp"
-        rules={[
-          { required: true, message: 'Введите ФП' },
-          { pattern: /^\d+$/, message: 'Только цифры' },
-        ]}
-        style={{ marginBottom: '8px' }}
-      >
-        <StyledInput allowClear placeholder="Введите данные" />
-      </Form.Item>
+        <FormItem top="ФП" status={errors.fp ? 'error' : 'default'} bottom={errors.fp ?? undefined}>
+          <Input
+            type="number"
+            value={values.fp}
+            placeholder="Введите данные"
+            onChange={(e) => handleChange('fp', e.target.value)}
+          />
+        </FormItem>
 
-      <Form.Item label="Сумма" style={{ marginBottom: '8px' }}>
-        <SumWrapper>
-          <Form.Item
-            name="sumRub"
-            noStyle
-            rules={[
-              { required: true, message: 'Рубли' },
-              { pattern: /^\d+$/, message: 'Только цифры' },
-            ]}
-            style={{ marginBottom: '8px' }}
-          >
-            <StyledInput className="sum-rub" placeholder="руб." />
-          </Form.Item>
-          <Form.Item
-            name="sumKop"
-            noStyle
-            rules={[
-              { required: true, message: 'Копейки' },
-              { pattern: /^\d{2}$/, message: 'Две цифры' },
-            ]}
-            style={{ marginBottom: '8px' }}
-          >
-            <StyledInput className="sum-kop" placeholder="коп." />
-          </Form.Item>
-        </SumWrapper>
-      </Form.Item>
+        {/* Сумма */}
+        <FormItem top="Сумма">
+          <FormLayoutGroup mode="horizontal">
+            <FormItem
+              top="руб."
+              status={errors.sumRub ? 'error' : 'default'}
+              bottom={errors.sumRub ?? undefined}
+            >
+              <Input
+                type="number"
+                value={values.sumRub}
+                onChange={(e) => handleChange('sumRub', e.target.value)}
+              />
+            </FormItem>
+            <FormItem
+              top="коп."
+              status={errors.sumKop ? 'error' : 'default'}
+              bottom={errors.sumKop ?? undefined}
+            >
+              <Input
+                type="number"
+                value={values.sumKop}
+                onChange={(e) => handleChange('sumKop', e.target.value)}
+              />
+            </FormItem>
+          </FormLayoutGroup>
+        </FormItem>
 
-      <Form.Item label="Дата и время" style={{ marginBottom: '8px' }}>
-        <DateTimeWrapper>
-          <Form.Item
-            name="date"
-            noStyle
-            rules={[{ required: true, message: 'Выберите дату' }]}
-            style={{ marginBottom: '8px' }}
-          >
-            <StyledDatePicker className="date-field" allowClear format="DD.MM.YYYY" />
-          </Form.Item>
-          <Form.Item
-            name="time"
-            noStyle
-            rules={[{ required: true, message: 'Выберите время' }]}
-            style={{ marginBottom: '8px' }}
-          >
-            <StyledTimePicker className="time-field" allowClear format="HH:mm" />
-          </Form.Item>
-        </DateTimeWrapper>
-      </Form.Item>
+        {/* Дата + время */}
+        <FormItem top="Дата и время">
+          <FormLayoutGroup mode="horizontal">
+            <FormItem
+              top="Дата"
+              status={errors.date ? 'error' : 'default'}
+              bottom={errors.date ?? undefined}
+            >
+              <DatePicker
+                value={values.date}
+                onChange={(v) => handleChange('date', v ? (v as Date) : null)}
+                closeOnChange
+              />
+            </FormItem>
+            <FormItem
+              top="Время"
+              status={errors.time ? 'error' : 'default'}
+              bottom={errors.time ?? undefined}
+            >
+              <Input
+                type="time"
+                value={values.time}
+                onChange={(e) => handleChange('time', e.target.value)}
+              />
+            </FormItem>
+          </FormLayoutGroup>
+        </FormItem>
 
-      <Form.Item style={{ textAlign: 'center', marginTop: 16, marginBottom: '8px' }}>
-        <ZewaButton style={{ margin: 'auto' }} variant="blue-b" type="submit">
-          Отправить
-        </ZewaButton>
-      </Form.Item>
-    </Form>
+        {/* submit */}
+        <FormItem>
+          <Button size="l" stretched mode="primary" loading={pending} type="submit">
+            Отправить
+          </Button>
+        </FormItem>
+      </form>
+    </Group>
   );
-}
+};
