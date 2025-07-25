@@ -105,7 +105,6 @@ export function HistoryScreen() {
         </Text>
       );
     }
-    console.info(games);
     return (
       <>
         {games.slice(0, visibleGames).map((item, id) => (

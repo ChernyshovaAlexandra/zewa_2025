@@ -13,7 +13,6 @@ export function PageHeader({ title, onBack }: PageHeaderProps) {
 
   const handleBack = () => {
     if (onBack) {
-      console.info('onBack');
       return onBack();
     }
 
