@@ -87,7 +87,6 @@ export class TelegramService {
   showScanQrPopup(text = 'Наведите камеру на QR-код'): boolean {
 
     if (!this.tg?.showScanQrPopup) {
-      console.warn('showScanQrPopup недоступен');
       return false;
     }
 

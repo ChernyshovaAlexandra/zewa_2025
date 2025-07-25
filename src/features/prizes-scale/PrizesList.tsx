@@ -27,7 +27,6 @@ const PrizesList: React.FC<PrizesListProps> = ({ isDrawerOpen }) => {
   const prizeRefs = React.useRef<Array<HTMLDivElement | null>>([]);
   const { isMobile } = useWindowSize();
   const navigate = useNavigate();
-  console.info(userData);
   // Активированные и новые купоны из данных пользователя
   const activatedCouponsArray = React.useMemo(
     () =>

@@ -50,7 +50,6 @@ export function useReceiptScan() {
           ),
         });
       } else {
-        console.info(data);
         renderScanErrorModal(data?.message ?? 'Ошибка при отправке чека');
       }
     },

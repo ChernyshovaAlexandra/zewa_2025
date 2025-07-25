@@ -14,7 +14,6 @@ export function ScannerComponent() {
   const { openTelegramScanner, pending, onQrScanned, setScannerNotAllowed, scanerNotAllowed } =
     useReceiptScan();
   const { isMobile } = useWindowSize();
-  navigator.mediaDevices.enumerateDevices().then(console.table);
 
   const showLocalScanner = async () => {
     try {
