@@ -50,8 +50,23 @@ export function HistoryScreen() {
       .history({ telegram_id: user.id })
       .then((res) => {
         const { data } = res.data ?? [];
-        setChecks(data?.checks);
-        setGames(data?.games);
+
+        const sortedChecks = (data?.checks ?? [])
+          .slice()
+          .sort(
+            (a, b) =>
+              new Date(b.created_at ?? b.date_time_raw).getTime() -
+              new Date(a.created_at ?? a.date_time_raw).getTime(),
+          );
+
+        const sortedGames = (data?.games ?? [])
+          .slice()
+          .sort(
+            (a, b) => new Date(b.day).getTime() - new Date(a.day).getTime(),
+          );
+
+        setChecks(sortedChecks);
+        setGames(sortedGames);
       })
       .catch((err) => {
         console.error('history error', err);
