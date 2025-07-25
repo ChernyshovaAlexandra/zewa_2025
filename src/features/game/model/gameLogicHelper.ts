@@ -36,6 +36,7 @@ export function handleMissedItem(
 ): Item {
   if (item.kind !== 'coin' && meta?.isGood && !item.missed && item.y - item.radius > MISS_LINE_Y) {
     applyLifeLoss(state);
+
     return { ...item, y: item.y + item.speed, missed: true };
   }
 
@@ -90,9 +91,11 @@ export function applyLifeLoss(state: ReturnType<typeof useGameModelStore.getStat
   const { lives, loseLife, stopGame, setGameOver } = state;
   if (lives <= 1) {
     loseLife();
+    state.triggerFlash(3);
     stopGame();
     requestAnimationFrame(() => setGameOver(true));
   } else {
     loseLife();
+    state.triggerFlash(3);
   }
 }

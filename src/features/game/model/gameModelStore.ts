@@ -39,6 +39,10 @@ interface GameModelState {
   resetLives: () => void;
   resetScore: () => void;
   setAvailableCoins: (coins: number) => void;
+  flashCount: number;
+  flashOverlay: boolean;
+  triggerFlash: (times?: number) => void;
+  updateFlash: (delta: number) => void;
 
   items: Item[];
   spawnCounts: Record<ItemKind, number>;
@@ -57,7 +61,6 @@ interface GameModelState {
   moveRight: () => void;
   tick: () => void;
   resetBackpack: () => void;
-
   resetGame: () => void;
 }
 export const game_id = 6;
@@ -71,6 +74,8 @@ export const useGameModelStore = create<GameModelState>((set, get) => ({
   isGameOver: false,
   isPaused: false,
   wasNavigatedToRules: false,
+  flashCount: 0,
+  flashOverlay: false,
 
   setGameOver: (v) => set({ isGameOver: v }),
   setWasNavigatedToRules: (v) => set({ wasNavigatedToRules: v }),
@@ -199,4 +204,28 @@ export const useGameModelStore = create<GameModelState>((set, get) => ({
       wasNavigatedToRules: false,
     }));
   },
+  triggerFlash: (times = 3) =>
+    set({
+      flashCount: times * 2,
+      flashOverlay: true,
+    }),
+
+  updateFlash: (delta) =>
+    set((state) => {
+      const FRAME_INTERVAL = 5;
+      if (state.flashCount <= 0) return {};
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      let timer = (state as any)._flashTimer || 0;
+      timer += delta;
+      if (timer >= FRAME_INTERVAL) {
+        const nextCount = state.flashCount - 1;
+        return {
+          flashCount: nextCount,
+          flashOverlay: nextCount > 0 ? !state.flashOverlay : false,
+          _flashTimer: timer - FRAME_INTERVAL,
+        };
+      }
+      return { _flashTimer: timer };
+    }),
 }));

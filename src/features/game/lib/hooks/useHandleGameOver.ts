@@ -13,7 +13,6 @@ export function useHandleGameOver(navigate: NavigateFunction) {
 
     const submitResult = async () => {
       try {
-        // берём score и coins из стора на момент финиша
         const { score, coins } = useGameModelStore.getState();
         await apiService.gameResult({
           game: game_id,

@@ -1,4 +1,4 @@
-import { Container, Stage } from '@pixi/react';
+import { Container, Graphics, Stage } from '@pixi/react';
 import { useContainerSize } from '@/hooks';
 import { FallingItems } from './FallingItems';
 import { GameTickerWrapper } from './GameTickerWrapper';
@@ -15,6 +15,7 @@ export const GameCanvas = () => {
   const { ref, width, height } = useContainerSize();
   const bottomY = height - BACKPACK_HEIGHT / 2 - 20;
   const x = useGameModelStore((s) => s.x);
+  const flashOverlay = useGameModelStore((s) => s.flashOverlay);
   const setCanvasWidth = useGameModelStore((s) => s.setCanvasWidth);
   const centerX = width / 2 + x;
 
@@ -47,6 +48,16 @@ export const GameCanvas = () => {
               width={BACKPACK_WIDTH}
               height={BACKPACK_HEIGHT}
             />
+            {flashOverlay && (
+              <Graphics
+                draw={(g) => {
+                  g.clear();
+                  g.beginFill(0xff0000, 0.5);
+                  g.drawRect(0, 0, width, height);
+                  g.endFill();
+                }}
+              />
+            )}
           </Container>
         </Stage>
       )}

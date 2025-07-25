@@ -53,5 +53,6 @@ export const useGameTicker = (canvasWidth: number, canvasHeight: number) => {
       }
       timer.current = 0;
     }
+    useGameModelStore.getState().updateFlash(delta);
   });
 };
