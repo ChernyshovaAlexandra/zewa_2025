@@ -1,7 +1,7 @@
 import { useModalStore } from '@/shared/model';
 import { KeyboardIcon, ZewaButton } from '@/shared/ui';
 import { Flex } from 'antd';
-import { ManualInputForm } from './ManualInputForm';
+import { ManualInputForm } from './manual-input-form';
 
 export const ButtonManualAddCheck = () => {
   const renderManualInputModal = () => {
