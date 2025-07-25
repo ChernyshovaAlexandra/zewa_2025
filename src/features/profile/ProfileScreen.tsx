@@ -14,7 +14,7 @@ export function ProfileScreen() {
 
   const handleShare = () => {
     if (!tgReferralLink) return;
-    const text = 'Присоединяйся к игре и получай бонусы!';
+    const text = '\nПрисоединяйся к игре от Zewa по моей ссылке — и выигрывай призы до 100 000 ₽!';
     const shareUrl =
       `https://t.me/share/url?` +
       `url=${encodeURIComponent(tgReferralLink)}` +
