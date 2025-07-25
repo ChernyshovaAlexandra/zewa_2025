@@ -10,6 +10,7 @@ interface CoinAnimationState {
   flyingCoins: FlyingCoin[];
   launchCoin: (from: { x: number; y: number }, to: { x: number; y: number }) => void;
   removeCoin: (id: string) => void;
+  reset: () => void;
 }
 
 export const useCoinAnimationStore = create<CoinAnimationState>((set) => ({
@@ -25,4 +26,5 @@ export const useCoinAnimationStore = create<CoinAnimationState>((set) => ({
     set((s) => ({
       flyingCoins: s.flyingCoins.filter((c) => c.id !== id),
     })),
+  reset: () => set({ flyingCoins: [] }),
 }));

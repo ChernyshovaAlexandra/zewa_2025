@@ -17,6 +17,12 @@ export const useGameTicker = (canvasWidth: number, canvasHeight: number) => {
   const ADD_INTERVAL = 1600;
 
   useEffect(() => {
+    if (!isGameStarted) {
+      timer.current = 0;
+    }
+  }, [isGameStarted]);
+
+  useEffect(() => {
     const handleVisibility = () => {
       if (document.hidden) pauseGame();
       else resumeGame();
