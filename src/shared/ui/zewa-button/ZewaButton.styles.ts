@@ -40,10 +40,13 @@ export const StyledButton = styled.button<{ $variant: ZewaButtonVariant }>`
         `;
       case 'white-small':
         return css`
-          padding: 4px 12px;
+          padding: 6px 12px;
           font-size: 14px;
           background: linear-gradient(180deg, #f4fcff 0%, #e3f7ff 100%);
-          color: #1235ab;
+          span {
+            color: #1235ab !important;
+            font-weight: 700;
+          }
           box-shadow:
             0px -2px 3px 0px #b3c7e9 inset,
             0px 3px 0px 0px #b3c7e9,

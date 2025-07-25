@@ -9,10 +9,8 @@ export interface Prize {
   activated: boolean;
 }
 export interface Coupon {
-  points_cost: number;
-  value: string | null;
-  type: string;
   points: number;
+  name: string;
 }
 
 export type DisplayCoupon = {
@@ -35,12 +33,9 @@ export interface UserInfo {
 export interface UserInfoExpanded extends UserInfo {
   coins: number;
   points: number;
-  new_coupons: Coupon[];
-  activated_coupons: Coupon[];
+  coupons: Coupon[];
   prizes: Prize[];
   tg_referral_link: string;
-  this_period_activated_coupons: Coupon[];
-  this_period_new_coupons: Coupon[];
 }
 
 export interface UserData {

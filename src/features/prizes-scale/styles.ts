@@ -142,10 +142,6 @@ export const ArrowIcon = styled.div<{ $isOpen: boolean }>`
 export const Bubble = styled.div<{ $activated: boolean; $isOpen: boolean }>`
   position: relative;
   flex-shrink: 0;
-  padding: 10px;
-
-  color: ${(props) => (props.$activated ? 'rgb(38, 136, 235)' : '#F2F2F2')};
-  filter: drop-shadow(0px 5px 0px #1235ab);
   text-align: center;
   display: grid;
   place-items: center;
@@ -158,12 +154,12 @@ export const Bubble = styled.div<{ $activated: boolean; $isOpen: boolean }>`
   padding-top: 10px;
 
   width: 155px;
+  padding: 5px;
   border-radius: var(--14, 14px);
-  background: linear-gradient(180deg, #2d59df 0%, #0f3bc1 100%);
-  box-shadow:
-    0px 3px 0px 0px #002ab0,
-    0px 1px 2px 0px rgba(255, 255, 255, 0.4) inset,
-    0px -2px 3px 0px #002ab0 inset;
+  background: ${({ $activated }) =>
+    $activated ? 'linear-gradient(180deg, #2D59DF 0%, #0F3BC1 100%)' : '#fff'};
+  border: ${({ $activated }) => ($activated ? '' : '1px dashed #1235ab')};
+  filter: ${({ $activated }) => ($activated ? 'drop-shadow(0px 5px 0px #1235ab)' : '')};
 
   span {
     font-family: 'Foco Trial';
@@ -171,6 +167,7 @@ export const Bubble = styled.div<{ $activated: boolean; $isOpen: boolean }>`
     font-weight: 400;
     line-height: 18px;
     text-align: center;
+    color: ${({ $activated }) => ($activated ? '#fff' : '#1235ab')};
   }
   video {
     pointer-events: none;
@@ -333,7 +330,7 @@ export const StyledCell = styled.div<{
 `;
 
 export const SpanDraw = styled.span`
-  color: #fff;
+  color: #7186cd;
 `;
 
 export const Button = styled.button<ButtonProps>`

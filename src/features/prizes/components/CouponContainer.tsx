@@ -14,12 +14,10 @@ import { applyNbsp } from '@/utils';
 import { ZewaButton } from '@/shared/ui';
 import { ToggleIcon } from '@/shared/ui/icons/ToggleIcon';
 
-// const end_coupon_date = '';
-
 interface PrizeContainerProps {
   coupon: {
     id?: number;
-    value: string | null;
+    name: string;
     code?: string;
     barcode?: string;
   };
@@ -27,8 +25,7 @@ interface PrizeContainerProps {
   showSnackbar?: (message: string) => void;
 }
 const CouponContainer: React.FC<PrizeContainerProps> = ({ coupon }) => {
-  const renderPromoContent = () => `Скидка -${coupon.value}%`;
-  console.info(coupon);
+  const renderPromoContent = () => coupon.name;
 
   const [toggledContent, setToggled] = useState(false);
   return (
