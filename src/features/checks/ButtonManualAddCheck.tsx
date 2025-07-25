@@ -6,7 +6,7 @@ import { ManualInputForm } from './manual-input-form';
 export const ButtonManualAddCheck = () => {
   const renderManualInputModal = () => {
     useModalStore.getState().openModal({
-      title: 'Ручной ввод',
+      title: 'Немного терпения...',
       closable: true,
       content: <ManualInputForm />,
     });
