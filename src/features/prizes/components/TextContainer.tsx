@@ -7,9 +7,10 @@ import styled from 'styled-components';
 type TextProps = {
   title: string;
   description: string;
+  isOffline: boolean
 };
 
-const Title = styled(Text)`
+export const Title = styled(Text)`
   color: #1235ab;
   font-feature-settings:
     'liga' off,
@@ -23,13 +24,13 @@ const Title = styled(Text)`
   line-height: 130%; /* 22.1px */
 `;
 
-const TextContainer: React.FC<TextProps> = ({ title, description }) => {
+const TextContainer: React.FC<TextProps> = ({ title, description, isOffline }) => {
   return (
     <ContainerForText>
       <Flex gap={'5px'} align="center" justify="space-between">
         <Flex gap={'5px'} align="center">
-          <img src="/assets/images/online-promo.svg" alt="" />
-          <Title style={{ margin: 0 }}>{title}</Title>
+          <img src={isOffline? "/assets/images/offline-promo.svg":"/assets/images/online-promo.svg"} alt="" />
+          <Title style={{ margin: 0, color: '#1235AB' }}>{title}</Title>
         </Flex>
         <Flex gap={'5px'} align="center">
           <img style={{ height: '1.5rem' }} src="/assets/images/zewa-logo.png" alt="" />

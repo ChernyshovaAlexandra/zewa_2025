@@ -11,6 +11,9 @@ export interface Prize {
 export interface Coupon {
   points: number;
   name: string;
+  value: number;
+  code?: string;
+  barcode?: string;
 }
 
 export type DisplayCoupon = {

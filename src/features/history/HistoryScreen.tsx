@@ -17,7 +17,7 @@ interface HistoryCheck {
 }
 
 interface GameHistory {
-  game_id: number;
+  code: string;
   points_earned: number;
   coins_spent: number;
   day: string;
@@ -111,11 +111,11 @@ export function HistoryScreen() {
         {games.slice(0, visibleGames).map((item, id) => (
           <GameContainer
             key={id}
-            header={item.game_id !== 4 ? `Игра «Снова в школу»` : `Реферальная ссылка`}
+            header={item.code !== 'game4' ? `Игра «Снова в школу»` : `Друг присоединился к игре`}
             caption={item.day}
             status={item.status}
             coins_earned={item.coins_earned}
-            points_earned={item.game_id !== 4 ? item.points_earned : 0}
+            points_earned={item.code !== 'game4' ? item.points_earned : 0}
           />
         ))}
       </>

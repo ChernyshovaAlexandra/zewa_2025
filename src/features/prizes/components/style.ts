@@ -5,7 +5,7 @@ import { ButtonProps, ButtonStyles } from '@/components';
 
 export const StyledCard = styled(Card)`
   margin-top: 1rem;
-  padding:15px;
+  padding: 15px;
   border-radius: 14px;
   background: linear-gradient(180deg, #f4fcff 0%, #e3f7ff 100%);
   box-shadow: 0px -2px 3px 0px #b3c7e9 inset;
@@ -17,11 +17,12 @@ export const HeadingStyled = styled(Text)`
 
 export const Description = styled.p`
   font-family: 'Foco Trial';
-  font-size: .9rem;
+  font-size: 0.9rem;
   font-weight: 400;
-  line-height: 1.5;
+  line-height: 1.4;
   white-space: break-spaces;
   color: rgba(109, 120, 133, 1);
+  margin-top: 8px;
 `;
 
 export const Notification = styled(Description)`
@@ -199,7 +200,7 @@ export const BarcodeContainer = styled.div`
   place-items: center;
   overflow: hidden;
   width: 100%;
-
+  margin: 0 0 10px;
   @media screen and (min-width: 505px) {
     max-width: fit-content;
   }

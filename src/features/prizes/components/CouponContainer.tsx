@@ -20,28 +20,40 @@ interface PrizeContainerProps {
     name: string;
     code?: string;
     barcode?: string;
+    value: number;
   };
   activated?: boolean;
   showSnackbar?: (message: string) => void;
 }
 const CouponContainer: React.FC<PrizeContainerProps> = ({ coupon }) => {
-  const renderPromoContent = () => coupon.name;
-
   const [toggledContent, setToggled] = useState(false);
+
   return (
     <StyledCard mode="shadow">
       <MainCardContainer>
         <div>
           <Flex noWrap style={{ gap: '.7rem' }}>
             <TextContainer
-              title={renderPromoContent()}
-              description={applyNbsp(`Скидка на покупку продукции Zewa в сети магазинов «Магнит».
+              isOffline={coupon.barcode ? true : false}
+              title={`Cкидка -${coupon.value}%`}
+              description={coupon.barcode?
+                applyNbsp(`Скидка на покупку продукции Zewa в сети магазинов «Магнит».
                 
-  Покажите на кассе полученный штрих-код.`)}
+Покажите на кассе полученный штрих-код.`): 
+applyNbsp(`Промокод со скидкой на покупку продукции Zewa онлайн в сети магазинов «Магнит».
+
+Используйте промокод при заказе онлайн.`)}
             />
           </Flex>
-          <ZewaButton variant="blue-b">Поменять на онлайн</ZewaButton>
-          {coupon.barcode && <BarcodeComponent barcode={coupon.barcode} />}
+
+          {coupon.barcode ? (
+            <>
+              <BarcodeComponent barcode={coupon.barcode} />
+              <ZewaButton variant="blue-b">Поменять на онлайн</ZewaButton>
+            </>
+          ) : (
+            <></>
+          )}
           <br />
           <Flex justify="space-between">
             <Description style={{ marginBottom: 0 }}>Скидка действует до 24.09.2025</Description>

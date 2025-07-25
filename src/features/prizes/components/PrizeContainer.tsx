@@ -1,12 +1,15 @@
-import React from 'react';
-import { StyledCard, MainCardContainer } from './style';
+import React, { useCallback } from 'react';
+import { StyledCard, MainCardContainer, Description } from './style';
 
 import ImageContainer from './ImageContainer';
-import { Flex } from '@vkontakte/vkui';
-import BarcodeComponent from './BarcodeComponent';
-import NotificationContainer from './NotificationContainer';
-import TextContainer from './TextContainer';
+import { Flex } from 'antd';
+// import BarcodeComponent from './BarcodeComponent';
+// import NotificationContainer from './NotificationContainer';
 import { prize_types_data } from '../mocks';
+import { Text, ZewaButton } from '@/shared/ui';
+import { Title } from './TextContainer';
+import { applyNbsp } from '@/utils';
+import { useModalStore } from '@/shared/model';
 
 type PrizeProps = {
   name: string;
@@ -23,27 +26,52 @@ interface PrizeContainerProps {
   prize: PrizeProps;
 }
 
-const sertificateDate = '';
+// const sertificateDate = '';
 
 const PrizeContainer: React.FC<PrizeContainerProps> = ({ prize }) => {
   const img = prize_types_data[prize.name]?.img || '/images/prize-bg.png';
   const description = prize_types_data[prize.name]?.description || 'Краткое описание деталей';
-  const additional = prize_types_data[prize.name]?.manager
-    ? `В ближайшее время с вами свяжется менеджер и доставит приз. Проверьте настройки и разрешения для отправки сообщений.`
-    : `При покупке покажите на кассе этот штрих-код. Сертификат действителен до ${sertificateDate} включительно.`;
-  const hasBarcode = prize.code && prize.name.indexOf('Сертификат') !== -1;
+  const additional = prize_types_data[prize.name]?.manager;
+
+  const handleClick = useCallback(() => {
+    useModalStore.getState().openModal({
+      title: 'Как забрать?',
+      closable: true,
+      content: (
+        <>
+          <Text>{additional}</Text>
+        </>
+      ),
+    });
+  }, [additional]);
 
   return (
     <StyledCard mode="shadow">
       <MainCardContainer>
         <div>
-          <Flex noWrap style={{ gap: '.7rem' }}>
-            <ImageContainer img={img} />
-            <TextContainer title={prize.name} description={description} />
+          <Flex vertical gap={'5px'} style={{ gap: '.7rem' }}>
+            <Flex gap="5px">
+              <ImageContainer img={img} />
+              <div>
+                <Title style={{ margin: 0, color: '#1235AB' }}>{prize.name}</Title>
+                <Description>{applyNbsp(description)}</Description>
+                <ZewaButton
+                  style={{
+                    padding: '7px 13px',
+                    height: 'auto',
+                    lineHeight: '1.4',
+                    fontSize: '15px',
+                  }}
+                  variant="blue-s"
+                  onClick={handleClick}
+                >
+                  Как получить
+                </ZewaButton>
+              </div>
+            </Flex>
           </Flex>
-          <NotificationContainer text={additional} />
+          {/* <NotificationContainer text={additional} /> */}
         </div>
-        {hasBarcode ? <BarcodeComponent barcode={prize.code || ''} /> : <></>}
       </MainCardContainer>
     </StyledCard>
   );
