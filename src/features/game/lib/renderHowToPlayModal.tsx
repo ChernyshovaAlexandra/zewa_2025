@@ -35,7 +35,7 @@ export const renderHowToPlayModal = async (game_coins: number) => {
           {game_coins ? (
             <>
               <br />
-              {applyNbsp(`Вам доступны монеты за загрузку чека.`)}
+              {applyNbsp(`Вам доступны монеты за загрузку чека:`)}
               <Flex justify='center' gap={'5px'}>
                 <p>+{game_coins} </p>
                 <img width='22px' height="22px" src="./assets/images/items/coin3.png" alt="иконка монета" />

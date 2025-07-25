@@ -1,8 +1,8 @@
 export const options = [
   {
-    label: 'Промокоды',
+    label: 'Купоны',
     value: 'promocodes',
-    'aria-label': 'Промокоды',
+    'aria-label': 'Купоны',
   },
   {
     label: 'Призы',
