@@ -143,7 +143,28 @@ export function useReceiptScan() {
     const opened = telegramService.showScanQrPopup();
     if (!opened) {
       renderScanErrorModal('Не удалось открыть сканер. Попробуйте ввести чек вручную.');
+      return;
     }
+
+    const handleQr = (code: string) => {
+      cleanup();
+      sendReceipt(code);
+    };
+
+    const handleError = () => {
+      cleanup();
+      renderScanErrorModal('Ошибка при сканировании QR-кода. Попробуйте ещё раз или введите чек вручную.');
+    };
+
+    const cleanup = () => {
+      telegramService.offEvent('qrCodeReceived', handleQr);
+      telegramService.offEvent('scanQrPopupClosed', cleanup);
+      telegramService.offEvent('onScanError', handleError);
+    };
+
+    telegramService.onEvent('qrCodeReceived', handleQr);
+    telegramService.onEvent('onScanError', handleError);
+    telegramService.onEvent('scanQrPopupClosed', cleanup);
   };
 
   return {
