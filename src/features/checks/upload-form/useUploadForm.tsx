@@ -32,7 +32,7 @@ export function useUploadForm() {
       const isValid = await validateQRCode(file);
       if (!isValid) {
         openModal({
-          title: 'Чек не распознан',
+          title: 'Qr-код не распознан',
           closable: true,
           content: <ScanPromptModal onClose={() => hideModal()} />,
         });

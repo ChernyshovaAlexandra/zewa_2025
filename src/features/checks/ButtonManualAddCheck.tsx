@@ -12,7 +12,7 @@ export const ButtonManualAddCheck = () => {
     });
   };
   return (
-    <ZewaButton variant="blue-b" onClick={renderManualInputModal}>
+    <ZewaButton style={{width: '100%'}} variant="blue-b" onClick={renderManualInputModal}>
       <Flex align="center" gap="5px">
         <KeyboardIcon /> Ввести вручную
       </Flex>

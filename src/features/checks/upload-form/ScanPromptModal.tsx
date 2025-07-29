@@ -10,10 +10,10 @@ export default function ScanPromptModal({ onClose }: Props) {
   return (
     <Flex vertical gap="10px" align="center">
       <Text size="p4" align="center">
-        Фото не содержит правильного QR-кода. Попробуйте ввести данные вручную.
+       Не удалось распознать QR-код на загруженном изображении. Попробуйте ввести данные вручную.
       </Text>
       <ButtonManualAddCheck />
-      <ZewaButton onClick={onClose} variant="blue-b">
+      <ZewaButton style={{width: '100%'}} onClick={onClose} variant="blue-b">
         Отмена
       </ZewaButton>
     </Flex>
