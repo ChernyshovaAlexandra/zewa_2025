@@ -83,7 +83,7 @@ export function ScannerComponent() {
         disabled={pending || scanerNotAllowed}
       >
         <Flex align="center" gap="5px">
-          <ScanWhiteIcon /> Сканировать
+          <ScanWhiteIcon /> Сканировать {isMobile ? 'моб' : 'не моб'}
         </Flex>
       </ZewaButton>
       <ButtonUploadCheck />

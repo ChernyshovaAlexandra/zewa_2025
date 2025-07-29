@@ -18,31 +18,6 @@ export const ContentWithDomovenok = styled.div`
   }
 `;
 
-export const PaperUnrolled = styled.div<{ $width: string }>`
-  width: ${(props) => props.$width};
-  height: 100%;
-  position: relative;
-  left: -2rem;
-  transition: width 3s ease-in-out;
-
-  &::after {
-    content: '';
-    position: absolute;
-    left: 0%;
-    top: 0;
-    bottom: 0;
-    background:
-      url(/assets/images/paper-pattern.png) repeat-x,
-      linear-gradient(270deg, #cfd9eb 0%, #fff 5%, #fff 100%);
-    background-size: auto 100%;
-    display: block;
-    height: 100%;
-    width: 92%;
-    transition: none;
-    transform: skewX(40deg);
-  }
-`;
-
 export const PaperRoll = styled.div`
   width: 4.5rem;
   height: 5rem;
@@ -318,8 +293,8 @@ export const StyledCell = styled.div<{
     visibility: ${({ $isActivated }) => ($isActivated ? 'visible' : 'hidden')};
     height: 40px;
     bottom: -40px;
-    background: url(/assets/images/paper-pattern.jpg);
-    background-size: 200px;
+    background: url(/assets/images/paper-pattern.jpg) repeat-x;
+    background-size: 170px 50px;
     width: 120%;
     display: block;
     left: -45%;

@@ -54,7 +54,6 @@ export default function App() {
           <AppRoot mode="full" safeAreaInsets={insets} scroll="contain" userSelectMode="disabled">
             <div
               style={{
-                maxWidth: 360,
                 width: '100%',
                 margin: '0 auto',
                 height: '100vh',

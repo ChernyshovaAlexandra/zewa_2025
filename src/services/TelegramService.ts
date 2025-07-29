@@ -85,7 +85,6 @@ export class TelegramService {
   }
 
   showScanQrPopup(text = 'Наведите камеру на QR-код'): boolean {
-
     if (!this.tg?.showScanQrPopup) {
       console.warn('showScanQrPopup недоступен');
       return false;
@@ -113,7 +112,7 @@ export class TelegramService {
   openTelegramLink(url: string) {
     try {
       this.tg?.openTelegramLink?.(url);
-    } catch (err) {
+    } catch {
       try {
         this.tg?.openLink?.(url);
       } catch (err2) {

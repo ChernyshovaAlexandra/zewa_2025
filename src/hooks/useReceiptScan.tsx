@@ -139,10 +139,15 @@ export function useReceiptScan() {
     [handleApiResponse, renderScanErrorModal, user?.id],
   );
 
+  const openTelegramScanner = () => {
+    const opened = telegramService.showScanQrPopup();
+    if (!opened) {
+      renderScanErrorModal('Не удалось открыть сканер. Попробуйте ввести чек вручную.');
+    }
+  };
+
   return {
-    openTelegramScanner: () => {
-      /* … */
-    },
+    openTelegramScanner,
     handlePhotoUpload,
     onQrScanned: sendReceipt,
     pending,

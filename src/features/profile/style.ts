@@ -91,7 +91,7 @@ export const FlexBetweenStyled = styled(FlexBetweenDiv)<{ platform: string }>`
 
 export const FlexColumnDiv = styled(Div)`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   position: relative;
   align-items: center;
   gap: 1rem;
@@ -116,9 +116,8 @@ export const FlexColumnDiv = styled(Div)`
       display: none;
     }
   }
+
   @media screen and (min-width: 405px) {
-    flex-direction: column;
-    gap: 0.5rem;
 
     > button {
       > img {
@@ -196,7 +195,6 @@ export const StyledCentredImage = styled(CenteredImage)`
   max-width: 300px;
 
   @media screen and (min-width: 560px) {
-    max-width: 360px;
     margin-top: -4.5rem;
     margin-left: 6rem;
   }
@@ -208,6 +206,7 @@ export const GroupStyled = styled.div`
   max-width: calc(100% - 20px);
   z-index: 100;
   margin: 0 auto;
+  width: 100%;
 `;
 
 export const ModalStyledText = styled.p`
