@@ -49,7 +49,7 @@ export function RulesScreen() {
             size="p4"
             dangerouslySetInnerHTML={{ __html: applyNbsp(faqText) }}
           />
-          <Linked>Задать вопрос</Linked>
+          <Linked href="https://t.me/zemma_zewa_support">Задать вопрос</Linked>
         </>
       )}
     </PageContainer>
