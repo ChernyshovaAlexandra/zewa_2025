@@ -16,7 +16,7 @@ export const renderGameOverModal = (score: number, navigate: ReturnType<typeof u
       <Flex vertical gap="20px">
         <Text size="p4" align="center" color="#596471">
           {applyNbsp(`Все жизни закончились. Свой результат можно увидеть в Турнирной таблице. 
-        Чтобы заработать монеты в игре, загрузите чек из магазина с продукцией Zewa.`)}
+        Чтобы заработать больше монет в игре, загрузите чек из «Магнита» с продукцией Zewa.`)}
         </Text>
         <Flex vertical gap="10px">
           <ZewaButton

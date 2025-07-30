@@ -34,9 +34,6 @@ export function RulesScreen() {
             size="p4"
             dangerouslySetInnerHTML={{ __html: applyNbsp(rulesText) }}
           />
-          <ButtonWrapper>
-            <ZewaButton variant="white">Понятно</ZewaButton>
-          </ButtonWrapper>
         </>
       ) : (
         <Text
