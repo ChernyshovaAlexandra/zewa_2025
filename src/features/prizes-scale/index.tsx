@@ -34,7 +34,7 @@ const PrizesScale: React.FC = () => {
   return (
     <>
       <DrawerWrapper $isOpen={isDrawerOpen} onClick={toggleDrawer}>
-        <Text align="center" size="p1" weight={900} color="#1235AB">
+        <Text style={{marginTop:'10px'}} align="center" size="p1" weight={900} color="#1235AB">
           Шкала призов
         </Text>
 

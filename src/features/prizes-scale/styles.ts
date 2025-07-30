@@ -89,7 +89,12 @@ export const DrawerWrapper = styled.div<{ $isOpen: boolean }>`
     )`
       : `#f4fcff`};
   border-radius: 20px 20px 0 0;
-  padding: 10px;
+  z-index: 200;
+
+  @media screen and (max-height: 570px) {
+    bottom: ${({ $isOpen }) => ($isOpen ? '1.9rem' : '0')};
+    height: ${({ $isOpen }) => ($isOpen ? '40%' : `5rem`)};
+  }
 `;
 
 export const DrawerHeader = styled.div`
@@ -102,7 +107,6 @@ export const DrawerHeader = styled.div`
 
 export const DrawerContent = styled.div<{ $isOpen: boolean }>`
   min-height: 14rem;
-  /* background-color: #a4aac420; */
 `;
 
 export const ArrowIcon = styled.div<{ $isOpen: boolean }>`
@@ -246,13 +250,16 @@ export const ButtonComponentStyled = styled.div`
 export const ScrollContainer = styled(HorizontalScroll)`
   width: 100%;
   position: relative;
-  bottom: 0rem;
+  /* bottom: -2.5rem; */
   z-index: 100;
 
   > div > div > div {
     &:first-child {
       display: flex;
     }
+  }
+  @media screen and (max-height: 567px) {
+    bottom: -0.5rem;
   }
 `;
 

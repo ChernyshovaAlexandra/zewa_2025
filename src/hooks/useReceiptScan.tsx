@@ -139,32 +139,17 @@ export function useReceiptScan() {
     [handleApiResponse, renderScanErrorModal, user?.id],
   );
 
-  const openTelegramScanner = () => {
-    const opened = telegramService.showScanQrPopup();
-    if (!opened) {
-      renderScanErrorModal('Не удалось открыть сканер. Попробуйте ввести чек вручную.');
-      return;
+  const openTelegramScanner = async () => {
+    try {
+      const raw: { data: string } = await telegramService.showScanQrPopup();
+      sendReceipt(raw.data);
+    } catch (e: any) {
+      renderScanErrorModal(
+        e.message === 'popup-closed'
+          ? 'Сканирование отменено.'
+          : 'Ошибка при сканировании QR-кода.',
+      );
     }
-
-    const handleQr = (code: string) => {
-      cleanup();
-      sendReceipt(code);
-    };
-
-    const handleError = () => {
-      cleanup();
-      renderScanErrorModal('Ошибка при сканировании QR-кода. Попробуйте ещё раз или введите чек вручную.');
-    };
-
-    const cleanup = () => {
-      telegramService.offEvent('qrCodeReceived', handleQr);
-      telegramService.offEvent('scanQrPopupClosed', cleanup);
-      telegramService.offEvent('onScanError', handleError);
-    };
-
-    telegramService.onEvent('qrCodeReceived', handleQr);
-    telegramService.onEvent('onScanError', handleError);
-    telegramService.onEvent('scanQrPopupClosed', cleanup);
   };
 
   return {

@@ -126,6 +126,10 @@ export class ApiService {
     return this.axios.post<AddCheckResponse>('/add-check', form, config);
   }
 
+  getWinners(data: Omit<HistoryRequest, 'hash'>) {
+    return this.axios.post('/standings', this.withHash(data));
+  }
+
   addCheckImageManual(data: {
     telegram_id: number;
     img: string;

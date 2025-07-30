@@ -15,9 +15,13 @@ export const Image = styled.img`
   background-color: #fff;
   aspect-ratio: 370 / 430;
   object-fit: cover;
-  object-position: center;
+  object-position: bottom;
   border-radius: 20px;
   margin-bottom: 15px;
+
+  @media screen and (max-height: 580px) {
+    max-height: 45vh;
+  }
 `;
 
 export const Text = styled.p`

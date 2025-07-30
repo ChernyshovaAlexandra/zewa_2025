@@ -43,7 +43,6 @@ const fileToCanvas = (file: File): Promise<HTMLCanvasElement> => {
 
 const worker = new Worker(workerUrl);
 
-/** Проверка QR-кода по regex */
 export async function validateQRCode(file: File): Promise<boolean> {
   console.log('[QR] validateQRCode: start', file);
   try {

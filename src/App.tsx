@@ -49,6 +49,7 @@ export default function App() {
         isWebView={true}
         hasCustomPanelHeaderAfter={true}
         customPanelHeaderAfterMinWidth={50}
+        colorScheme="light"
       >
         <AdaptivityProvider>
           <AppRoot mode="full" safeAreaInsets={insets} scroll="contain" userSelectMode="disabled">

@@ -26,9 +26,9 @@ export const ModalCardInner = styled.div`
 export const ModalCard = styled.div`
   border-radius: 16px;
   display: flex;
-  width: 90%;
+  width: 500px;
   height: fit-content;
-  max-width: 340px;
+  max-width: 95%;
   text-align: center;
   border: 6px solid #1235ab;
   background: #c5dfe9;
@@ -71,7 +71,6 @@ export const CloseBtn = styled.button`
   z-index: 20;
   display: grid;
   place-items: center;
-  
 
   &::before {
     content: '';

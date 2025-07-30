@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export interface TelegramUser {
   id: number;
   first_name: string;
@@ -19,8 +20,10 @@ export interface TelegramWebApp {
   expand: () => void;
   disableVerticalSwipes?: () => void;
   ready: () => void;
+  closeScanQrPopup: () => void;
   sendData: (data: string) => void;
-  onEvent: (eventType: string, callback: (...args: unknown[]) => void) => void;
+  onEvent: (eventType: string, callback: (...args: any) => void) => void;
+  offEvent: (eventType: string, callback: (...args: any) => void) => void;
   showScanQrPopup?: (params: { text?: string }) => void;
   allowVerticalSwipe?: boolean;
   // openTelegramLink is available in Telegram Web App but missing in types
@@ -28,10 +31,15 @@ export interface TelegramWebApp {
   openLink?: (url: string) => void;
 }
 
+type Events = { qrText: string };
+
 export class TelegramService {
   private tg?: TelegramWebApp;
   private isScanPopupOpen = false;
-
+  private listeners = new Map<keyof Events, Set<(p: any) => void>>();
+  private emit<K extends keyof Events>(name: K, payload: Events[K]) {
+    this.listeners.get(name)?.forEach((h) => h(payload));
+  }
   init() {
     this.tg = window?.Telegram?.WebApp;
     this.tg?.ready();
@@ -55,12 +63,11 @@ export class TelegramService {
     this.tg?.sendData(data);
   }
 
-  onEvent(eventType: string, callback: (...args: unknown[]) => void) {
+  onEvent(eventType: string, callback: (...args: any) => void) {
     this.tg?.onEvent(eventType, callback);
   }
 
-  offEvent(eventType: string, callback: (...args: unknown[]) => void) {
-    // @ts-expect-error – offEvent есть в TelegramMiniApp, но не в типах
+  offEvent(eventType: string, callback: (...args: any) => void) {
     this.tg?.offEvent?.(eventType, callback);
   }
 
@@ -83,30 +90,43 @@ export class TelegramService {
       console.error('Failed to disable vertical swipes:', err);
     }
   }
+  closeScanQrPopup() {}
 
-  showScanQrPopup(text = 'Наведите камеру на QR-код'): boolean {
-    if (!this.tg?.showScanQrPopup) {
-      console.warn('showScanQrPopup недоступен');
-      return false;
-    }
+  showScanQrPopup(text = 'Наведите камеру на QR-код'): Promise<{ data: string }> {
+    const tg = this.tg; // 🔒 сузили тип
+    if (!tg || !tg.showScanQrPopup || this.isScanPopupOpen)
+      return Promise.reject(new Error('scanner-busy'));
 
-    if (this.isScanPopupOpen) {
-      return false;
-    }
+    return new Promise((resolve, reject) => {
+      const cleanup = () => {
+        this.isScanPopupOpen = false;
+        tg.offEvent('qrTextReceived', onQr);
+        tg.offEvent('scanQrPopupClosed', onClose);
+      };
 
-    try {
-      this.tg.showScanQrPopup({ text });
-      this.isScanPopupOpen = true;
-      // сбрасываем флаг после закрытия
-      this.tg.onEvent?.('scanQrPopupClosed', () => (this.isScanPopupOpen = false));
-      this.tg.onEvent?.('qrCodeReceived', () => (this.isScanPopupOpen = false));
-      this.tg.onEvent?.('onScanError', () => (this.isScanPopupOpen = false));
-      return true;
-    } catch (err) {
-      // сюда попадёт WebAppScanQrPopupOpened и любые другие ошибки
-      console.error('Failed to open QR popup:', err);
-      return false;
-    }
+      const onQr = (raw: { data: string }) => {
+        // ← строка!
+        tg.closeScanQrPopup(); // закрываем нативное окно
+        cleanup();
+        resolve(raw);
+      };
+
+      const onClose = () => {
+        cleanup();
+        reject(new Error('popup-closed'));
+      };
+
+      tg.onEvent('qrTextReceived', onQr); // подписка ДО вызова
+      tg.onEvent('scanQrPopupClosed', onClose);
+
+      try {
+        this.isScanPopupOpen = true;
+        tg.showScanQrPopup?.({ text });
+      } catch (err) {
+        cleanup();
+        reject(err);
+      }
+    });
   }
 
   openTelegramLink(url: string) {
