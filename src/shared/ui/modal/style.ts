@@ -9,7 +9,7 @@ export const Overlay = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 100;
+  z-index: 9999999;
 `;
 
 export const ModalCardInner = styled.div`
@@ -34,6 +34,7 @@ export const ModalCard = styled.div`
   background: #c5dfe9;
   filter: drop-shadow(0px 4px 0px #00098f);
   position: relative;
+  
 `;
 
 export const ModalTitle = styled(Heading)`

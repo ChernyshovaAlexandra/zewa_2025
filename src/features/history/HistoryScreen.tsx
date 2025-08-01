@@ -74,6 +74,7 @@ export function HistoryScreen() {
 
   const renderChecks = () => {
     const data = checks?.length ? checks : [];
+    console.info(data);
     if (!data.length) {
       return (
         <Text weight={700} color="white" align="center">
@@ -105,7 +106,6 @@ export function HistoryScreen() {
         </Text>
       );
     }
-    console.info(games);
     return (
       <>
         {games.slice(0, visibleGames).map((item, id) => (

@@ -70,6 +70,8 @@ const CheckContainer: React.FC<CheckProps> = ({
               loading="lazy"
             />
           </StyledCoins>
+        ) : status.indexOf('Откло') !== -1 ? (
+          <Total>Отклонён</Total>
         ) : (
           <Total>{status}</Total>
         )}

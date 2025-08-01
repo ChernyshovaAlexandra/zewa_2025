@@ -11,12 +11,13 @@ import { useEffect, useRef } from 'react';
 import { BackpackAnimator } from './BackpackAnimator';
 import { CoinAnimationsLayer } from './CoinAnimationsLayer';
 import * as PIXI from 'pixi.js';
+import { useNavigate } from 'react-router-dom';
 
 export const GameCanvas = () => {
   const { ref, width, height } = useContainerSize();
   const bottomY = height - BACKPACK_HEIGHT / 2 - 20;
   const x = useGameModelStore((s) => s.x);
-
+  const navigate = useNavigate();
   const dragData = useRef<{
     dragging: boolean;
     lastX: number;
@@ -73,7 +74,7 @@ export const GameCanvas = () => {
             <Background width={width} height={height} />
             <BackpackBack x={centerX} y={bottomY} width={BACKPACK_WIDTH} height={BACKPACK_HEIGHT} />
             <BackpackAnimator />
-            <GameTickerWrapper width={width} height={height} />
+            <GameTickerWrapper width={width} height={height} navigate={navigate} />
             <FallingItems />
             <CoinAnimationsLayer />
             <BackpackFront
