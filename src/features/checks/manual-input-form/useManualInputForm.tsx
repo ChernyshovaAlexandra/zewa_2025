@@ -1,6 +1,7 @@
 import { FormEvent, useState } from 'react';
 import { Text, Spinner } from '@vkontakte/vkui';
 import { useModalStore } from '@/shared/model/modalStore';
+import { showModal } from '../lib/showModal';
 import { apiService, telegramService } from '@/services';
 import {
   ManualInputFormState,
@@ -83,22 +84,18 @@ export function useManualInputForm() {
         date: formattedDate,
       });
 
-      openModal({
-        title: 'Проверка чека',
-        closable: true,
-        content: (
-          <Text>
-            {resp.data.message ??
-              'После проверки мы зарегистрируем чек, начислим вам монеты и пришлем уведомление об этом.'}
-          </Text>
-        ),
-      });
+      showModal(
+        'Проверка чека',
+        resp.data.message ??
+          'После проверки мы зарегистрируем чек, начислим вам монеты и пришлём уведомление об этом.',
+        true,
+      );
     } catch {
-      openModal({
-        title: 'Ошибка',
-        closable: true,
-        content: <Text>Сеть недоступна или сервер не отвечает</Text>,
-      });
+      showModal(
+        'Упс!',
+        'что-то пошло не так. Попробуй повторить позже',
+        true,
+      );
     } finally {
       setPending(false);
     }
