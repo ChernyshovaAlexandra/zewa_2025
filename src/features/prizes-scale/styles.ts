@@ -90,10 +90,41 @@ export const DrawerWrapper = styled.div<{ $isOpen: boolean }>`
       : `#f4fcff`};
   border-radius: 20px 20px 0 0;
   z-index: 200;
-
+  > p {
+    position: relative;
+  }
   @media screen and (max-height: 570px) {
     bottom: ${({ $isOpen }) => ($isOpen ? '1.9rem' : '0')};
     height: ${({ $isOpen }) => ($isOpen ? '40%' : `5rem`)};
+  }
+
+  &:after {
+    content: '';
+    position: absolute;
+    display: block;
+    background: url('/assets/images/arr-down.svg') no-repeat center;
+    background-size: contain;
+    top: -1rem;
+    left: 0;
+    right: 0;
+    margin: auto;
+    transform: ${({ $isOpen }) => ($isOpen ? `rotate(-90deg)` : `rotate(90deg)`)};
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+  &:before {
+    content: '';
+    position: absolute;
+    display: block;
+    width: 6rem;
+    height: 10rem;
+    background: #f4fcff;
+    top: -1.3rem;
+    left: 0;
+    right: 0;
+    margin: auto;
+    border-radius: 100%;
+    z-index: 0;
   }
 `;
 
