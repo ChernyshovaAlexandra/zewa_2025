@@ -1,11 +1,11 @@
-export const rulesText = `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+export const rulesText = `Ловите полезные предметы (школьные принадлежности и товары Zewa) и избегайте лишних. Каждый пойманный предмет добавляет 1 балл.
 
-Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+Пропустили нужную вещь или поймали ненужную — теряете одну жизнь. Всего у вас 3 жизни в каждой игре.
 
-1. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-2. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-3. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-4. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+Иногда падают золотые монеты: поймали — монета зачисляется на ваш счёт. Монеты позволяют двигаться по шкале призов и участвовать в розыгрышах подарков.
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-`;
+Играть можно сколько угодно раз, даже без покупок Zewa.
+
+Каждую неделю приз получает тот, кто в одной игре набрал больше всех баллов.
+
+Следите за результатами в Турнирной таблице.`;
