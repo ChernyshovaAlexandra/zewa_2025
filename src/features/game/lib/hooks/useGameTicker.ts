@@ -24,11 +24,18 @@ export const useGameTicker = (canvasWidth: number, canvasHeight: number) => {
 
   useEffect(() => {
     const handleVisibility = () => {
-      if (document.hidden) pauseGame();
-      else resumeGame();
+      if (document.hidden) {
+        pauseGame();
+      } else if (!useGameModelStore.getState().isPaused) {
+        resumeGame();
+      }
     };
     const handleBlur = () => pauseGame();
-    const handleFocus = () => resumeGame();
+    const handleFocus = () => {
+      if (!useGameModelStore.getState().isPaused) {
+        resumeGame();
+      }
+    };
 
     document.addEventListener('visibilitychange', handleVisibility);
     window.addEventListener('blur', handleBlur);
