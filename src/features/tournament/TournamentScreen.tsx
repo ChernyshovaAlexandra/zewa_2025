@@ -1,6 +1,6 @@
 import { Fragment, useState } from 'react';
 import { PageContainer, Text } from '@/shared/ui';
-import { applyNbsp, maskName } from '@/utils';
+import { applyNbsp, smartMaskName } from '@/utils';
 import { useStandings } from './useStandings';
 
 import * as S from './TournamentScreen.styles';
@@ -33,12 +33,21 @@ export function TournamentScreen() {
       </PageContainer>
     );
   }
-  const topPlayers = data.topPlayers
+  const winners = Object.values(data.draw_winners)[0] ?? [];
+  const mappedPlayers = data.topPlayers
     .slice()
     .sort((a, b) => b.points - a.points)
     .map((p, idx) => ({ place: idx + 1, ...p }));
 
-  const winners = Object.values(data.draw_winners)[0] ?? [];
+  const topTen = mappedPlayers.slice(0, 10);
+
+  const currentPlayer = mappedPlayers.find((p) => p.name === user?.username);
+
+  const displayPlayers = currentPlayer
+    ? topTen.some((p) => p.name === user?.username)
+      ? topTen
+      : [...topTen, currentPlayer]
+    : topTen;
 
   return (
     <PageContainer fullscreen scrollable title="Турнирная таблица" onBack={() => navigate('/')}>
@@ -74,8 +83,14 @@ export function TournamentScreen() {
               </tr>
             </thead>
             <tbody>
-              {topPlayers.map((p) => (
-                <tr key={p.place}>
+              {displayPlayers.map((p, idx) => (
+                <tr
+                  style={{
+                    borderRadius: '10px',
+                    background: idx === 0 ? 'rgba(255, 255, 255, 0.30)' : '',
+                  }}
+                  key={p.place}
+                >
                   <td>
                     <Flex gap="5px" align="center">
                       {p.place}{' '}
@@ -129,7 +144,7 @@ export function TournamentScreen() {
                       )}
                     </Flex>
                   </td>
-                  <td>{maskName(p.name)}</td>
+                  <td>{smartMaskName(p.name)}</td>
                   <td>{p.points}</td>
                 </tr>
               ))}
@@ -149,7 +164,7 @@ export function TournamentScreen() {
               <S.PrizeItem key={i}>
                 <div>
                   <Text color="#1235AB" weight={900}>
-                    {maskName(w.name)}
+                    {smartMaskName(w.name)}
                   </Text>
                   <Text size="p4" color="#596471">
                     {w.prize}

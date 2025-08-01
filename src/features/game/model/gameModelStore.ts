@@ -29,6 +29,8 @@ interface GameModelState {
   isGameOver: boolean;
   isPaused: boolean;
   wasNavigatedToRules: boolean;
+  setX: (x: number) => void;
+  dragging: boolean;
   setGameOver: (v: boolean) => void;
   setWasNavigatedToRules: (v: boolean) => void;
   startGame: () => void;
@@ -64,6 +66,8 @@ interface GameModelState {
   tick: () => void;
   resetBackpack: () => void;
   resetGame: () => void;
+  setDragging: (v: boolean) => void;
+  setTargetX: (valueOrUpdater: number | ((prev: number) => number)) => void;
 }
 export const game_id = 'back_to_school';
 
@@ -73,12 +77,28 @@ export const useGameModelStore = create<GameModelState>((set, get) => ({
   coins: 0,
   coins_available: 0,
   lives: 3,
+  dragging: false,
   isGameOver: false,
   isPaused: false,
   wasNavigatedToRules: false,
   flashCount: 0,
   flashOverlay: false,
+  setX: (newX: number) => set({ x: newX }),
+  setTargetX: (valueOrUpdater: number | ((prev: number) => number)) =>
+    set((state) => {
+      const prev = state.targetX;
+      const raw =
+        typeof valueOrUpdater === 'function'
+          ? (valueOrUpdater as (prev: number) => number)(prev)
+          : (valueOrUpdater as number);
 
+      const half = BACKPACK_WIDTH / 2;
+      const min = -state.canvasWidth / 2 + half;
+      const max = state.canvasWidth / 2 - half;
+      const targetX = Math.max(min, Math.min(raw, max));
+
+      return { targetX };
+    }),
   setGameOver: (v) => set({ isGameOver: v }),
   setWasNavigatedToRules: (v) => set({ wasNavigatedToRules: v }),
   startGame: () => set({ isGameStarted: true }),
@@ -162,8 +182,7 @@ export const useGameModelStore = create<GameModelState>((set, get) => ({
       return { items: updated };
     });
   },
-
-  // backpack slice state
+  setDragging: (v: boolean) => set({ dragging: v }),
   x: 0,
   targetX: 0,
   canvasWidth: 0,
@@ -183,9 +202,10 @@ export const useGameModelStore = create<GameModelState>((set, get) => ({
     set({ targetX: Math.min(next, canvasWidth / 2 - half + margin) });
   },
   tick: () => {
-    const { x, targetX } = get();
+    const { x, targetX, dragging } = get();
     const dx = targetX - x;
-    const speed = 6;
+    const speed = dragging ? 1 : 6;
+
     if (Math.abs(dx) < 1) {
       set({ x: targetX });
     } else {
@@ -239,5 +259,3 @@ export const useGameModelStore = create<GameModelState>((set, get) => ({
       return { _flashTimer: timer };
     }),
 }));
-
-

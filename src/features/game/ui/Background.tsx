@@ -5,7 +5,7 @@ export const Background = ({ width, height }: { width: number; height: number })
   return (
     <>
       <GlowingCoin x={50} y={50} />
-      <Sprite image={'./assets/images/game-bg.jpg'} x={0} y={0} width={width} height={height} />
+      <Sprite image={'./assets/images/game-bg.webp'} x={0} y={0} width={width} height={height} />
     </>
   );
 };
