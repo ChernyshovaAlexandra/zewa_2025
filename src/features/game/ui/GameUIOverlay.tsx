@@ -69,7 +69,6 @@ export const GameUIOverlay = () => {
 const Wrapper = styled.div`
   position: absolute;
   inset: 0;
-  /* pointer-events: none; */
 `;
 
 const TopRow = styled.div`

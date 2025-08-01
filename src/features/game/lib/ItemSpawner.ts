@@ -1,16 +1,20 @@
 import { ITEM_CATALOG, type ItemKind } from '@/features/game/constants/items';
 import type { Item } from '@/features/game/model/gameModelStore';
 
+export const BASE_SPEED = 0.003
 export class ItemSpawner {
   private canvasWidth: number;
+  private canvasHeight: number;
   private existingItems: { x: number; y: number; radius: number }[];
   private spawnCounts: Record<ItemKind, number>;
 
   constructor(
+    canvasHeight: number,
     canvasWidth: number,
     existingItems: { x: number; y: number; radius: number }[],
     spawnCounts: Record<ItemKind, number>,
   ) {
+    this.canvasHeight = canvasHeight;
     this.canvasWidth = canvasWidth;
     this.existingItems = existingItems;
     this.spawnCounts = spawnCounts;
@@ -19,8 +23,6 @@ export class ItemSpawner {
   private buildWeightedPool(): ItemKind[] {
     return (Object.keys(ITEM_CATALOG) as ItemKind[]).flatMap((kind) => {
       const meta = ITEM_CATALOG[kind];
-      const count = this.spawnCounts[kind] || 0;
-      if (meta.spawnLimit && count >= meta.spawnLimit) return [];
       const weight = meta.spawnWeight ?? 1;
       return Array(Math.floor(weight * 10)).fill(kind);
     });
@@ -45,29 +47,30 @@ export class ItemSpawner {
 
     for (let attempt = 0; attempt < 10; attempt++) {
       const x = minX + Math.random() * (maxX - minX);
-      const y = -radius;
 
-      const overlaps = this.existingItems.some((o) => {
-        const dx = o.x - x;
-        const dy = o.y - y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        return dist < o.radius + radius + 10;
-      });
+      const y = -150;
 
-      if (!overlaps) {
-        return {
+      // const overlaps = this.existingItems.some((o) => {
+      //   const dx = o.x - x;
+      //   const dy = o.y - y;
+      //   const dist = Math.sqrt(dx * dx + dy * dy);
+      //   return dist < o.radius + radius + 10;
+      // });
+
+      // if (!overlaps) {
+      return {
+        kind,
+        item: {
+          id: `${Date.now()}-${Math.random()}`,
           kind,
-          item: {
-            id: `${Date.now()}-${Math.random()}`,
-            kind,
-            x,
-            y,
-            radius,
-            speed: 3,
-            attachedOffsetX: null,
-          },
-        };
-      }
+          x,
+          y,
+          radius,
+          speed: BASE_SPEED * this.canvasHeight,
+          attachedOffsetX: null,
+        },
+      };
+      // }
     }
 
     return null;

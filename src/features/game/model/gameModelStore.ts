@@ -51,7 +51,7 @@ interface GameModelState {
   items: Item[];
   spawnCounts: Record<ItemKind, number>;
   spawnedCoinsCount: number;
-  addItem: (canvasWidth: number) => void;
+  addItem: (canvasWidth: number, canvasHeight: number) => void;
   spawnCoin: (canvasWidth: number) => void;
   moveItems: (canvasHeight: number) => void;
   markAsCaught: (id: string) => void;
@@ -123,10 +123,10 @@ export const useGameModelStore = create<GameModelState>((set, get) => ({
       flashOverlay: false,
       flashCount: 0,
     }),
-  addItem: (canvasWidth) => {
+  addItem: (canvasWidth, canvasHeight) => {
     const others = get().items.map(({ x, y, radius }) => ({ x, y, radius }));
     const spawnCounts = get().spawnCounts;
-    const spawner = new ItemSpawner(canvasWidth, others, spawnCounts);
+    const spawner = new ItemSpawner(canvasHeight, canvasWidth, others, spawnCounts);
     const result = spawner.spawnItem();
     if (!result) return;
     const { item, kind } = result;

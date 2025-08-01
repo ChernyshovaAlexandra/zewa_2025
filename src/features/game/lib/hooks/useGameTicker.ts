@@ -14,7 +14,10 @@ export const useGameTicker = (canvasWidth: number, canvasHeight: number) => {
   const resumeGame = useGameModelStore((s) => s.resumeGame);
 
   const timer = useRef(0);
-  const ADD_INTERVAL = 1600;
+  const BASE_HEIGHT = 667;
+  const MAX_HEIGHT = 780;
+
+  const ADD_INTERVAL = canvasHeight >= BASE_HEIGHT && canvasHeight < MAX_HEIGHT ? 2800 : 1800;
 
   useEffect(() => {
     if (!isGameStarted) {
@@ -59,10 +62,10 @@ export const useGameTicker = (canvasWidth: number, canvasHeight: number) => {
         if (spawnChance) {
           spawnCoin(canvasWidth);
         } else {
-          addItem(canvasWidth);
+          addItem(canvasWidth, canvasHeight);
         }
       } else {
-        addItem(canvasWidth);
+        addItem(canvasWidth, canvasHeight);
       }
       timer.current = 0;
     }
