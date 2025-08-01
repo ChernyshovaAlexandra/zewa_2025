@@ -58,7 +58,7 @@ describe('game restart flow', () => {
   });
 
   it('spawns items and applies logic after reset', () => {
-    renderHook(() => useGameTicker(100, 200));
+    renderHook(() => useGameTicker(100, 200, () => {}));
     for (let i = 0; i < ADD_STEPS; i++) {
       tickCallback(1);
     }
