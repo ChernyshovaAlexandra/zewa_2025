@@ -56,4 +56,16 @@ describe('useGameTicker', () => {
     document.dispatchEvent(new Event('visibilitychange'));
     expect(resumeGame).toHaveBeenCalled();
   });
+
+  it('does not resume when already paused', () => {
+    useGameModelStore.setState({ isPaused: true });
+    renderHook(() => useGameTicker(100, 200));
+
+    Object.defineProperty(document, 'hidden', { configurable: true, value: false });
+    document.dispatchEvent(new Event('visibilitychange'));
+    expect(resumeGame).not.toHaveBeenCalled();
+
+    window.dispatchEvent(new Event('focus'));
+    expect(resumeGame).not.toHaveBeenCalled();
+  });
 });
