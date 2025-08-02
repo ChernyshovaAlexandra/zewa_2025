@@ -25,14 +25,6 @@ export const useGameTicker = (canvasWidth: number, canvasHeight: number, navigat
   const ADD_INTERVAL = canvasHeight >= BASE_HEIGHT && canvasHeight < MAX_HEIGHT ? 2800 : 1800;
 
   useEffect(() => {
-    // сбрасываем таймеры при старте / рестарте игры
-    if (!isGameStarted) {
-      accSpawnMs.current = 0;
-      lastFrame.current = performance.now();
-    }
-  }, [isGameStarted]);
-
-  useEffect(() => {
     const handleVisibility = () => {
       if (document.hidden) {
         renderPauseModal(navigate);
