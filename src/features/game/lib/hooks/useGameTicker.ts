@@ -58,11 +58,18 @@ export const useGameTicker = (canvasWidth: number, canvasHeight: number, navigat
     };
   }, [navigate, pauseGame, resumeGame]);
 
+  useEffect(() => {
+    if (isGameStarted) {
+      accSpawnMs.current = 0;
+      lastFrame.current = performance.now();
+    }
+  }, [isGameStarted]);
+
   useTick(() => {
     if (!isGameStarted || isPaused) return;
 
     const now = performance.now();
-    const dtMs = now - lastFrame.current;
+    const dtMs = Math.min(now - lastFrame.current, ADD_INTERVAL);
     lastFrame.current = now;
 
     moveItems(canvasHeight, dtMs);
