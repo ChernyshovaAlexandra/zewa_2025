@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 import { useTick } from '@pixi/react';
 import { useRef, useEffect } from 'react';
 import { useGameModelStore } from '@/features/game/model/gameModelStore';
@@ -15,15 +16,19 @@ export const useGameTicker = (canvasWidth: number, canvasHeight: number, navigat
   const pauseGame = useGameModelStore((s) => s.pauseGame);
   const resumeGame = useGameModelStore((s) => s.resumeGame);
 
-  const timer = useRef(0);
+  const lastFrame = useRef(performance.now());
+  const accSpawnMs = useRef(0);
+
   const BASE_HEIGHT = 667;
   const MAX_HEIGHT = 780;
 
   const ADD_INTERVAL = canvasHeight >= BASE_HEIGHT && canvasHeight < MAX_HEIGHT ? 2800 : 1800;
-  console.info(isGameStarted);
+
   useEffect(() => {
+    // сбрасываем таймеры при старте / рестарте игры
     if (!isGameStarted) {
-      timer.current = 0;
+      accSpawnMs.current = 0;
+      lastFrame.current = performance.now();
     }
   }, [isGameStarted]);
 
@@ -39,6 +44,7 @@ export const useGameTicker = (canvasWidth: number, canvasHeight: number, navigat
     const handleFocus = () => {
       if (!useGameModelStore.getState().isPaused) {
         resumeGame();
+        lastFrame.current = performance.now();
       }
     };
 
@@ -52,25 +58,21 @@ export const useGameTicker = (canvasWidth: number, canvasHeight: number, navigat
     };
   }, [navigate, pauseGame, resumeGame]);
 
-  useTick((delta: number) => {
+  useTick(() => {
     if (!isGameStarted || isPaused) return;
 
-    moveItems(canvasHeight);
-    timer.current += delta * (1000 / 60);
+    const now = performance.now();
+    const dtMs = now - lastFrame.current;
+    lastFrame.current = now;
 
-    if (timer.current >= ADD_INTERVAL) {
-      if (coins < coins_available) {
-        const spawnChance = Math.random() < 0.2;
-        if (spawnChance) {
-          spawnCoin(canvasWidth);
-        } else {
-          addItem(canvasWidth, canvasHeight);
-        }
-      } else {
-        addItem(canvasWidth, canvasHeight);
-      }
-      timer.current = 0;
+    moveItems(canvasHeight, dtMs);
+
+    accSpawnMs.current += dtMs;
+    if (accSpawnMs.current >= ADD_INTERVAL) {
+      const needCoin = coins < coins_available && Math.random() < 0.2;
+      needCoin ? spawnCoin(canvasWidth) : addItem(canvasWidth, canvasHeight);
+      accSpawnMs.current -= ADD_INTERVAL;
     }
-    useGameModelStore.getState().updateFlash(delta);
+    useGameModelStore.getState().updateFlash(dtMs);
   });
 };

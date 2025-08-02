@@ -53,7 +53,7 @@ interface GameModelState {
   spawnedCoinsCount: number;
   addItem: (canvasWidth: number, canvasHeight: number) => void;
   spawnCoin: (canvasWidth: number) => void;
-  moveItems: (canvasHeight: number) => void;
+  moveItems: (canvasHeight: number, dtMs: number) => void;
   markAsCaught: (id: string) => void;
   resetItems: () => void;
 
@@ -157,8 +157,9 @@ export const useGameModelStore = create<GameModelState>((set, get) => ({
     set((s) => ({
       items: s.items.map((item) => (item.id === id ? { ...item, caught: true } : item)),
     })),
-  moveItems: (canvasHeight) => {
+  moveItems: (canvasHeight, dtMs) => {
     const { x, canvasWidth } = get();
+    const speedCoef = dtMs / 16.666;
     const backpack = {
       x: canvasWidth / 2 + x,
       y: canvasHeight - BACKPACK_HEIGHT / 2 - 20,
@@ -173,7 +174,8 @@ export const useGameModelStore = create<GameModelState>((set, get) => ({
             if (item.kind === 'coin') return null;
             return { ...item, x: backpack.x + item.attachedOffsetX, y: backpack.y - item.radius };
           }
-          return handleItemCatch(item, backpack, canvasHeight, state);
+          const falling = { ...item, y: item.y + item.speed * speedCoef };
+          return handleItemCatch(falling, backpack, canvasHeight, state);
         })
         .filter(
           (item): item is Item =>
