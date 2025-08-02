@@ -14,12 +14,9 @@ export function GameRulesScreen() {
         navigate(-1);
       }}
     >
-      <Text
-        color="#fff"
-        as="div"
-        size="p4"
-        dangerouslySetInnerHTML={{ __html: applyNbsp(rulesText) }}
-      />
+      <Text color="#fff" as="div" size="p4">
+        {applyNbsp(rulesText)}
+      </Text>
     </PageContainer>
   );
 }
