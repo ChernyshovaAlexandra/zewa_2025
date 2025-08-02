@@ -52,7 +52,6 @@ export function OnboardingScreen({ onFinish }: OnboardingScreenProps) {
       <S.Image src={steps[step].image} alt="onboarding" />
       <Text weight={700} align="center" color="#fff">
         {steps[step].header}
-        {/* {window.innerWidth} x {window.innerHeight} */}
       </Text>
       <S.Text>{applyNbsp(steps[step].text)}</S.Text>
       <ZewaButton variant="white" onClick={handleNext} style={{ marginTop: 'auto', width: '80%' }}>

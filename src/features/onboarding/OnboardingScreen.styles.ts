@@ -18,10 +18,7 @@ export const Image = styled.img`
   object-position: bottom;
   border-radius: 20px;
   margin-bottom: 15px;
-
-  @media screen and (max-height: 580px) {
-    max-height: 45vh;
-  }
+  max-height: 50vh;
 `;
 
 export const Text = styled.p`
