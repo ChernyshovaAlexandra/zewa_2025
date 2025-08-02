@@ -54,7 +54,7 @@ const CheckContainer: React.FC<CheckProps> = ({
         <CheckNumber>{subtitle}</CheckNumber>
         <Icon20InfoCircleOutline color="#7E97B4" onClick={showModalInfo} />
       </FlexBetween>
-      <FlexBetween>{caption ? <Date> {Helper.formatDate(caption)}</Date> : <></>}</FlexBetween>
+      <FlexBetween>{caption ? <Date>{Helper.formatDate2(caption)}</Date> : <></>}</FlexBetween>
       <Spacing size={24}>
         <SeparatorStyled />
       </Spacing>
@@ -63,12 +63,7 @@ const CheckContainer: React.FC<CheckProps> = ({
         {status === 'Засчитан' || coins_earned ? (
           <StyledCoins>
             <Text style={{ fontSize: '14px' }}> +{coins_earned} </Text>
-            <img
-              src={`/assets/images/coins-icon.png`}
-              width="24"
-              alt="coins-icon"
-              loading="lazy"
-            />
+            <img src={`/assets/images/coins-icon.png`} width="24" alt="coins-icon" loading="lazy" />
           </StyledCoins>
         ) : status.indexOf('Откло') !== -1 ? (
           <Total>Отклонён</Total>
