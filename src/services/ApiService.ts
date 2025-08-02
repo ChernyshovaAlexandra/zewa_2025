@@ -31,6 +31,9 @@ export interface ActivateCouponRequest {
   type: CouponType;
   coupon_id: string | number;
 }
+export interface ChangeCouponRequest {
+  barcode: string;
+}
 
 export interface AddCheckRequest {
   telegram_id: number;
@@ -43,11 +46,11 @@ export interface AddCheckRequest {
 }
 
 export interface GameStartRequest {
-  game: number;
+  game: string;
 }
 
 export interface GameResultRequest {
-  game: number;
+  game: string;
   result: number;
   points: number;
   coins: number;
@@ -91,6 +94,10 @@ export class ApiService {
     };
   }
 
+  changeCoupon(data: Omit<ChangeCouponRequest, 'hash'>) {
+    return this.axios.post('/change-coupon', this.withHash(data));
+  }
+
   start(data: Omit<StartRequest, 'hash'>) {
     return this.axios.post('/start', this.withHash(data));
   }
@@ -117,6 +124,10 @@ export class ApiService {
     form.append('payload', this.payload);
 
     return this.axios.post<AddCheckResponse>('/add-check', form, config);
+  }
+
+  getWinners(data: Omit<HistoryRequest, 'hash'>) {
+    return this.axios.post('/standings', this.withHash(data));
   }
 
   addCheckImageManual(data: {

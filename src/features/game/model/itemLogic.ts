@@ -19,7 +19,6 @@ export function handleItemCatch(
     return handleMissedItem(item, meta, MISS_LINE_Y, state);
   }
 
-  // Center the item horizontally inside the backpack
   const offsetX = 0;
   const caughtItem = handleCaughtItem(item, meta, offsetX, state, backpack);
   return { ...caughtItem, x: backpack.x };

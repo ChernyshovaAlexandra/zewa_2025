@@ -13,7 +13,7 @@ export function UploadForm() {
       <StyledFormItem top={pending ? '' : 'Загрузите фото чека'}>
         {pending ? (
           <>
-            <Text>Отправляем чек на проверку. Это займёт какое-то время.</Text>
+            <Text>Проверяем загруженное фото. Не закрывайте окно.</Text>
             <Spinner size="m" style={{ margin: '0 auto' }} />
           </>
         ) : (

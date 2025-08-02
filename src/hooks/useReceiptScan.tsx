@@ -139,10 +139,21 @@ export function useReceiptScan() {
     [handleApiResponse, renderScanErrorModal, user?.id],
   );
 
+  const openTelegramScanner = async () => {
+    try {
+      const raw: { data: string } = await telegramService.showScanQrPopup();
+      sendReceipt(raw.data);
+    } catch (e: any) {
+      renderScanErrorModal(
+        e.message === 'popup-closed'
+          ? 'Сканирование отменено.'
+          : 'Ошибка при сканировании QR-кода.',
+      );
+    }
+  };
+
   return {
-    openTelegramScanner: () => {
-      /* … */
-    },
+    openTelegramScanner,
     handlePhotoUpload,
     onQrScanned: sendReceipt,
     pending,

@@ -1,8 +1,10 @@
 import { useTick } from '@pixi/react';
 import { useRef, useEffect } from 'react';
 import { useGameModelStore } from '@/features/game/model/gameModelStore';
+import { renderPauseModal } from '../renderPauseModal';
 
-export const useGameTicker = (canvasWidth: number, canvasHeight: number) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const useGameTicker = (canvasWidth: number, canvasHeight: number, navigate: any) => {
   const moveItems = useGameModelStore((s) => s.moveItems);
   const isPaused = useGameModelStore((s) => s.isPaused);
   const addItem = useGameModelStore((s) => s.addItem);
@@ -14,8 +16,11 @@ export const useGameTicker = (canvasWidth: number, canvasHeight: number) => {
   const resumeGame = useGameModelStore((s) => s.resumeGame);
 
   const timer = useRef(0);
-  const ADD_INTERVAL = 1600;
+  const BASE_HEIGHT = 667;
+  const MAX_HEIGHT = 780;
 
+  const ADD_INTERVAL = canvasHeight >= BASE_HEIGHT && canvasHeight < MAX_HEIGHT ? 2800 : 1800;
+  console.info(isGameStarted);
   useEffect(() => {
     if (!isGameStarted) {
       timer.current = 0;
@@ -24,11 +29,18 @@ export const useGameTicker = (canvasWidth: number, canvasHeight: number) => {
 
   useEffect(() => {
     const handleVisibility = () => {
-      if (document.hidden) pauseGame();
-      else resumeGame();
+      if (document.hidden) {
+        renderPauseModal(navigate);
+      } else if (!useGameModelStore.getState().isPaused) {
+        resumeGame();
+      }
     };
-    const handleBlur = () => pauseGame();
-    const handleFocus = () => resumeGame();
+    const handleBlur = () => renderPauseModal(navigate);
+    const handleFocus = () => {
+      if (!useGameModelStore.getState().isPaused) {
+        resumeGame();
+      }
+    };
 
     document.addEventListener('visibilitychange', handleVisibility);
     window.addEventListener('blur', handleBlur);
@@ -38,7 +50,7 @@ export const useGameTicker = (canvasWidth: number, canvasHeight: number) => {
       window.removeEventListener('blur', handleBlur);
       window.removeEventListener('focus', handleFocus);
     };
-  }, [pauseGame, resumeGame]);
+  }, [navigate, pauseGame, resumeGame]);
 
   useTick((delta: number) => {
     if (!isGameStarted || isPaused) return;
@@ -52,10 +64,10 @@ export const useGameTicker = (canvasWidth: number, canvasHeight: number) => {
         if (spawnChance) {
           spawnCoin(canvasWidth);
         } else {
-          addItem(canvasWidth);
+          addItem(canvasWidth, canvasHeight);
         }
       } else {
-        addItem(canvasWidth);
+        addItem(canvasWidth, canvasHeight);
       }
       timer.current = 0;
     }

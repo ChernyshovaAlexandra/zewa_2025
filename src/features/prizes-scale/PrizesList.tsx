@@ -27,7 +27,7 @@ const PrizesList: React.FC<PrizesListProps> = ({ isDrawerOpen }) => {
   const prizeRefs = React.useRef<Array<HTMLDivElement | null>>([]);
   const { isMobile } = useWindowSize();
   const navigate = useNavigate();
-  console.info(userData);
+
   // Активированные и новые купоны из данных пользователя
   const activatedCouponsArray = React.useMemo(
     () =>
@@ -64,7 +64,7 @@ const PrizesList: React.FC<PrizesListProps> = ({ isDrawerOpen }) => {
 
   const lastActivatedIndex = modifiedPrizes.reduce((lastIndex, prize, index) => {
     if (!userData) return 0;
-    if (userData.user.points >= prize.points || prize.activated) {
+    if (userData.user.coins >= prize.points || prize.activated) {
       return index;
     }
     return lastIndex;
@@ -72,7 +72,7 @@ const PrizesList: React.FC<PrizesListProps> = ({ isDrawerOpen }) => {
 
   const renderPrizeCells = React.useMemo(() => {
     if (!modifiedPrizes.length || !userData) return null;
-    const { points } = userData.user;
+    const { coins: points } = userData.user;
 
     return modifiedPrizes.map((prize, id) => {
       const isActivated = prize.activated;

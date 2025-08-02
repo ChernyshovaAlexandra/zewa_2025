@@ -37,8 +37,8 @@ vi.mock('../../constants/items', () => {
 describe('ItemSpawner', () => {
   it('учитывает веса спавна', () => {
     // оба элемента могут заспавниться
-    const limits = { apple: 0, ball: 0 } as Record<ItemKind, number>;
-    const spawner = new ItemSpawner(100, [], limits);
+    const limits = { pen: 0, ball: 0 } as Record<ItemKind, number>;
+    const spawner = new ItemSpawner(100, 100, [], limits);
 
     const item = spawner.spawnItem();
     expect(item).toBeDefined();
@@ -47,8 +47,8 @@ describe('ItemSpawner', () => {
 
   it('не спавнит элемент, если достигнут его лимит', () => {
     // лимит для ball = 1, значит только apple
-    const limits = { apple: 0, ball: 1 } as Record<ItemKind, number>;
-    const spawner = new ItemSpawner(100, [], limits);
+    const limits = { pen: 0, ball: 1 } as Record<ItemKind, number>;
+    const spawner = new ItemSpawner(100, 100, [], limits);
 
     const result = spawner.spawnItem();
     expect(result).toBeDefined();

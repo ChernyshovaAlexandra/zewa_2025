@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ChangeEvent, useRef, useState, useCallback } from 'react';
 import { useModalStore } from '@/shared/model/modalStore';
-import { validateQRCode } from '@/utils/qr';
+// import { validateQRCode } from '@/utils/qr';
 import ScanPromptModal from './ScanPromptModal';
 import { useReceiptScan } from '@/hooks';
 
@@ -28,11 +28,10 @@ export function useUploadForm() {
         return;
       }
 
-      // 1) Валидация QR
-      const isValid = await validateQRCode(file);
+      const isValid = true; //await validateQRCode(file);
       if (!isValid) {
         openModal({
-          title: 'Чек не распознан',
+          title: 'Qr-код не распознан',
           closable: true,
           content: <ScanPromptModal onClose={() => hideModal()} />,
         });

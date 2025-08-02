@@ -18,31 +18,6 @@ export const ContentWithDomovenok = styled.div`
   }
 `;
 
-export const PaperUnrolled = styled.div<{ $width: string }>`
-  width: ${(props) => props.$width};
-  height: 100%;
-  position: relative;
-  left: -2rem;
-  transition: width 3s ease-in-out;
-
-  &::after {
-    content: '';
-    position: absolute;
-    left: 0%;
-    top: 0;
-    bottom: 0;
-    background:
-      url(/assets/images/paper-pattern.png) repeat-x,
-      linear-gradient(270deg, #cfd9eb 0%, #fff 5%, #fff 100%);
-    background-size: auto 100%;
-    display: block;
-    height: 100%;
-    width: 92%;
-    transition: none;
-    transform: skewX(40deg);
-  }
-`;
-
 export const PaperRoll = styled.div`
   width: 4.5rem;
   height: 5rem;
@@ -114,7 +89,43 @@ export const DrawerWrapper = styled.div<{ $isOpen: boolean }>`
     )`
       : `#f4fcff`};
   border-radius: 20px 20px 0 0;
-  padding: 10px;
+  z-index: 200;
+  > p {
+    position: relative;
+  }
+  @media screen and (max-height: 570px) {
+    bottom: ${({ $isOpen }) => ($isOpen ? '1.9rem' : '0')};
+    height: ${({ $isOpen }) => ($isOpen ? '40%' : `5rem`)};
+  }
+
+  &:after {
+    content: '';
+    position: absolute;
+    display: block;
+    background: url('/assets/images/arr-down.svg') no-repeat center;
+    background-size: contain;
+    top: -1rem;
+    left: 0;
+    right: 0;
+    margin: auto;
+    transform: ${({ $isOpen }) => ($isOpen ? `rotate(-90deg)` : `rotate(90deg)`)};
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+  &:before {
+    content: '';
+    position: absolute;
+    display: block;
+    width: 6rem;
+    height: 10rem;
+    background: #f4fcff;
+    top: -1.3rem;
+    left: 0;
+    right: 0;
+    margin: auto;
+    border-radius: 100%;
+    z-index: 0;
+  }
 `;
 
 export const DrawerHeader = styled.div`
@@ -127,7 +138,6 @@ export const DrawerHeader = styled.div`
 
 export const DrawerContent = styled.div<{ $isOpen: boolean }>`
   min-height: 14rem;
-  /* background-color: #a4aac420; */
 `;
 
 export const ArrowIcon = styled.div<{ $isOpen: boolean }>`
@@ -271,13 +281,16 @@ export const ButtonComponentStyled = styled.div`
 export const ScrollContainer = styled(HorizontalScroll)`
   width: 100%;
   position: relative;
-  bottom: 0rem;
+  /* bottom: -2.5rem; */
   z-index: 100;
 
   > div > div > div {
     &:first-child {
       display: flex;
     }
+  }
+  @media screen and (max-height: 567px) {
+    bottom: -0.5rem;
   }
 `;
 
@@ -318,8 +331,8 @@ export const StyledCell = styled.div<{
     visibility: ${({ $isActivated }) => ($isActivated ? 'visible' : 'hidden')};
     height: 40px;
     bottom: -40px;
-    background: url(/assets/images/paper-pattern.jpg);
-    background-size: 200px;
+    background: url(/assets/images/paper-pattern.jpg) repeat-x;
+    background-size: 170px 50px;
     width: 120%;
     display: block;
     left: -45%;

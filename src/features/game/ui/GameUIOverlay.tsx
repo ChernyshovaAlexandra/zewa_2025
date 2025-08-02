@@ -23,7 +23,7 @@ export const GameUIOverlay = () => {
   }, []);
 
   return (
-    <Wrapper style={{ maxWidth: '360px', margin: 'auto' }}>
+    <Wrapper>
       <TopRow>
         <InfoBlock>
           <Flex gap="4px">
@@ -69,7 +69,6 @@ export const GameUIOverlay = () => {
 const Wrapper = styled.div`
   position: absolute;
   inset: 0;
-  /* pointer-events: none; */
 `;
 
 const TopRow = styled.div`

@@ -1,5 +1,5 @@
 import zewaLogo from '/assets/images/zewa-logo.png';
-import rollBg from '/assets/images/roll-bg.png';
+import rollBg from '/assets/images/roll-bg.webp';
 import * as S from './style';
 
 export function SplashScreen() {

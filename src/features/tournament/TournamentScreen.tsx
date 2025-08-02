@@ -1,46 +1,56 @@
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import { PageContainer, Text } from '@/shared/ui';
-import { applyNbsp, maskName } from '@/utils';
+import { applyNbsp, smartMaskName } from '@/utils';
+import { useStandings } from './useStandings';
+
 import * as S from './TournamentScreen.styles';
-
-interface Player {
-  place: number;
-  name: string;
-  points: number;
-}
-
-interface Winner {
-  name: string;
-  prize: string;
-  image: string;
-}
-
-const topPlayers: Player[] = [
-  { place: 1, name: 'Алексей', points: 1500 },
-  { place: 2, name: 'Мария', points: 1300 },
-  { place: 3, name: 'Иван', points: 1200 },
-  { place: 4, name: 'Екатерина', points: 1100 },
-  { place: 5, name: 'Дмитрий', points: 1000 },
-];
-
-const winners: Winner[] = [
-  {
-    name: 'Ольга Петрова',
-    prize: 'Скейтборд',
-    image: './assets/images/items/skateboard.png',
-  },
-  {
-    name: 'Никита Сидоров',
-    prize: 'Наушники',
-    image: './assets/images/items/headphones.png',
-  },
-];
+import { Spinner } from '@vkontakte/vkui';
+import { useUserStore } from '@/shared/model';
+import { prize_types_data } from '../prizes/mocks';
+import { useNavigate } from 'react-router-dom';
+import { Flex } from 'antd';
 
 export function TournamentScreen() {
   const [active, setActive] = useState<'players' | 'winners'>('players');
+  const user = useUserStore((s) => s.user);
+  const navigate = useNavigate();
+  const { data, loading, error } = useStandings(user?.id || 0);
+
+  if (loading) {
+    return (
+      <PageContainer fullscreen scrollable title="Турнирная таблица">
+        <Spinner />
+      </PageContainer>
+    );
+  }
+
+  if (error || !data) {
+    return (
+      <PageContainer fullscreen scrollable title="Турнирная таблица">
+        <Text color="#fff" align="center">
+          Не удалось загрузить таблицу&nbsp;— попробуйте позже
+        </Text>
+      </PageContainer>
+    );
+  }
+  const winners = Object.values(data.draw_winners)[0] ?? [];
+  const mappedPlayers = data.topPlayers
+    .slice()
+    .sort((a, b) => b.points - a.points)
+    .map((p, idx) => ({ place: idx + 1, ...p }));
+
+  const topTen = mappedPlayers.slice(0, 10);
+
+  const currentPlayer = mappedPlayers.find((p) => p.name === user?.username);
+
+  const displayPlayers = currentPlayer
+    ? topTen.some((p) => p.name === user?.username)
+      ? topTen
+      : [...topTen, currentPlayer]
+    : topTen;
 
   return (
-    <PageContainer fullscreen scrollable title="Турнирная таблица">
+    <PageContainer fullscreen scrollable title="Турнирная таблица" onBack={() => navigate('/')}>
       <S.TabsWrapper>
         <S.Tabs>
           <S.TabButton $active={active === 'players'} onClick={() => setActive('players')}>
@@ -52,7 +62,7 @@ export function TournamentScreen() {
         </S.Tabs>
       </S.TabsWrapper>
       {active === 'players' ? (
-        <>
+        <Fragment>
           <Text style={{ color: '#fff', lineHeight: 1.4, fontSize: '14px', textAlign: 'center' }}>
             {applyNbsp(
               `Результаты участников текущей недели по максимальному количеству пойманных предметов.`,
@@ -63,39 +73,107 @@ export function TournamentScreen() {
               <tr>
                 <th>Место</th>
                 <th>Имя</th>
-                <th>Очки</th>
+                <th>
+                  <img
+                    style={{ width: '22px' }}
+                    src="./assets/images/backpack-icon.png"
+                    alt="иконка рюкзак"
+                  />
+                </th>
               </tr>
             </thead>
             <tbody>
-              {topPlayers.map((p) => (
-                <tr key={p.place}>
-                  <td>{p.place}</td>
-                  <td>{maskName(p.name)}</td>
+              {displayPlayers.map((p, idx) => (
+                <tr
+                  style={{
+                    borderRadius: '10px',
+                    background: idx === 0 ? 'rgba(255, 255, 255, 0.30)' : '',
+                  }}
+                  key={p.place}
+                >
+                  <td>
+                    <Flex gap="5px" align="center">
+                      {p.place}{' '}
+                      {p.place === 1 && (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="18"
+                          height="18"
+                          viewBox="0 0 24 24"
+                          fill="gold"
+                          stroke="gold"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z" />
+                          <path d="M5 21h14" />
+                        </svg>
+                      )}
+                      {p.place === 2 && (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="18"
+                          height="18"
+                          viewBox="0 0 24 24"
+                          fill="silver"
+                          stroke="silver"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z" />
+                          <path d="M5 21h14" />
+                        </svg>
+                      )}
+                      {p.place === 3 && (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="18"
+                          height="18"
+                          viewBox="0 0 24 24"
+                          stroke="#CD7F32"
+                          fill="#CD7F32"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z" />
+                          <path d="M5 21h14" />
+                        </svg>
+                      )}
+                    </Flex>
+                  </td>
+                  <td>{smartMaskName(p.name)}</td>
                   <td>{p.points}</td>
                 </tr>
               ))}
             </tbody>
           </S.Table>
-        </>
+        </Fragment>
       ) : (
         <div>
           <Text style={{ color: '#fff', lineHeight: 1.4, fontSize: '14px', textAlign: 'center' }}>
             <b>Неделя 1</b>
-            <br />С 01.08 по 10.08
+            <br />
+            С&nbsp;01.08&nbsp;по&nbsp;10.08
           </Text>
-          {winners.map((w, i) => (
-            <S.PrizeItem key={i}>
-              <div>
-                <Text color="#1235AB" weight={900}>
-                  {maskName(w.name)}
-                </Text>
-                <Text size="p4" color="#596471">
-                  {w.prize}
-                </Text>
-              </div>
-              <img src={w.image} alt={w.prize} width={50} height={50} />
-            </S.PrizeItem>
-          ))}
+          {winners.map((w, i) => {
+            const img = prize_types_data[w.name]?.img || '/assets/images/prize-bg.png';
+            return (
+              <S.PrizeItem key={i}>
+                <div>
+                  <Text color="#1235AB" weight={900}>
+                    {smartMaskName(w.name)}
+                  </Text>
+                  <Text size="p4" color="#596471">
+                    {w.prize}
+                  </Text>
+                </div>
+                <img src={img} alt={w.prize} width={50} height={50} />
+              </S.PrizeItem>
+            );
+          })}
         </div>
       )}
     </PageContainer>

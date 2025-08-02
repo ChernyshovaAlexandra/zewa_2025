@@ -4,36 +4,36 @@ import {
   FormLayoutGroup,
   Input,
   DateInput as DatePicker,
-  Button,
+  
 } from '@vkontakte/vkui';
-import { ManualInputFormState } from './helpers';
+// import { ManualInputFormState } from './helpers';
 import { useManualInputForm } from './useManualInputForm';
 import { CenteredTitle, StyledForm } from './styles';
+import { ZewaButton } from '@/shared/ui';
 
 export function ManualInputForm() {
-  const { values, errors, pending, handleChange, handleSubmit } =
-    useManualInputForm();
+  const { values, errors, pending, handleChange, handleSubmit } = useManualInputForm();
 
   return (
     <Group mode="plain">
       <StyledForm onSubmit={handleSubmit}>
         <FormItem>
-          <CenteredTitle weight="3">
-            Введите код из чека в нужное поле
-          </CenteredTitle>
+          <CenteredTitle weight="3">Введите код из чека в нужное поле</CenteredTitle>
         </FormItem>
 
         <FormItem top="ФН" status={errors.fn ? 'error' : 'default'} bottom={errors.fn ?? undefined}>
           <Input
+            required
             type="number"
             value={values.fn}
-            placeholder="Введите данные"
+            placeholder="Введите данные (16 цифр)"
             onChange={(e) => handleChange('fn', e.target.value)}
           />
         </FormItem>
 
         <FormItem top="ФД" status={errors.fd ? 'error' : 'default'} bottom={errors.fd ?? undefined}>
           <Input
+            required
             type="number"
             value={values.fd}
             placeholder="Введите данные"
@@ -43,6 +43,7 @@ export function ManualInputForm() {
 
         <FormItem top="ФП" status={errors.fp ? 'error' : 'default'} bottom={errors.fp ?? undefined}>
           <Input
+            required
             type="number"
             value={values.fp}
             placeholder="Введите данные"
@@ -50,14 +51,15 @@ export function ManualInputForm() {
           />
         </FormItem>
 
-        <FormItem top="Сумма">
-          <FormLayoutGroup mode="horizontal">
+        <FormItem>
+          <FormLayoutGroup style={{ padding: 0 }} mode="horizontal">
             <FormItem
-              top="руб."
+              top="Сумма руб."
               status={errors.sumRub ? 'error' : 'default'}
               bottom={errors.sumRub ?? undefined}
             >
               <Input
+                required
                 type="number"
                 value={values.sumRub}
                 onChange={(e) => handleChange('sumRub', e.target.value)}
@@ -69,6 +71,7 @@ export function ManualInputForm() {
               bottom={errors.sumKop ?? undefined}
             >
               <Input
+                required
                 type="number"
                 value={values.sumKop}
                 onChange={(e) => handleChange('sumKop', e.target.value)}
@@ -77,17 +80,26 @@ export function ManualInputForm() {
           </FormLayoutGroup>
         </FormItem>
 
-        <FormItem top="Дата и время">
-          <FormLayoutGroup mode="horizontal">
-            <FormItem top="Дата" status={errors.date ? 'error' : 'default'} bottom={errors.date ?? undefined}>
+        <FormItem>
+          <FormLayoutGroup style={{ padding: 0 }} mode="horizontal">
+            <FormItem
+              top="Дата"
+              status={errors.date ? 'error' : 'default'}
+              bottom={errors.date ?? undefined}
+            >
               <DatePicker
                 value={values.date}
                 onChange={(v) => handleChange('date', v ? (v as Date) : null)}
                 closeOnChange
               />
             </FormItem>
-            <FormItem top="Время" status={errors.time ? 'error' : 'default'} bottom={errors.time ?? undefined}>
+            <FormItem
+              top="Время"
+              status={errors.time ? 'error' : 'default'}
+              bottom={errors.time ?? undefined}
+            >
               <Input
+                required
                 type="time"
                 value={values.time}
                 onChange={(e) => handleChange('time', e.target.value)}
@@ -97,9 +109,14 @@ export function ManualInputForm() {
         </FormItem>
 
         <FormItem>
-          <Button size="l" stretched mode="primary" loading={pending} type="submit">
+          <ZewaButton
+            style={{ width: '250px', margin: '10px auto 0' }}
+            variant="blue-b"
+            pending={pending}
+            type="submit"
+          >
             Отправить
-          </Button>
+          </ZewaButton>
         </FormItem>
       </StyledForm>
     </Group>

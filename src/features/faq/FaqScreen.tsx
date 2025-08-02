@@ -1,4 +1,4 @@
-import { PageContainer, Text } from '@/shared/ui';
+import { PageContainer, Text, ZewaButton } from '@/shared/ui';
 import { applyNbsp } from '@/utils';
 import { faqText } from './faqText';
 
@@ -11,6 +11,7 @@ export function FaqScreen() {
         size="p4"
         dangerouslySetInnerHTML={{ __html: applyNbsp(faqText) }}
       />
+      <ZewaButton variant="white">Задать вопрос</ZewaButton>
     </PageContainer>
   );
 }

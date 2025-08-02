@@ -1,4 +1,5 @@
-import { useEffect, useMemo } from 'react';
+/* eslint-disable @typescript-eslint/no-unused-expressions */
+import { useEffect, useMemo, useRef } from 'react';
 import { useGameModelStore } from '@/features/game/model/gameModelStore';
 import styled from 'styled-components';
 import { ForwardIcon, LeftIcon } from '@/shared/ui';
@@ -14,6 +15,28 @@ export const BackpackControls = () => {
   const isGameOver = useGameModelStore((s) => s.isGameOver);
   const isGameStarted = useGameModelStore((s) => s.isGameStarted);
   const isModalOpen = useModalStore((s) => s.isOpen);
+  const repeatRef = useRef<NodeJS.Timeout | null>(null);
+  const REPEAT_DELAY = 300; // мс до старта авто-повтора
+  const REPEAT_RATE = 60; // мс между повторами (~16 fps)
+
+  const startHold = (dir: 'left' | 'right') => {
+    if (!canMove) return;
+
+    dir === 'left' ? moveLeft() : moveRight();
+    repeatRef.current = setTimeout(() => {
+      repeatRef.current = setInterval(() => {
+        dir === 'left' ? moveLeft() : moveRight();
+      }, REPEAT_RATE);
+    }, REPEAT_DELAY);
+  };
+
+  const stopHold = () => {
+    if (repeatRef.current) {
+      clearTimeout(repeatRef.current);
+      clearInterval(repeatRef.current as NodeJS.Timeout); // если уже interval
+      repeatRef.current = null;
+    }
+  };
 
   const canMove = useMemo(
     () => isGameStarted && !isPaused && !isGameOver && !isModalOpen,
@@ -42,6 +65,9 @@ export const BackpackControls = () => {
   return (
     <ControlsWrapper>
       <ArrowButton
+        onPointerDown={() => startHold('left')}
+        onPointerUp={stopHold}
+        onPointerLeave={stopHold}
         style={{ color: '#F23177' }}
         onClick={() => {
           if (canMove) moveLeft();
@@ -50,6 +76,9 @@ export const BackpackControls = () => {
         <LeftIcon />
       </ArrowButton>
       <ArrowButton
+        onPointerDown={() => startHold('right')}
+        onPointerUp={stopHold}
+        onPointerLeave={stopHold}
         style={{ color: '#F23177' }}
         onClick={() => {
           if (canMove) moveRight();
