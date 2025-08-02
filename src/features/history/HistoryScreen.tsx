@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { PageContainer, Text } from '@/shared/ui';
 import { useUserStore } from '@/shared/model';
 import { apiService } from '@/services';
@@ -47,34 +47,40 @@ export function HistoryScreen() {
 
   useEffect(() => {
     if (!user) return;
+
     apiService
       .history({ telegram_id: user.id })
       .then((res) => {
         const { data } = res.data ?? [];
 
-        const sortedChecks = (data?.checks ?? [])
-          .slice()
-          .sort(
-            (a: any, b: any) =>
-              new Date(b.created_at ?? b.date_time_raw).getTime() -
-              new Date(a.created_at ?? a.date_time_raw).getTime(),
-          );
-
-        const sortedGames = (data?.games ?? [])
-          .slice()
-          .sort((a: any, b: any) => new Date(b.day).getTime() - new Date(a.day).getTime());
-
-        setChecks(sortedChecks);
-        setGames(sortedGames);
+        setChecks(data?.checks ?? []);
+        setGames(data?.games ?? []);
       })
       .catch((err) => {
         console.error('history error', err);
       });
   }, [user]);
 
+  const sortedChecks = useMemo(
+    () =>
+      [...checks].sort(
+        (a: any, b: any) =>
+          new Date(b.created_at ?? b.date_time_raw).getTime() -
+          new Date(a.created_at ?? a.date_time_raw).getTime(),
+      ),
+    [checks],
+  );
+
+  const sortedGames = useMemo(
+    () =>
+      [...games].sort(
+        (a: any, b: any) => new Date(b.day).getTime() - new Date(a.day).getTime(),
+      ),
+    [games],
+  );
+
   const renderChecks = () => {
-    const data = checks?.length ? checks : [];
-    console.info(data);
+    const data = sortedChecks.length ? sortedChecks : [];
     if (!data.length) {
       return (
         <Text weight={700} color="white" align="center">
@@ -99,7 +105,7 @@ export function HistoryScreen() {
   };
 
   const renderGames = () => {
-    if (!games?.length) {
+    if (!sortedGames.length) {
       return (
         <Text weight={700} color="white" align="center">
           История игр пока пуста
@@ -108,7 +114,7 @@ export function HistoryScreen() {
     }
     return (
       <>
-        {games.slice(0, visibleGames).map((item, id) => (
+        {sortedGames.slice(0, visibleGames).map((item, id) => (
           <GameContainer
             key={id}
             header={item.code !== 'game4' ? `Игра «Снова в школу»` : `Друг присоединился к игре`}
