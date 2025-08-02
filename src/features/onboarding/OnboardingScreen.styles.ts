@@ -13,7 +13,7 @@ export const Wrapper = styled.div`
 export const Image = styled.img`
   width: 100%;
   background-color: #fff;
-  aspect-ratio: 370 / 400;
+  aspect-ratio: 370 / 370;
   object-fit: cover;
   object-position: bottom;
   border-radius: 20px;
