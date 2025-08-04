@@ -36,8 +36,6 @@ export function ProfileScreen() {
             <TournamentIcon />
           </ZewaButton>
         </FlexBetweenDiv>
-        {/* <StyledCentredImage src={'/images/name.png'} alt="name" /> */}
-
         <FlexColumnDiv>
           <ZewaButton onClick={() => navigate('/prizes')} variant="white">
             <PrizeIcon /> Мои призы

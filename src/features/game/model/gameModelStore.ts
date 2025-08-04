@@ -194,14 +194,14 @@ export const useGameModelStore = create<GameModelState>((set, get) => ({
     const half = BACKPACK_WIDTH / 2;
     const margin = 25;
     const next = targetX - 25;
-    set({ targetX: Math.max(next, -canvasWidth / 2 + half - margin) });
+    set({ targetX: Math.max(next, -canvasWidth / 2 + half - margin), dragging: false });
   },
   moveRight: () => {
     const { targetX, canvasWidth } = get();
     const half = BACKPACK_WIDTH / 2;
     const margin = 25;
     const next = targetX + 25;
-    set({ targetX: Math.min(next, canvasWidth / 2 - half + margin) });
+    set({ targetX: Math.min(next, canvasWidth / 2 - half + margin), dragging: false });
   },
   tick: () => {
     const { x, targetX, dragging } = get();
@@ -216,7 +216,7 @@ export const useGameModelStore = create<GameModelState>((set, get) => ({
   },
   resetBackpack: () => {
     const width = get().canvasWidth;
-    set({ x: 0, targetX: 0, canvasWidth: width });
+    set({ x: 0, targetX: 0, canvasWidth: width, dragging: false });
   },
 
   resetGame: () => {
