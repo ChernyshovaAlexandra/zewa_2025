@@ -1,15 +1,31 @@
 import { PageContainer, Text } from '@/shared/ui';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as S from '../tournament/TournamentScreen.styles';
 import { useUserStore } from '@/shared/model';
 import PrizeContainer from './components/PrizeContainer';
 import CouponContainer from './components/CouponContainer';
 import { useNavigate } from 'react-router-dom';
+import { apiService } from '@/services';
 
 export function PrizesScreen() {
   const [active, setActive] = useState<'promocodes' | 'prizes'>('promocodes');
   const userData = useUserStore((s) => s.userData);
+  const user = useUserStore((s) => s.user);
+  const setUserData = useUserStore((s) => s.setUserData);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const { data } = await apiService.start({ username: user?.username ?? '' });
+        setUserData(data?.data);
+      } catch (err) {
+        console.error('start error', err);
+      }
+    };
+    if (user) fetchUser();
+  }, [user, setUserData]);
+
   const renderCoupons = () => {
     if (!userData) return <></>;
     return (
@@ -42,7 +58,7 @@ export function PrizesScreen() {
   );
 
   return (
-    <PageContainer fullscreen title="Мои призы" onBack={()=>navigate('/profile')}>
+    <PageContainer fullscreen title="Мои призы" onBack={() => navigate('/profile')}>
       <S.TabsWrapper>
         <S.Tabs>
           <S.TabButton $active={active === 'promocodes'} onClick={() => setActive('promocodes')}>

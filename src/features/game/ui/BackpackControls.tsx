@@ -20,6 +20,7 @@ export const BackpackControls = () => {
   const REPEAT_RATE = 60; // мс между повторами (~16 fps)
 
   const startHold = (dir: 'left' | 'right') => {
+    stopHold();
     if (!canMove) return;
 
     dir === 'left' ? moveLeft() : moveRight();
@@ -44,6 +45,22 @@ export const BackpackControls = () => {
   );
 
   useEffect(() => {
+    const up = () => {
+      stopHold();
+      useGameModelStore.getState().setDragging(false);
+    };
+    window.addEventListener('pointerup', up, { passive: true });
+    window.addEventListener('pointercancel', up, { passive: true });
+    return () => {
+      window.removeEventListener('pointerup', up);
+      window.removeEventListener('pointercancel', up);
+    };
+  }, []);
+
+  useEffect(() => {
+    return () => stopHold();
+  }, []);
+  useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       if (!canMove || flyingCoins.length) return;
       if (e.key === 'ArrowLeft') moveLeft();
@@ -65,22 +82,36 @@ export const BackpackControls = () => {
   return (
     <ControlsWrapper>
       <ArrowButton
-        onPointerDown={() => startHold('left')}
-        onPointerUp={stopHold}
+        onPointerDown={(e) => {
+          e.stopPropagation();
+          startHold('left');
+        }}
+        onPointerUp={(e) => {
+          e.stopPropagation();
+          stopHold();
+        }}
         onPointerLeave={stopHold}
         style={{ color: '#F23177' }}
-        onClick={() => {
+        onClick={(e) => {
+          e.stopPropagation();
           if (canMove) moveLeft();
         }}
       >
         <LeftIcon />
       </ArrowButton>
       <ArrowButton
-        onPointerDown={() => startHold('right')}
-        onPointerUp={stopHold}
+        onPointerDown={(e) => {
+          e.stopPropagation();
+          startHold('right');
+        }}
+        onPointerUp={(e) => {
+          e.stopPropagation();
+          stopHold();
+        }}
         onPointerLeave={stopHold}
         style={{ color: '#F23177' }}
-        onClick={() => {
+        onClick={(e) => {
+          e.stopPropagation();
           if (canMove) moveRight();
         }}
       >
