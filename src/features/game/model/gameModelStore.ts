@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { ItemSpawner } from '../lib/ItemSpawner';
+import { BASE_SPEED, ItemSpawner } from '../lib/ItemSpawner';
 import type { ItemKind } from '../constants/items';
 export interface Item {
   id: string;
@@ -52,7 +52,7 @@ interface GameModelState {
   spawnCounts: Record<ItemKind, number>;
   spawnedCoinsCount: number;
   addItem: (canvasWidth: number, canvasHeight: number) => void;
-  spawnCoin: (canvasWidth: number) => void;
+  spawnCoin: (canvasWidth: number, canvasHeight: number, dtMs: number) => void;
   moveItems: (canvasHeight: number, dtMs: number) => void;
   markAsCaught: (id: string) => void;
   resetItems: () => void;
@@ -135,28 +135,6 @@ export const useGameModelStore = create<GameModelState>((set, get) => ({
       spawnCounts: { ...s.spawnCounts, [kind]: (s.spawnCounts[kind] || 0) + 1 },
     }));
   },
-  spawnCoin: (canvasWidth) => {
-    const { spawnedCoinsCount, coins_available } = get();
-    if (spawnedCoinsCount >= coins_available) return;
-    const radius = 24;
-    const x = Math.random() * (canvasWidth - radius * 2) + radius;
-    const y = -radius;
-    const speed = 2 + Math.random();
-    const coinItem: Item = {
-      id: `coin-${Date.now()}`,
-      kind: 'coin',
-      x,
-      y,
-      radius,
-      speed,
-      attachedOffsetX: null,
-    };
-    set((s) => ({ items: [...s.items, coinItem], spawnedCoinsCount: s.spawnedCoinsCount + 1 }));
-  },
-  markAsCaught: (id) =>
-    set((s) => ({
-      items: s.items.map((item) => (item.id === id ? { ...item, caught: true } : item)),
-    })),
   moveItems: (canvasHeight, dtMs) => {
     const { x, canvasWidth } = get();
     const speedCoef = dtMs / 18;
@@ -184,6 +162,30 @@ export const useGameModelStore = create<GameModelState>((set, get) => ({
       return { items: updated };
     });
   },
+  spawnCoin: (canvasWidth, canvasHeight, dtMs) => {
+    const { spawnedCoinsCount, coins_available } = get();
+    if (spawnedCoinsCount >= coins_available) return;
+    const radius = 24;
+    const x = Math.random() * (canvasWidth - radius * 2) + radius;
+    const y = -radius;
+    const speedCoef = dtMs / 18;
+    const speed = BASE_SPEED * canvasHeight * speedCoef;
+    const coinItem: Item = {
+      id: `coin-${Date.now()}`,
+      kind: 'coin',
+      x,
+      y,
+      radius,
+      speed,
+      attachedOffsetX: null,
+    };
+    set((s) => ({ items: [...s.items, coinItem], spawnedCoinsCount: s.spawnedCoinsCount + 1 }));
+  },
+  markAsCaught: (id) =>
+    set((s) => ({
+      items: s.items.map((item) => (item.id === id ? { ...item, caught: true } : item)),
+    })),
+
   setDragging: (v: boolean) => set({ dragging: v }),
   x: 0,
   targetX: 0,
