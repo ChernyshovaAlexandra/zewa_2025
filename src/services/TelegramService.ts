@@ -93,7 +93,7 @@ export class TelegramService {
   closeScanQrPopup() {}
 
   showScanQrPopup(text = 'Наведите камеру на QR-код'): Promise<{ data: string }> {
-    const tg = this.tg; // 🔒 сузили тип
+    const tg = this.tg;
     if (!tg || !tg.showScanQrPopup || this.isScanPopupOpen)
       return Promise.reject(new Error('scanner-busy'));
 
@@ -105,8 +105,7 @@ export class TelegramService {
       };
 
       const onQr = (raw: { data: string }) => {
-        // ← строка!
-        tg.closeScanQrPopup(); // закрываем нативное окно
+        tg.closeScanQrPopup();
         cleanup();
         resolve(raw);
       };
@@ -116,7 +115,7 @@ export class TelegramService {
         reject(new Error('popup-closed'));
       };
 
-      tg.onEvent('qrTextReceived', onQr); // подписка ДО вызова
+      tg.onEvent('qrTextReceived', onQr);
       tg.onEvent('scanQrPopupClosed', onClose);
 
       try {
