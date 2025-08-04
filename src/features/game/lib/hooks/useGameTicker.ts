@@ -3,7 +3,7 @@ import { useTick } from '@pixi/react';
 import { useRef, useEffect } from 'react';
 import { useGameModelStore } from '@/features/game/model/gameModelStore';
 import { renderPauseModal } from '../renderPauseModal';
-
+const COIN_CHANCE = 0.2;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const useGameTicker = (canvasWidth: number, canvasHeight: number, navigate: any) => {
   const moveItems = useGameModelStore((s) => s.moveItems);
@@ -18,6 +18,7 @@ export const useGameTicker = (canvasWidth: number, canvasHeight: number, navigat
 
   const lastFrame = useRef(performance.now());
   const accSpawnMs = useRef(0);
+  const justCoin = useRef(false);
 
   const BASE_HEIGHT = 667;
   const MAX_HEIGHT = 780;
@@ -68,8 +69,16 @@ export const useGameTicker = (canvasWidth: number, canvasHeight: number, navigat
 
     accSpawnMs.current += dtMs;
     if (accSpawnMs.current >= ADD_INTERVAL) {
-      const needCoin = coins < coins_available && Math.random() < 0.2;
-      needCoin ? spawnCoin(canvasWidth) : addItem(canvasWidth, canvasHeight);
+      const canSpawnCoin =
+        coins < coins_available && !justCoin.current && Math.random() < COIN_CHANCE; // шанс выпадения монеты
+      if (canSpawnCoin) {
+        spawnCoin(canvasWidth, canvasHeight, dtMs);
+        justCoin.current = true;
+      } else {
+        addItem(canvasWidth, canvasHeight);
+        justCoin.current = false;
+      }
+
       accSpawnMs.current -= ADD_INTERVAL;
     }
     useGameModelStore.getState().updateFlash(dtMs);

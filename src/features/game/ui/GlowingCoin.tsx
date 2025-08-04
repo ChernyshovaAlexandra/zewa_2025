@@ -3,7 +3,6 @@ import { useMemo, useRef, useState } from 'react';
 import * as PIXI from 'pixi.js';
 
 export const GlowingCoin = ({ x, y, size = 36 }: { x: number; y: number; size?: number }) => {
-  // const glowRef = useRef<PIXI.Sprite>(null);
   const raysRef = useRef<PIXI.Sprite>(null);
   const coinRef = useRef<PIXI.AnimatedSprite>(null);
 
@@ -38,7 +37,6 @@ export const GlowingCoin = ({ x, y, size = 36 }: { x: number; y: number; size?: 
         width={size * 2}
         height={size * 2}
         anchor={0.5}
-        // blendMode={PIXI.BLEND_MODES.ADD}
       />
 
       {/* Монетка */}
@@ -50,7 +48,7 @@ export const GlowingCoin = ({ x, y, size = 36 }: { x: number; y: number; size?: 
         anchor={0.5}
         isPlaying
         loop
-        animationSpeed={0.5} // ~9 fps — выглядит как «блеск»
+        animationSpeed={0.5}
       />
     </Container>
   );
