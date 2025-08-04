@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useCallback } from 'react';
 import {
   ScrollContainer,
@@ -12,9 +13,10 @@ import {
 
 import useWindowSize from '@/helpers/windowSize';
 import { prize_types_data } from '../prizes/mocks';
-import { useUserStore } from '@/shared/model';
+import { useModalStore, useUserStore } from '@/shared/model';
 import { Coupon } from '@/types';
 import { ZewaButton } from '@/shared/ui';
+import { CouponActivatedModal } from './CouponActivatedModal';
 import { useNavigate } from 'react-router-dom';
 
 interface PrizesListProps {
@@ -28,6 +30,23 @@ const PrizesList: React.FC<PrizesListProps> = ({ isDrawerOpen }) => {
   const { isMobile } = useWindowSize();
   const navigate = useNavigate();
 
+  const openCouponModal = useCallback(
+    (coupon: any) => {
+      console.info(coupon);
+      useModalStore.getState().openModal({
+        title: coupon.name,
+        closable: true,
+        content: (
+          <CouponActivatedModal
+            coupon={coupon}
+            onClose={() => useModalStore.getState().closeModal()}
+            navigate={navigate}
+          />
+        ),
+      });
+    },
+    [navigate],
+  );
   // Активированные и новые купоны из данных пользователя
   const activatedCouponsArray = React.useMemo(
     () =>
@@ -121,7 +140,7 @@ const PrizesList: React.FC<PrizesListProps> = ({ isDrawerOpen }) => {
               {prize.name}
             </StyledSpan>
             {isActivated ? (
-              <ZewaButton variant="white-small" onClick={() => navigate('/prizes')}>
+              <ZewaButton variant="white-small" onClick={() => openCouponModal(prize)}>
                 Получить
               </ZewaButton>
             ) : (
@@ -137,7 +156,7 @@ const PrizesList: React.FC<PrizesListProps> = ({ isDrawerOpen }) => {
         </StyledCell>
       );
     });
-  }, [modifiedPrizes, userData, isDrawerOpen, lastActivatedIndex, isMobile, navigate]);
+  }, [modifiedPrizes, userData, isDrawerOpen, lastActivatedIndex, isMobile, openCouponModal]);
 
   const scrollToLastActivatedPrize = useCallback(() => {
     if (scrollContainerRef.current && prizeRefs.current[lastActivatedIndex]) {

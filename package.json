@@ -12,7 +12,8 @@
     "format": "prettier --write .",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
-    "test": "vitest run"
+    "test": "vitest run",
+    "env": "vite --printEnv"
   },
   "dependencies": {
     "@pixi/filter-glow": "^5.2.1",

@@ -55,7 +55,7 @@ const GameContainer: React.FC<GameProps> = ({
             <StyledCoins>
               <Text style={{ fontSize: '14px' }}> +{coins_earned} </Text>
               <img
-                src={`/public/assets/images/coins-icon.png`}
+                src={`/assets/images/coins-icon.png`}
                 width="24"
                 alt="coins-icon"
                 loading="lazy"

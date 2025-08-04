@@ -177,6 +177,14 @@ class Helper {
     const [, year, month, day] = match;
     return `${day}.${month}.${year}`;
   };
+  static formatDate2 = (dateString: string) => {
+    // YYYYMMDD[T]HHMM[SS]     →     DD.MM.YYYY HH:MM
+    const m = dateString.match(/^(\d{4})(\d{2})(\d{2})(?:T?(\d{2})(\d{2}))?/);
+    if (!m) return dateString;
+
+    const [, year, month, day, hh, mm] = m;
+    return hh && mm ? `${day}.${month}.${year} ${hh}:${mm}` : `${day}.${month}.${year}`;
+  };
 
   static deFormatDate = (dateValue: Date) => {
     const year = dateValue.getFullYear();

@@ -29,16 +29,26 @@ export const renderHowToPlayModal = async (game_coins: number) => {
 
     return (
       <Flex vertical gap="20px">
-        <Text style={{ textAlign: 'center' }} size="p4" align="center" color="#596471">
+        <Text
+          style={{ textAlign: 'center', whiteSpace: 'pre-wrap' }}
+          size="p4"
+          align="center"
+          color="#596471"
+        >
           {applyNbsp(`Добро пожаловать!
-          Сейчас расскажем подробнее, как играть. `)}
+          Сейчас расскажем подробнее, как играть. Если вы используете vpn, рекомендуем отключить его на время игры.`)}
           {game_coins ? (
             <>
               <br />
               {applyNbsp(`Вам доступны монеты в игре:`)}
-              <Flex justify='center' gap={'5px'}>
+              <Flex justify="center" gap={'5px'}>
                 <p>+{game_coins} </p>
-                <img width='22px' height="22px" src="./assets/images/items/coin3.png" alt="иконка монета" />
+                <img
+                  width="22px"
+                  height="22px"
+                  src="./assets/images/items/coin3.png"
+                  alt="иконка монета"
+                />
               </Flex>
             </>
           ) : (

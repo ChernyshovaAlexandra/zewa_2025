@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { PageContainer, Text } from '@/shared/ui';
 import { useUserStore } from '@/shared/model';
 import { apiService } from '@/services';
@@ -25,6 +25,35 @@ interface GameHistory {
   coins_earned: number;
 }
 
+const ts = (s?: string) => {
+  if (!s) return 0;
+
+  /* YYYYMMDDTHHMM */
+  const m1 = s.match(/^(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})$/);
+  if (m1) {
+    const [, y, mo, d, h, mi] = m1;
+    return Date.UTC(+y, +mo - 1, +d, +h, +mi);
+  }
+
+  const m2 = s.match(/^(\d{2})\.(\d{2})\.(\d{4})(?:\s+(\d{2}):(\d{2}))?$/);
+  if (m2) {
+    const [, d, mo, y, h = '0', mi = '0'] = m2;
+    return Date.UTC(+y, +mo - 1, +d, +h, +mi);
+  }
+
+  /* DD.MM.YY [HH:MM]  → 20YY */
+  const m3 = s.match(/^(\d{2})\.(\d{2})\.(\d{2})(?:\s+(\d{2}):(\d{2}))?$/);
+  if (m3) {
+    const [, d, mo, y2, h = '0', mi = '0'] = m3;
+    const y = 2000 + +y2; // «25» → 2025
+    return Date.UTC(y, +mo - 1, +d, +h, +mi);
+  }
+
+  /* всё остальное — Date.parse() */
+  const t = Date.parse(s);
+  return isNaN(t) ? 0 : t;
+};
+
 export function HistoryScreen() {
   const [active, setActive] = useState<'checks' | 'coins'>('checks');
   const [checks, setChecks] = useState<HistoryCheck[]>([]);
@@ -47,34 +76,36 @@ export function HistoryScreen() {
 
   useEffect(() => {
     if (!user) return;
+
     apiService
       .history({ telegram_id: user.id })
       .then((res) => {
         const { data } = res.data ?? [];
 
-        const sortedChecks = (data?.checks ?? [])
-          .slice()
-          .sort(
-            (a: any, b: any) =>
-              new Date(b.created_at ?? b.date_time_raw).getTime() -
-              new Date(a.created_at ?? a.date_time_raw).getTime(),
-          );
-
-        const sortedGames = (data?.games ?? [])
-          .slice()
-          .sort((a: any, b: any) => new Date(b.day).getTime() - new Date(a.day).getTime());
-
-        setChecks(sortedChecks);
-        setGames(sortedGames);
+        setChecks(data?.checks ?? []);
+        setGames(data?.games ?? []);
       })
       .catch((err) => {
         console.error('history error', err);
       });
   }, [user]);
 
+  const sortedChecks = useMemo(
+    () =>
+      [...checks].sort(
+        (a: any, b: any) =>
+          ts(b.date_time_raw || b.created_at) - ts(a.date_time_raw || a.created_at),
+      ),
+    [checks],
+  );
+
+  const sortedGames = useMemo(
+    () => [...games].sort((a: any, b: any) => ts(b.day) - ts(a.day)),
+    [games],
+  );
+
   const renderChecks = () => {
-    const data = checks?.length ? checks : [];
-    console.info(data);
+    const data = sortedChecks.length ? sortedChecks : [];
     if (!data.length) {
       return (
         <Text weight={700} color="white" align="center">
@@ -84,22 +115,25 @@ export function HistoryScreen() {
     }
     return (
       <>
-        {data.slice(0, visibleChecks).map((item, id) => (
-          <CheckContainer
-            key={id}
-            subtitle={`Чек №${id + 1}`}
-            caption={item.date_time_raw}
-            coins_earned={item.coins_earned}
-            status={item.status}
-            check={item}
-          />
-        ))}
+        {data.slice(0, visibleChecks).map((item, id) => {
+          console.info(item.date_time_raw);
+          return (
+            <CheckContainer
+              key={id}
+              subtitle={`Чек №${id + 1}`}
+              caption={item.date_time_raw}
+              coins_earned={item.coins_earned}
+              status={item.status}
+              check={item}
+            />
+          );
+        })}
       </>
     );
   };
 
   const renderGames = () => {
-    if (!games?.length) {
+    if (!sortedGames.length) {
       return (
         <Text weight={700} color="white" align="center">
           История игр пока пуста
@@ -108,7 +142,7 @@ export function HistoryScreen() {
     }
     return (
       <>
-        {games.slice(0, visibleGames).map((item, id) => (
+        {sortedGames.slice(0, visibleGames).map((item, id) => (
           <GameContainer
             key={id}
             header={item.code !== 'game4' ? `Игра «Снова в школу»` : `Друг присоединился к игре`}
