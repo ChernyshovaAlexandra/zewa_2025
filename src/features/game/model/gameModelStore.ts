@@ -53,7 +53,7 @@ interface GameModelState {
   spawnedCoinsCount: number;
   addItem: (canvasWidth: number, canvasHeight: number) => void;
   spawnCoin: (canvasWidth: number) => void;
-  moveItems: (canvasHeight: number) => void;
+  moveItems: (canvasHeight: number, dtMs: number) => void;
   markAsCaught: (id: string) => void;
   resetItems: () => void;
 
@@ -157,8 +157,9 @@ export const useGameModelStore = create<GameModelState>((set, get) => ({
     set((s) => ({
       items: s.items.map((item) => (item.id === id ? { ...item, caught: true } : item)),
     })),
-  moveItems: (canvasHeight) => {
+  moveItems: (canvasHeight, dtMs) => {
     const { x, canvasWidth } = get();
+    const speedCoef = dtMs / 18;
     const backpack = {
       x: canvasWidth / 2 + x,
       y: canvasHeight - BACKPACK_HEIGHT / 2 - 20,
@@ -173,7 +174,8 @@ export const useGameModelStore = create<GameModelState>((set, get) => ({
             if (item.kind === 'coin') return null;
             return { ...item, x: backpack.x + item.attachedOffsetX, y: backpack.y - item.radius };
           }
-          return handleItemCatch(item, backpack, canvasHeight, state);
+          const falling = { ...item, y: item.y + item.speed * speedCoef };
+          return handleItemCatch(falling, backpack, canvasHeight, state);
         })
         .filter(
           (item): item is Item =>
@@ -240,20 +242,20 @@ export const useGameModelStore = create<GameModelState>((set, get) => ({
       flashOverlay: true,
     }),
 
-  updateFlash: (delta) =>
+  updateFlash: (dtMs) =>
     set((state) => {
-      const FRAME_INTERVAL = 5;
+      const FRAME_INTERVAL_MS = 80;
       if (state.flashCount <= 0) return {};
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       let timer = (state as any)._flashTimer || 0;
-      timer += delta;
-      if (timer >= FRAME_INTERVAL) {
+      timer += dtMs;
+      if (timer >= FRAME_INTERVAL_MS) {
         const nextCount = state.flashCount - 1;
         return {
           flashCount: nextCount,
           flashOverlay: nextCount > 0 ? !state.flashOverlay : false,
-          _flashTimer: timer - FRAME_INTERVAL,
+          _flashTimer: timer - FRAME_INTERVAL_MS,
         };
       }
       return { _flashTimer: timer };

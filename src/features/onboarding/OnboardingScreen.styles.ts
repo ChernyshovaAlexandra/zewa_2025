@@ -13,15 +13,12 @@ export const Wrapper = styled.div`
 export const Image = styled.img`
   width: 100%;
   background-color: #fff;
-  aspect-ratio: 370 / 400;
+  aspect-ratio: 370 / 370;
   object-fit: cover;
   object-position: bottom;
   border-radius: 20px;
   margin-bottom: 15px;
-
-  @media screen and (max-height: 580px) {
-    max-height: 45vh;
-  }
+  max-height: 50vh;
 `;
 
 export const Text = styled.p`

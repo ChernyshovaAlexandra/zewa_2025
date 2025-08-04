@@ -1,7 +1,7 @@
 import { ITEM_CATALOG, type ItemKind } from '@/features/game/constants/items';
 import type { Item } from '@/features/game/model/gameModelStore';
 
-export const BASE_SPEED = 0.003
+export const BASE_SPEED = 0.0018
 export class ItemSpawner {
   private canvasWidth: number;
   private canvasHeight: number;
