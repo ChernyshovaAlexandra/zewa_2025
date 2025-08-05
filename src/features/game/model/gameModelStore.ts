@@ -185,7 +185,10 @@ export const useGameModelStore = create<GameModelState>((set, get) => ({
     set((s) => ({
       items: s.items.map((item) => (item.id === id ? { ...item, caught: true } : item)),
     })),
+<<<<<<< HEAD
 
+=======
+>>>>>>> develop
   setDragging: (v: boolean) => set({ dragging: v }),
   x: 0,
   targetX: 0,
