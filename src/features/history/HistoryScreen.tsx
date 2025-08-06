@@ -145,11 +145,11 @@ export function HistoryScreen() {
         {sortedGames.slice(0, visibleGames).map((item, id) => (
           <GameContainer
             key={id}
-            header={item.code !== 'game4' ? `Игра «Снова в школу»` : `Друг присоединился к игре`}
+            header={item.code !== 'referral' ? `Игра «Снова в школу»` : `Друг присоединился к игре`}
             caption={item.day}
             status={item.status}
             coins_earned={item.coins_earned}
-            points_earned={item.code !== 'game4' ? item.points_earned : 0}
+            points_earned={item.code !== 'referral' ? item.points_earned : 0}
           />
         ))}
       </>
