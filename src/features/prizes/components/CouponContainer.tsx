@@ -24,6 +24,7 @@ interface PrizeContainerProps {
     code?: string;
     barcode?: string;
     value: number;
+    can_change: boolean;
   };
   activated?: boolean;
   showSnackbar?: (message: string) => void;
@@ -64,7 +65,7 @@ const CouponContainer: React.FC<PrizeContainerProps> = ({ coupon }) => {
             />
           </Flex>
 
-          {coupon.barcode ? (
+          {coupon.barcode && coupon.can_change ? (
             <>
               <BarcodeComponent barcode={coupon.barcode} />
               <ZewaButton onClick={handleChangeToOnline} variant="blue-b">
