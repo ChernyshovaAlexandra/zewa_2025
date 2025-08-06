@@ -34,7 +34,7 @@ const TextContainer: React.FC<TextProps> = ({ title, description, isOffline }) =
         </Flex>
         <Flex gap={'5px'} align="center">
           <img style={{ height: '1.5rem' }} src="/assets/images/zewa-logo.png" alt="" />
-          <img style={{ height: '1.5rem' }} src="/assets/images/logo-magnit.svg" alt="" />
+          <img style={{ height: '2rem' }} src="/assets/images/logo-magnit.png" alt="" />
         </Flex>
       </Flex>
       <Spacing size={10} />
