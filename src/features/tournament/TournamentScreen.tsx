@@ -156,7 +156,7 @@ export function TournamentScreen() {
           <Text style={{ color: '#fff', lineHeight: 1.4, fontSize: '14px', textAlign: 'center' }}>
             <b>Неделя 1</b>
             <br />
-            С&nbsp;01.08&nbsp;по&nbsp;10.08
+            С&nbsp;05.08&nbsp;по&nbsp;10.08
           </Text>
           {winners.map((w, i) => {
             const img = prize_types_data[w.name]?.img || '/assets/images/prize-bg.png';

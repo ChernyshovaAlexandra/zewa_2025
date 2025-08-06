@@ -5,10 +5,9 @@ import { Flex } from 'antd';
 import type { useNavigate } from 'react-router-dom';
 
 export const renderPauseModal = (navigate: ReturnType<typeof useNavigate>) => {
-  const { pauseGame, resumeGame } = useGameModelStore.getState();
   const { openModal, closeModal } = useModalStore.getState();
 
-  pauseGame();
+  useGameModelStore.getState().pauseGame();
 
   openModal({
     title: 'Пауза',
@@ -18,7 +17,7 @@ export const renderPauseModal = (navigate: ReturnType<typeof useNavigate>) => {
         <ZewaButton
           variant="blue-b"
           onClick={() => {
-            resumeGame();
+            useGameModelStore.getState().resumeGame();
             closeModal();
           }}
         >

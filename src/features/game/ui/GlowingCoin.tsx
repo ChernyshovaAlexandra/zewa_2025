@@ -1,30 +1,22 @@
 import { AnimatedSprite, Container, Sprite, useTick } from '@pixi/react';
-import { useMemo, useRef, useState } from 'react';
+import { useMemo, useRef } from 'react';
 import * as PIXI from 'pixi.js';
 
 export const GlowingCoin = ({ x, y, size = 36 }: { x: number; y: number; size?: number }) => {
   const raysRef = useRef<PIXI.Sprite>(null);
   const coinRef = useRef<PIXI.AnimatedSprite>(null);
 
-  const [rotation, setRotation] = useState(0);
   const textures = useMemo(
     () =>
-      [
-        'coina3-1.png',
-        'coina3-2.png',
-        'coina3-3.png',
-        'coina3-4.png',
-        'coina3-5.png',
-        'coina3-5.png',
-        'coina3-5.png',
-      ].map((p) => PIXI.Texture.from(`/assets/images/items/${p}`)),
+      ['coina3-1.png', 'coina3-2.png', 'coina3-3.png', 'coina3-4.png', 'coina3-5.png'].map((p) =>
+        PIXI.Texture.from(`/assets/images/items/${p}`),
+      ),
     [],
   );
 
   useTick((delta) => {
-    setRotation((prev) => prev + 0.01 * delta);
     if (raysRef.current) {
-      raysRef.current.rotation = rotation;
+      raysRef.current.rotation += 0.05 * delta;
     }
   });
 

@@ -85,6 +85,17 @@ export class ApiService {
   private withHash<T extends Record<string, unknown>>(
     data: T,
   ): T & { hash: string; payload: string; ts: number } {
+    console.info(data);
+
+    if (data.points || data.coins) {
+      return {
+        ...data,
+        telegram_id: this.telegram_id,
+        payload: this.payload + `&coins=${data.coins}` + `&points=${data.points}`,
+        ts: this.ts,
+        hash: '',
+      };
+    }
     return {
       ...data,
       telegram_id: this.telegram_id,

@@ -1,13 +1,12 @@
-/* eslint-disable @typescript-eslint/no-unused-expressions */
 import { useTick } from '@pixi/react';
 import { useRef, useEffect } from 'react';
 import { useGameModelStore } from '@/features/game/model/gameModelStore';
 import { renderPauseModal } from '../renderPauseModal';
+import { useGameProgressStore } from '../../model/useGameProgressStore';
 const COIN_CHANCE = 0.2;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const useGameTicker = (canvasWidth: number, canvasHeight: number, navigate: any) => {
   const moveItems = useGameModelStore((s) => s.moveItems);
-  const isPaused = useGameModelStore((s) => s.isPaused);
   const addItem = useGameModelStore((s) => s.addItem);
   const spawnCoin = useGameModelStore((s) => s.spawnCoin);
   const coins = useGameModelStore((s) => s.coins);
@@ -26,30 +25,33 @@ export const useGameTicker = (canvasWidth: number, canvasHeight: number, navigat
   const ADD_INTERVAL = canvasHeight >= BASE_HEIGHT && canvasHeight < MAX_HEIGHT ? 2800 : 1800;
 
   useEffect(() => {
+    const getStores = () => ({
+      isGameStarted: useGameModelStore.getState().isGameStarted,
+      hasPlayedSession: useGameProgressStore.getState().hasPlayedSession,
+    });
+
     const handleVisibility = () => {
+      const { isGameStarted, hasPlayedSession } = getStores();
+      if (!isGameStarted || !hasPlayedSession) return;
       if (document.hidden) {
         renderPauseModal(navigate);
-      } else if (!useGameModelStore.getState().isPaused) {
-        resumeGame();
       }
     };
-    const handleBlur = () => renderPauseModal(navigate);
-    const handleFocus = () => {
-      if (!useGameModelStore.getState().isPaused) {
-        resumeGame();
-        lastFrame.current = performance.now();
-      }
+
+    const handleBlur = () => {
+      const { isGameStarted, hasPlayedSession } = getStores();
+      if (!isGameStarted || !hasPlayedSession) return;
+      renderPauseModal(navigate);
     };
 
     document.addEventListener('visibilitychange', handleVisibility);
     window.addEventListener('blur', handleBlur);
-    window.addEventListener('focus', handleFocus);
+
     return () => {
       document.removeEventListener('visibilitychange', handleVisibility);
       window.removeEventListener('blur', handleBlur);
-      window.removeEventListener('focus', handleFocus);
     };
-  }, [navigate, pauseGame, resumeGame]);
+  }, [navigate, pauseGame, resumeGame, isGameStarted]);
 
   useEffect(() => {
     if (isGameStarted) {
@@ -59,6 +61,7 @@ export const useGameTicker = (canvasWidth: number, canvasHeight: number, navigat
   }, [isGameStarted]);
 
   useTick(() => {
+    const { isGameStarted, isPaused } = useGameModelStore.getState();
     if (!isGameStarted || isPaused) return;
 
     const now = performance.now();
@@ -70,7 +73,7 @@ export const useGameTicker = (canvasWidth: number, canvasHeight: number, navigat
     accSpawnMs.current += dtMs;
     if (accSpawnMs.current >= ADD_INTERVAL) {
       const canSpawnCoin =
-        coins < coins_available && !justCoin.current && Math.random() < COIN_CHANCE; // шанс выпадения монеты
+        coins < coins_available && !justCoin.current && Math.random() < COIN_CHANCE; 
       if (canSpawnCoin) {
         spawnCoin(canvasWidth, canvasHeight, dtMs);
         justCoin.current = true;
