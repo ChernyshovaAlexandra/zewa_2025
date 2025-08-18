@@ -33,7 +33,7 @@ export function TournamentScreen() {
       </PageContainer>
     );
   }
-  const winners = Object.values(data.draw_winners)[0] ?? [];
+
   const mappedPlayers = data.topPlayers
     .slice()
     .sort((a, b) => b.points - a.points)
@@ -152,29 +152,60 @@ export function TournamentScreen() {
           </S.Table>
         </Fragment>
       ) : (
-        <div>
-          <Text style={{ color: '#fff', lineHeight: 1.4, fontSize: '14px', textAlign: 'center' }}>
-            <b>Неделя 1</b>
-            <br />
-            С&nbsp;05.08&nbsp;по&nbsp;10.08
-          </Text>
-          {winners.map((w, i) => {
-            const img = prize_types_data[w.name]?.img || '/assets/images/prize-bg.png';
-            return (
-              <S.PrizeItem key={i}>
-                <div>
-                  <Text color="#1235AB" weight={900}>
-                    {smartMaskName(w.name)}
+        <>
+          {Object.entries(data.draw_winners).map(([week, winners]) => (
+            <>
+              {winners.length ? (
+                <div key={week}>
+                  <Text
+                    style={{
+                      color: '#fff',
+                      lineHeight: 1.4,
+                      fontSize: '14px',
+                      textAlign: 'center',
+                      marginBottom: '10px',
+                    }}
+                  >
+                    <b>Неделя {week}</b>
+                    <br />
+                    {/* сюда лучше пробрасывать даты с бэка, если они есть */}
+                    {/* пока оставляю заглушку */}
+                    {week === '1' ? (
+                      <>С&nbsp;05.08&nbsp;по&nbsp;10.08</>
+                    ) : week === '2' ? (
+                      <>С&nbsp;11.08&nbsp;по&nbsp;17.08</>
+                    ) : week === '3' ? (
+                      <>С&nbsp;18.08&nbsp;по&nbsp;24.08</>
+                    ) : week === '4' ? (
+                      <>С&nbsp;25.08&nbsp;по&nbsp;31.08</>
+                    ) : (
+                      <></>
+                    )}
                   </Text>
-                  <Text size="p4" color="#596471">
-                    {w.prize}
-                  </Text>
+
+                  {(winners as Array<{ name: string; prize: string }>).map((w, i) => {
+                    const img = prize_types_data[w.name]?.img || '/assets/images/prize-bg.png';
+                    return (
+                      <S.PrizeItem key={i}>
+                        <div>
+                          <Text color="#1235AB" weight={900}>
+                            {smartMaskName(w.name)}
+                          </Text>
+                          <Text size="p4" color="#596471">
+                            {w.prize}
+                          </Text>
+                        </div>
+                        <img src={img} alt={w.prize} width={50} height={50} />
+                      </S.PrizeItem>
+                    );
+                  })}
                 </div>
-                <img src={img} alt={w.prize} width={50} height={50} />
-              </S.PrizeItem>
-            );
-          })}
-        </div>
+              ) : (
+                <></>
+              )}
+            </>
+          ))}
+        </>
       )}
     </PageContainer>
   );
