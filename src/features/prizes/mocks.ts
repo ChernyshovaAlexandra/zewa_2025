@@ -111,7 +111,7 @@ export const prize_types_data: Record<
     manager:
       'После получения личного сообщения в мессенджере сообщите о себе необходимую информацию. После её проверки мы доставим приз в удобное для вас место и время.',
   },
-  'Умные часы Honor Choice InFoWear 2i 5504ACGM ': {
+  'Умные часы Honor Choice InFoWear 2i 5504ACGM': {
     img: `
     /assets/images/prizes/watch.jpg`,
     img_thumb: `
