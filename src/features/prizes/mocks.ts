@@ -116,7 +116,7 @@ export const prize_types_data: Record<
     /assets/images/prizes/watch.jpg`,
     img_thumb: `
     /assets/images/prizes/watch.png`,
-    description: `Умные часы Honor Choice InFoWear 2i 5504ACGM `,
+    description: `Умные часы Honor Choice InFoWear 2i 5504ACGM`,
     manager:
       'После получения личного сообщения в мессенджере сообщите о себе необходимую информацию. После её проверки мы доставим приз в удобное для вас место и время.',
   },
@@ -129,7 +129,7 @@ export const prize_types_data: Record<
     manager:
       'После получения личного сообщения в мессенджере сообщите о себе необходимую информацию. После её проверки мы доставим приз в удобное для вас место и время.',
   },
-  'Беспроводные наушники JBL Tune 520BT, USB Type-C ': {
+  'Беспроводные наушники JBL Tune 520BT, USB Type-C': {
     img: `
     /assets/images/prizes/headphones.jpg`,
     img_thumb: `
