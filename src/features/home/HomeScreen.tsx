@@ -20,7 +20,6 @@ export function HomeScreen() {
       <Navigation>
         <Flex justify="space-between">
           <Coins />
-
           <Flex gap="10px">
             <ZewaButton variant="white" onClick={() => navigate('/tournament')}>
               <TournamentIcon />
