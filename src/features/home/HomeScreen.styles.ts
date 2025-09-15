@@ -11,7 +11,7 @@ export const HomeWrapper = styled.div<{ $withImage?: boolean }>`
   > * {
     position: relative;
   }
-  /* &::before {
+  &::before {
     content: '';
     position: absolute;
     width: 100%;
@@ -19,7 +19,7 @@ export const HomeWrapper = styled.div<{ $withImage?: boolean }>`
     background: url('./assets/images/1.webp') no-repeat center top;
     background-size: cover;
     z-index: 0;
-  } */
+  }
 `;
 
 export const BackpackContainer = styled.div`
