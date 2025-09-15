@@ -36,7 +36,6 @@ export function HomeScreenClosed() {
         >{`Ждите следующих\nобновлений!\nДо скорой встречи!`}</h1>
       </Flex>
       <ZewaButton
-    //   finl
         variant="white"
         onClick={() => {
           window.open('https://t.me/zemma_zewa_support', '_blank');
