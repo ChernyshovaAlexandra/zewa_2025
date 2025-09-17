@@ -1,4 +1,4 @@
-import { UserIcon, ZewaButton } from '@/shared/ui';
+import { TournamentIcon, UserIcon, ZewaButton } from '@/shared/ui';
 import { HomeWrapper, Navigation } from './HomeScreen.styles';
 import { Flex } from 'antd';
 import { useNavigate } from 'react-router-dom';
@@ -12,7 +12,10 @@ export function HomeScreenClosed() {
   return (
     <HomeWrapper $withImage>
       <Navigation>
-        <Flex justify="flex-end">
+        <Flex justify="space-between">
+          <ZewaButton variant="white" onClick={() => navigate('/tournament')}>
+            <TournamentIcon />
+          </ZewaButton>
           <ZewaButton variant="white" onClick={() => navigate('/profile')}>
             <UserIcon />
           </ZewaButton>

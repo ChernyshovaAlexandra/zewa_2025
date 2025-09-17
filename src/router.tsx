@@ -21,9 +21,9 @@ const PrizesScreen = lazy(() =>
 // const FaqScreen = lazy(() =>
 //   import('@/features/faq/FaqScreen').then((m) => ({ default: m.FaqScreen })),
 // );
-// const TournamentScreen = lazy(() =>
-//   import('@/features/tournament/TournamentScreen').then((m) => ({ default: m.TournamentScreen })),
-// );
+const TournamentScreen = lazy(() =>
+  import('@/features/tournament/TournamentScreen').then((m) => ({ default: m.TournamentScreen })),
+);
 // const GameRulesScreen = lazy(() =>
 //   import('@/features/game/GameRulesScreen').then((m) => ({ default: m.GameRulesScreen })),
 // );
@@ -42,11 +42,12 @@ export function AppRouter() {
         <Routes>
           <Route path="/" element={<HomeScreen />} />
           <Route path="/prizes" element={<PrizesScreen />} />
+          <Route path="/tournament" element={<TournamentScreen />} />
           {/* <Route path="/upload" element={<UploadCheckScreen />} />
           <Route path="/history" element={<HistoryScreen />} />
           <Route path="/rules" element={<RulesScreen />} />
           <Route path="/faq" element={<FaqScreen />} />
-          <Route path="/tournament" element={<TournamentScreen />} />
+          
           <Route path="/game/rules" element={<GameRulesScreen />} />
           <Route path="/game" element={<GameScreen />} /> */}
           <Route path="/profile" element={<ProfileScreen />} />
