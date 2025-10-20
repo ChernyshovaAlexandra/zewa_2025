@@ -7,6 +7,7 @@ export * from './rules/RulesScreen';
 export * from './faq/FaqScreen';
 export * from './tournament/TournamentScreen';
 export * from './game';
+export * from './memo-game';
 export * from './error/ErrorPage';
 export * from './profile/ProfileScreen';
 export * from './checks/lib/renderQrScannerModal';

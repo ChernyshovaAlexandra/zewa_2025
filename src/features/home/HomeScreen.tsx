@@ -32,7 +32,11 @@ export function HomeScreen() {
       </Navigation>
       <BackpackContainer>
         <Backpack src="./assets/images/backpack.webp" alt="Backpack" />
-        <ZewaButton variant="play" icon={<PlayIcon />} onClick={() => navigate('/game')}>
+        <ZewaButton
+          variant="play"
+          icon={<PlayIcon />}
+          onClick={() => navigate('/game/memo/levels')}
+        >
           ИГРАТЬ
         </ZewaButton>
       </BackpackContainer>
