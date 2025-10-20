@@ -14,29 +14,7 @@ export const InfoBlock = styled.div`
   align-items: center;
   gap: 4px;
   text-align: center;
-
-  h2,
-  h3 {
-    color: #eaf6ff; /* светло-голубой как на макете */
-  text-align: center;
-  font-family: 'Foco Trial', sans-serif;
-  font-weight: 900;
-  font-size: 40px;
-  line-height: 110%;
-  text-transform: uppercase;
-
-  /* Контур */
-  -webkit-text-stroke: 3px #193f74;
-
-  /* Подсветка и глубина */
-  text-shadow:
-    0 2px 6px rgba(25, 63, 116, 0.8),
-    0 4px 14px rgba(25, 63, 116, 0.6);
-
-  font-feature-settings: 'liga' off, 'clig' off;
-  }
 `;
-
 
 export const CardsGrid = styled.div<{ $columns: number }>`
   display: grid;
@@ -59,10 +37,15 @@ export const Card = styled.button`
   cursor: pointer;
   perspective: 1000px;
   transform-style: preserve-3d;
+  transition: transform 0.2s ease;
 
   &:focus-visible {
     outline: 2px solid #5d79c1;
     outline-offset: 3px;
+  }
+
+  &[disabled] {
+    cursor: default;
   }
 
   @supports not (aspect-ratio: 1) {
@@ -74,7 +57,7 @@ export const Card = styled.button`
   }
 `;
 
-export const CardInner = styled.div<{ $flipped: boolean }>`
+export const CardInner = styled.div<{ $flipped: boolean; $matched: boolean }>`
   position: absolute;
   inset: 0;
   border-radius: 6px;
@@ -82,6 +65,15 @@ export const CardInner = styled.div<{ $flipped: boolean }>`
   transition: transform 0.6s ease;
   box-shadow: 0px 8px 24px rgba(31, 37, 50, 0.08);
   will-change: transform;
+
+  ${({ $matched }) =>
+    $matched &&
+    css`
+      box-shadow:
+        0 0 0 2px rgba(63, 191, 138, 0.85),
+        0px 8px 28px rgba(63, 191, 138, 0.35);
+    `}
+
   ${({ $flipped }) =>
     $flipped
       ? css`
@@ -108,25 +100,42 @@ export const CardFace = styled.div`
 `;
 
 export const CardBack = styled(CardFace)`
-  background: url(/assets/images/memo/back.webp) no-repeat center;
+  background: linear-gradient(180deg, #dbe4ff 0%, #a0b6ff 100%);
+  background-image: url('/assets/images/memo/back.webp');
+  background-repeat: no-repeat;
+  background-position: center;
   background-size: cover;
 `;
 
-export const CardFront = styled(CardFace)`
+export const CardFront = styled(CardFace)<{ $matched: boolean }>`
   transform: rotateY(180deg);
   background: #ffffff;
+  position: relative;
+  width: 100%;
+  height: 100%;
+
+  ${({ $matched }) =>
+    $matched &&
+    css`
+      &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: rgba(63, 191, 138, 0.24);
+        border: 2px solid rgba(63, 191, 138, 0.9);
+        border-radius: 6px;
+        box-shadow: inset 0 0 12px rgba(63, 191, 138, 0.35);
+      }
+    `}
 `;
 
 export const CardFrontImage = styled.img`
   width: 70%;
   height: 70%;
-  object-fit: cover;
-  pointer-events: none;
-`;
-
-export const CardBackImage = styled.img`
-  width: 70%;
-  height: auto;
   object-fit: contain;
   pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  position: relative;
+  z-index: 1;
 `;
