@@ -15,8 +15,7 @@ export default function App() {
   const {
     isReady: isTelegramReady,
     isTelegramWebApp,
-    safeAreaInsetTop,
-    safeAreaInsetBottom,
+    safeAreaInsetTop
   } = useTelegram();
 
   useEffect(() => {
@@ -30,7 +29,6 @@ export default function App() {
 
   const insets: SafeAreaInsets = {
     top: Math.max(0, safeAreaInsetTop),
-    bottom: Math.max(0, safeAreaInsetBottom),
     left: 0,
     right: 0,
   };

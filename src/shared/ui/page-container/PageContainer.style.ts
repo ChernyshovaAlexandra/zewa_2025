@@ -8,6 +8,7 @@ export const Wrapper = styled.div<{
   align-items: center;
   background: url('./assets/images/game-bg.webp');
   box-sizing: border-box;
+  padding-bottom: var(--twa-safe-area-bottom, 0px);
 
   ${({ $fullscreen }) =>
     $fullscreen &&

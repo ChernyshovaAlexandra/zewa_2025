@@ -9,7 +9,6 @@ interface TelegramContextValue {
   isTelegramWebApp: boolean;
   isReady: boolean;
   safeAreaInsetTop: number;
-  safeAreaInsetBottom: number;
 }
 
 const initialContext: TelegramContextValue = {
@@ -17,7 +16,6 @@ const initialContext: TelegramContextValue = {
   isTelegramWebApp: false,
   isReady: false,
   safeAreaInsetTop: 0,
-  safeAreaInsetBottom: 0,
 };
 
 export const TelegramContext = createContext<TelegramContextValue>(initialContext);
@@ -29,7 +27,6 @@ export function TelegramProvider({ children }: { children: ReactNode }) {
   const [isTelegramWebApp, setIsTelegramWebApp] = useState(initialContext.isTelegramWebApp);
   const [isReady, setIsReady] = useState(initialContext.isReady);
   const [safeAreaInsetTop, setSafeAreaInsetTop] = useState(initialContext.safeAreaInsetTop);
-  const [safeAreaInsetBottom, setSafeAreaInsetBottom] = useState(initialContext.safeAreaInsetBottom);
 
   useEffect(() => {
     if (typeof document === 'undefined') return;
@@ -38,18 +35,14 @@ export function TelegramProvider({ children }: { children: ReactNode }) {
       '--twa-safe-area-top',
       `${Math.max(0, safeAreaInsetTop)}px`,
     );
-    document.documentElement.style.setProperty(
-      '--twa-safe-area-bottom',
-      `${Math.max(0, safeAreaInsetBottom)}px`,
-    );
-  }, [safeAreaInsetTop, safeAreaInsetBottom]);
+  });
 
   useEffect(() => {
     if (typeof window === 'undefined') {
       setIsTelegramWebApp(false);
       setIsReady(true);
       setSafeAreaInsetTop(0);
-      setSafeAreaInsetBottom(0);
+
       return;
     }
 
@@ -87,18 +80,22 @@ export function TelegramProvider({ children }: { children: ReactNode }) {
         return Math.max(0, directValue);
       }
 
-      const safeAreaObjectTop = (webApp as TelegramWebApp & {
-        safeArea?: { top?: number };
-        safeAreaInsets?: { top?: number };
-      }).safeArea?.top;
+      const safeAreaObjectTop = (
+        webApp as TelegramWebApp & {
+          safeArea?: { top?: number };
+          safeAreaInsets?: { top?: number };
+        }
+      ).safeArea?.top;
 
       if (typeof safeAreaObjectTop === 'number' && Number.isFinite(safeAreaObjectTop)) {
         return Math.max(0, safeAreaObjectTop);
       }
 
-      const safeAreaInsetsTop = (webApp as TelegramWebApp & {
-        safeAreaInsets?: { top?: number };
-      }).safeAreaInsets?.top;
+      const safeAreaInsetsTop = (
+        webApp as TelegramWebApp & {
+          safeAreaInsets?: { top?: number };
+        }
+      ).safeAreaInsets?.top;
       if (typeof safeAreaInsetsTop === 'number' && Number.isFinite(safeAreaInsetsTop)) {
         return Math.max(0, safeAreaInsetsTop);
       }
@@ -123,63 +120,11 @@ export function TelegramProvider({ children }: { children: ReactNode }) {
       return 0;
     };
 
-    const computeSafeAreaBottom = (
-      webApp: TelegramWebApp | null | undefined,
-      computedTop: number,
-    ) => {
-      if (!webApp) return readCssSafeArea('bottom');
-
-      const directValue = (webApp as TelegramWebApp & { safeAreaInsetBottom?: number })
-        .safeAreaInsetBottom;
-      if (typeof directValue === 'number' && Number.isFinite(directValue)) {
-        return Math.max(0, directValue);
-      }
-
-      const safeAreaObjectBottom = (webApp as TelegramWebApp & {
-        safeArea?: { bottom?: number };
-      }).safeArea?.bottom;
-
-      if (typeof safeAreaObjectBottom === 'number' && Number.isFinite(safeAreaObjectBottom)) {
-        return Math.max(0, safeAreaObjectBottom);
-      }
-
-      const safeAreaInsetsBottom = (webApp as TelegramWebApp & {
-        safeAreaInsets?: { bottom?: number };
-      }).safeAreaInsets?.bottom;
-      if (typeof safeAreaInsetsBottom === 'number' && Number.isFinite(safeAreaInsetsBottom)) {
-        return Math.max(0, safeAreaInsetsBottom);
-      }
-
-      const cssValue = readCssSafeArea('bottom');
-      if (cssValue > 0) {
-        return cssValue;
-      }
-
-      if (
-        typeof window !== 'undefined' &&
-        typeof webApp.viewportStableHeight === 'number' &&
-        Number.isFinite(webApp.viewportStableHeight) &&
-        webApp.viewportStableHeight > 0
-      ) {
-        const diff = window.innerHeight - webApp.viewportStableHeight;
-        if (diff > 0) {
-          const bottomCandidate = diff - Math.max(0, computedTop);
-          if (bottomCandidate > 0) {
-            return bottomCandidate;
-          }
-        }
-      }
-
-      return 0;
-    };
-
     const applySafeArea = (webAppInstance?: TelegramWebApp | null) => {
       if (cancelled) return;
       const webApp = webAppInstance ?? telegramService.getWebApp();
       const top = computeSafeAreaTop(webApp);
-      const bottom = computeSafeAreaBottom(webApp, top);
-      setSafeAreaInsetTop(top);
-      setSafeAreaInsetBottom(bottom);
+      setSafeAreaInsetTop(top + 20);
     };
 
     const complete = (value: boolean) => {
@@ -188,7 +133,6 @@ export function TelegramProvider({ children }: { children: ReactNode }) {
       setIsReady(true);
       if (!value) {
         setSafeAreaInsetTop(0);
-        setSafeAreaInsetBottom(0);
       }
     };
 
@@ -313,7 +257,6 @@ export function TelegramProvider({ children }: { children: ReactNode }) {
         isTelegramWebApp,
         isReady,
         safeAreaInsetTop,
-        safeAreaInsetBottom,
       }}
     >
       {children}

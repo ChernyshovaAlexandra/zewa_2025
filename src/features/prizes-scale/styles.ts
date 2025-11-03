@@ -4,10 +4,10 @@ import { ButtonProps, ButtonStyles } from '@/components';
 
 export const ContentWithDomovenok = styled.div`
   position: absolute;
-  bottom: -55px;
+  bottom: calc(var(--twa-safe-area-bottom, 0px) - 55px);
   left: 0;
-  width: 184px;
-  height: 179px;
+  width: 198px;
+  height: 142px;
   touch-action: none;
   z-index: 200;
 
@@ -25,7 +25,7 @@ export const PaperRoll = styled.div`
   position: absolute;
   right: -20px;
   background-size: contain;
-  bottom: -3px;
+  bottom: calc(var(--twa-safe-area-bottom, 0px) - 3px);
   z-index: 2;
   transition: all 4s ease-in-out;
 `;
@@ -35,7 +35,7 @@ export const RollingLine = styled.div<{ $isOpen: boolean }>`
     display: block;
   }
   position: fixed;
-  bottom: 1.5rem;
+  bottom: calc(var(--twa-safe-area-bottom, 0px) + 1.5rem);
   left: 0;
   width: 100%;
   background: #3c68ee30;
@@ -52,7 +52,7 @@ export const DomovenokInitial = styled.picture<{ $isOpen: boolean }>`
   }
   position: absolute;
   left: 0;
-  bottom: 0;
+  bottom: var(--twa-safe-area-bottom, 0px);
   opacity: ${({ $isOpen }) => ($isOpen ? 0 : 1)};
   transition: opacity 0.3s ease-in-out;
   z-index: 200;
@@ -68,16 +68,17 @@ export const DomovenokOpened = styled.picture<{ $isOpen: boolean }>`
   }
   position: absolute;
   left: 0;
-  bottom: 0;
+  bottom: var(--twa-safe-area-bottom, 0px);
   opacity: ${({ $isOpen }) => ($isOpen ? 1 : 0)};
   transition: opacity 0.3s ease-in-out;
 `;
 
 export const DrawerWrapper = styled.div<{ $isOpen: boolean }>`
   position: absolute;
-  bottom: 0;
+  bottom: var(--twa-safe-area-bottom, 0px);
   height: ${({ $isOpen }) => ($isOpen ? '40%' : `4rem`)};
   width: 100%;
+  padding-bottom: calc(var(--twa-safe-area-bottom, 0px) + 12px);
   background: ${({ $isOpen }) =>
     $isOpen
       ? `#f4fcff linear-gradient(
@@ -94,7 +95,8 @@ export const DrawerWrapper = styled.div<{ $isOpen: boolean }>`
     position: relative;
   }
   @media screen and (max-height: 570px) {
-    bottom: ${({ $isOpen }) => ($isOpen ? '1.9rem' : '0')};
+    bottom: ${({ $isOpen }) =>
+      $isOpen ? `calc(var(--twa-safe-area-bottom, 0px) + 1.9rem)` : 'var(--twa-safe-area-bottom, 0px)'};
     height: ${({ $isOpen }) => ($isOpen ? '40%' : `5rem`)};
   }
 
