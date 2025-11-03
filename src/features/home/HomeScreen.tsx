@@ -68,7 +68,7 @@ export function HomeScreen() {
         <ZewaButton
           style={{ padding: '14px', color: '#E53375' }}
           variant="white"
-          onClick={() => navigate('/')}
+          onClick={() => navigate('/club')}
         >
           Клуб помощников Домовёнка
         </ZewaButton>

@@ -45,7 +45,7 @@ export function MemoGameLevelsScreen() {
   };
 
   return (
-    <PageContainer title="Игра «Мемо»" onBack={() => navigate(-1)}>
+    <PageContainer onBack={() => navigate('/')}>
       <Text align="center" size="p3" color="#596471">
         Выберите уровень перед стартом. По мере обновлений мы сможем разблокировать новые режимы.
       </Text>
@@ -69,11 +69,7 @@ export function MemoGameLevelsScreen() {
                   </Text>
                 </S.LevelInfo>
               </S.LevelHeader>
-              <ZewaButton
-                variant="blue-b"
-                disabled={isLocked}
-                onClick={() => handlePlay(level.id)}
-              >
+              <ZewaButton variant="blue-b" disabled={isLocked} onClick={() => handlePlay(level.id)}>
                 {isLocked ? 'Скоро' : 'Играть'}
               </ZewaButton>
             </S.LevelCard>

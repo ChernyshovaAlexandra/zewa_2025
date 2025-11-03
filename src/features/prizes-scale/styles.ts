@@ -1,10 +1,11 @@
 import styled from 'styled-components';
 import { Card, EllipsisText, HorizontalScroll } from '@vkontakte/vkui';
 import { ButtonProps, ButtonStyles } from '@/components';
+import { Text } from '@/shared/ui';
 
 export const ContentWithDomovenok = styled.div`
   position: absolute;
-  bottom: calc(var(--twa-safe-area-bottom, 0px) - 55px);
+  bottom: 0;
   left: 0;
   width: 198px;
   height: 142px;
@@ -25,7 +26,7 @@ export const PaperRoll = styled.div`
   position: absolute;
   right: -20px;
   background-size: contain;
-  bottom: calc(var(--twa-safe-area-bottom, 0px) - 3px);
+  bottom: -3px;
   z-index: 2;
   transition: all 4s ease-in-out;
 `;
@@ -35,7 +36,7 @@ export const RollingLine = styled.div<{ $isOpen: boolean }>`
     display: block;
   }
   position: fixed;
-  bottom: calc(var(--twa-safe-area-bottom, 0px) + 1.5rem);
+  bottom: 1.5rem;
   left: 0;
   width: 100%;
   background: #3c68ee30;
@@ -52,7 +53,7 @@ export const DomovenokInitial = styled.picture<{ $isOpen: boolean }>`
   }
   position: absolute;
   left: 0;
-  bottom: var(--twa-safe-area-bottom, 0px);
+  bottom: 0;
   opacity: ${({ $isOpen }) => ($isOpen ? 0 : 1)};
   transition: opacity 0.3s ease-in-out;
   z-index: 200;
@@ -68,35 +69,28 @@ export const DomovenokOpened = styled.picture<{ $isOpen: boolean }>`
   }
   position: absolute;
   left: 0;
-  bottom: var(--twa-safe-area-bottom, 0px);
+  bottom: 0;
   opacity: ${({ $isOpen }) => ($isOpen ? 1 : 0)};
   transition: opacity 0.3s ease-in-out;
 `;
 
 export const DrawerWrapper = styled.div<{ $isOpen: boolean }>`
   position: absolute;
-  bottom: var(--twa-safe-area-bottom, 0px);
+  bottom: 0;
   height: ${({ $isOpen }) => ($isOpen ? '40%' : `4rem`)};
   width: 100%;
-  padding-bottom: calc(var(--twa-safe-area-bottom, 0px) + 12px);
-  background: ${({ $isOpen }) =>
-    $isOpen
-      ? `#f4fcff linear-gradient(
-      180deg,
-      rgba(244, 252, 255, 0) 60%,
-      rgba(244, 252, 255, 0) 65%,
-      #cfd9eb 85%,
-      #cfd9eb 100%
-    )`
-      : `#f4fcff`};
+  background: url('/assets/images/scale/bg.webp') no-repeat center;
+  background-size: cover;
   border-radius: 20px 20px 0 0;
+  border: 1px solid #ebf9ff;
   z-index: 200;
+
   > p {
     position: relative;
   }
+
   @media screen and (max-height: 570px) {
-    bottom: ${({ $isOpen }) =>
-      $isOpen ? `calc(var(--twa-safe-area-bottom, 0px) + 1.9rem)` : 'var(--twa-safe-area-bottom, 0px)'};
+    bottom: ${({ $isOpen }) => ($isOpen ? '1.9rem' : '0')};
     height: ${({ $isOpen }) => ($isOpen ? '40%' : `5rem`)};
   }
 
@@ -110,23 +104,26 @@ export const DrawerWrapper = styled.div<{ $isOpen: boolean }>`
     left: 0;
     right: 0;
     margin: auto;
-    transform: ${({ $isOpen }) => ($isOpen ? `rotate(-90deg)` : `rotate(90deg)`)};
-    width: 1.25rem;
-    height: 1.25rem;
+    transform: ${({ $isOpen }) => ($isOpen ? `rotate(0deg)` : `rotate(-180deg)`)};
+    width: 0.9rem;
+    height: 0.9rem;
+    z-index: 10;
   }
+
   &:before {
     content: '';
     position: absolute;
     display: block;
-    width: 6rem;
-    height: 10rem;
-    background: #f4fcff;
+    width: 39px;
+    height: 39px;
+    background: #e53375;
     top: -1.3rem;
     left: 0;
     right: 0;
     margin: auto;
     border-radius: 100%;
-    z-index: 0;
+    clip-path: polygon(0 56%, 100% 56%, 100% 0, 0 0);
+    z-index: 5;
   }
 `;
 
@@ -342,6 +339,25 @@ export const StyledCell = styled.div<{
     z-index: 10;
     transform: skewX(32deg);
   }
+`;
+
+export const ScaleTitle = styled(Text)`
+  color: #fff;
+  text-align: center;
+  font-feature-settings:
+    'liga' off,
+    'clig' off;
+  text-shadow: 0 1px 0 rgba(18, 53, 171, 0.5);
+
+  /* H2 */
+  -webkit-text-stroke-width: 1.3px;
+  -webkit-text-stroke-color: var(---, #193f74);
+  font-family: 'Foco Trial';
+  font-size: 1.5rem;
+  font-style: normal;
+  font-weight: 900;
+  line-height: 110%;
+  margin-top: 10px;
 `;
 
 export const SpanDraw = styled.span`

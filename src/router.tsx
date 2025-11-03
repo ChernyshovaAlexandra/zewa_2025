@@ -24,6 +24,9 @@ const FaqScreen = lazy(() =>
 const TournamentScreen = lazy(() =>
   import('@/features/tournament/TournamentScreen').then((m) => ({ default: m.TournamentScreen })),
 );
+const ClubScreen = lazy(() =>
+  import('@/features/club/ClubScreen').then((m) => ({ default: m.ClubScreen })),
+);
 
 const BackToSchoolGameScreen = lazy(() =>
   import('@/features/back-to-school-game/GameScreen').then((m) => ({
@@ -62,6 +65,7 @@ export function AppRouter() {
           <Route path="/history" element={<HistoryScreen />} />
           <Route path="/rules" element={<RulesScreen />} />
           <Route path="/faq" element={<FaqScreen />} />
+          <Route path="/club" element={<ClubScreen />} />
 
           <Route path="/back-to-school-game" element={<BackToSchoolGameScreen />} />
           <Route path="/back-to-school-game/rules" element={<BackToSchoolGameRulesScreen />} />
