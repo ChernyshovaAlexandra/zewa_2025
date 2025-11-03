@@ -47,13 +47,15 @@ export interface AddCheckRequest {
 
 export interface GameStartRequest {
   game: string;
+  level?: number;
 }
 
 export interface GameResultRequest {
   game: string;
-  result: number;
-  points: number;
-  coins: number;
+  result: number | boolean;
+  points?: number;
+  coins?: number;
+  level?: number;
 }
 
 export class ApiService {

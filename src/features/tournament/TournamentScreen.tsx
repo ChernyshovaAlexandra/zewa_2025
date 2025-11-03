@@ -76,8 +76,8 @@ export function TournamentScreen() {
                 <th>
                   <img
                     style={{ width: '22px' }}
-                    src="./assets/images/backpack-icon.png"
-                    alt="иконка рюкзак"
+                    src="./assets/images/snowflake.svg"
+                    alt="иконка снежинки"
                   />
                 </th>
               </tr>

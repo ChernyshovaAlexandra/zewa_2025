@@ -122,17 +122,38 @@ export const GameBtnWrapper = styled.div`
   flex: 1;
 `;
 
-export const GameBtn = styled(ZewaButton)`
+export const GameBtn = styled(ZewaButton)<{ $isClosed?: boolean }>`
   border-radius: var(--10, 10px);
-  background: #f23177;
-  box-shadow:
-    0 3px 30px 0 rgba(241, 6, 109, 0.5),
+  background: ${({ $isClosed }) =>
+    $isClosed ? 'linear-gradient(180deg, #E4E6EC 0%, #717684 100%)' : '#f23177'};
+  box-shadow: ${({ $isClosed }) =>
+    $isClosed
+      ? `0 1px 2px 0 rgba(231, 235, 240, 0.4) inset,
+    0 -2px 3px 0 #5d6270 inset,
+    0 3px 0 0 #5d6270,
+    0 5px 5px 0 rgba(0, 53, 116, 0.5)`
+      : `0 3px 30px 0 rgba(241, 6, 109, 0.5),
     0 23px 44.5px 0 rgba(185, 18, 154, 0.5),
     0 1px 2px 0 rgba(231, 235, 240, 0.4) inset,
-    0 -2px 8.2px 0 #ae2260 inset;
+    0 -2px 8.2px 0 #ae2260 inset`};
   position: relative;
   width: 100%;
   height: 53px;
+
+  cursor: ${({ $isClosed }) => ($isClosed ? 'not-allowed' : 'pointer')};
+
+  &:hover {
+    background: ${({ $isClosed }) =>
+      $isClosed ? 'linear-gradient(180deg, #E4E6EC 0%, #717684 100%)' : '#f23177'};
+    box-shadow: ${({ $isClosed }) =>
+      $isClosed
+        ? `0 1px 2px 0 rgba(231, 235, 240, 0.4) inset,
+    0 -2px 3px 0 #5d6270 inset,
+    0 3px 0 0 #5d6270,
+    0 5px 5px 0 rgba(0, 53, 116, 0.5)`
+        : `0 1px 2px 0 rgba(231, 235, 240, 0.4) inset,
+      0 -2px 8.2px 0 #ae2260 inset`};
+  }
 `;
 
 export const GameBtnImg = styled.img`

@@ -1,4 +1,4 @@
-import { PageContainer, Heading, Text, SnowflakeIcon, PlayIcon } from '@/shared/ui';
+import { PageContainer, Heading, Text, SnowflakeIcon, PlayIcon, LockIcon } from '@/shared/ui';
 import { useNavigate } from 'react-router-dom';
 import { useMemoGameStore } from './model/memoGameStore';
 import * as S from './MemoGameLevelsScreen.styles';
@@ -12,6 +12,7 @@ const LEVELS: Array<{
   description: string | null;
   time: string;
   snowflakes: number;
+  isClosed?: boolean;
 }> = [
   {
     id: 1,
@@ -26,6 +27,7 @@ const LEVELS: Array<{
     description: 'Загрузите чек с продукцией Zewa, чтобы продолжить игру',
     time: '1 мин',
     snowflakes: 10,
+    isClosed: true,
   },
   {
     id: 3,
@@ -33,6 +35,7 @@ const LEVELS: Array<{
     description: 'Загрузите больше чеков с продукцией Zewa, чтобы продолжить игру',
     time: '2 мин',
     snowflakes: 15,
+    isClosed: true,
   },
 ];
 
@@ -80,8 +83,9 @@ export function MemoGameLevelsScreen() {
                   <S.GameBtnImg src="/assets/images/play-btn-bg.webp" />
                   <S.GameBtn
                     variant="play"
-                    icon={<PlayIcon />}
-                    onClick={() => handlePlay(level.id)}
+                    icon={level.isClosed ? <LockIcon /> : <PlayIcon />}
+                    onClick={() => (level.isClosed ? () => {} : handlePlay(level.id))}
+                    $isClosed={level.isClosed}
                   >
                     Играть
                   </S.GameBtn>

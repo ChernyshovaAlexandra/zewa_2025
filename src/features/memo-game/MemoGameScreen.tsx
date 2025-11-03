@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type SyntheticEvent } from 'react';
-import { PageContainer } from '@/shared/ui';
+import { Flex } from 'antd';
+import { PageContainer, PauseIcon, SnowflakeIcon } from '@/shared/ui';
 import * as S from './MemoGameScreen.styles';
 import { MemoOnboardingOverlay } from './ui/MemoOnboardingOverlay';
 import { useMemoHowToPlayEntry } from './lib/useMemoHowToPlayEntry';
@@ -11,6 +12,8 @@ import {
   MEMO_IMAGE_SETS,
 } from './config/memoLevelsConfig';
 import { renderMemoFinishModal } from './lib/renderMemoFinishModal';
+import { renderMemoPauseModal } from './lib/renderMemoPauseModal';
+import { apiService } from '@/services';
 
 const CARD_IMAGE_BASE_PATH = '/assets/images/memo/cards';
 const CARD_IMAGE_COUNT = 6;
@@ -73,6 +76,7 @@ export function MemoGameScreen() {
   const [turnsCount, setTurnsCount] = useState(0);
   const [timeRemaining, setTimeRemaining] = useState(timeLimitSeconds);
   const [gameResult, setGameResult] = useState<'playing' | 'success' | 'timeout'>('playing');
+  const [isPaused, setIsPaused] = useState(false);
 
   const matchedPairsCount = useMemo(
     () => Math.floor(matchedCards.filter(Boolean).length / 2),
@@ -89,6 +93,7 @@ export function MemoGameScreen() {
     setTurnsCount(0);
     setGameResult('playing');
     setTimeRemaining(timeLimitSeconds);
+    setIsPaused(false);
 
     if (resolutionTimeoutRef.current) {
       window.clearTimeout(resolutionTimeoutRef.current);
@@ -98,6 +103,42 @@ export function MemoGameScreen() {
     if (timerIntervalRef.current) {
       window.clearInterval(timerIntervalRef.current);
       timerIntervalRef.current = null;
+    }
+
+    return () => {
+      if (resolutionTimeoutRef.current) {
+        window.clearTimeout(resolutionTimeoutRef.current);
+        resolutionTimeoutRef.current = null;
+      }
+      if (timerIntervalRef.current) {
+        window.clearInterval(timerIntervalRef.current);
+        timerIntervalRef.current = null;
+      }
+    };
+  }, [
+    selectedLevel,
+    currentImageSetId,
+    totalCards,
+    cardDeck.length,
+    timeLimitSeconds,
+    restartToken,
+  ]);
+
+  useEffect(() => {
+    const imageSources = Array.from(new Set(cardDeck.map((card) => card.imageSrc)));
+    imageSources.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+    });
+  }, [cardDeck]);
+
+  useEffect(() => {
+    if (gameResult !== 'playing' || isPaused) {
+      if (timerIntervalRef.current) {
+        window.clearInterval(timerIntervalRef.current);
+        timerIntervalRef.current = null;
+      }
+      return;
     }
 
     const intervalId = window.setInterval(() => {
@@ -119,22 +160,7 @@ export function MemoGameScreen() {
         timerIntervalRef.current = null;
       }
     };
-  }, [
-    selectedLevel,
-    currentImageSetId,
-    totalCards,
-    cardDeck.length,
-    timeLimitSeconds,
-    restartToken,
-  ]);
-
-  useEffect(() => {
-    const imageSources = Array.from(new Set(cardDeck.map((card) => card.imageSrc)));
-    imageSources.forEach((src) => {
-      const img = new Image();
-      img.src = src;
-    });
-  }, [cardDeck]);
+  }, [gameResult, isPaused]);
 
   useEffect(
     () => () => {
@@ -151,6 +177,7 @@ export function MemoGameScreen() {
 
   const handleCardClick = (index: number) => {
     if (gameResult !== 'playing') return;
+    if (isPaused) return;
     if (isResolvingPair) return;
     if (matchedCards[index]) return;
     if (activeIndexes.includes(index)) return;
@@ -187,6 +214,42 @@ export function MemoGameScreen() {
     }
   };
 
+  const submitGameResult = useCallback(
+    async (result: boolean) => {
+      try {
+        await apiService.gameResult({ game: 'memo', result, level: selectedLevel });
+      } catch (err) {
+        console.error('memo gameResult error', err);
+      }
+    },
+    [selectedLevel],
+  );
+
+  const handlePause = useCallback(() => {
+    if (gameResult !== 'playing') return;
+    if (isPaused) return;
+
+    setIsPaused(true);
+
+    renderMemoPauseModal({
+      onResume: () => {
+        setIsPaused(false);
+      },
+      onRules: async () => {
+        setGameResult('timeout');
+        setIsPaused(false);
+        await submitGameResult(false);
+        navigate('/game/memo/levels');
+      },
+      onExit: async () => {
+        setGameResult('timeout');
+        setIsPaused(false);
+        await submitGameResult(false);
+        navigate('/');
+      },
+    });
+  }, [gameResult, isPaused, navigate, submitGameResult]);
+
   const finishGame = useCallback(
     (result: 'success' | 'timeout') => {
       if (gameResult !== 'playing') return;
@@ -201,11 +264,14 @@ export function MemoGameScreen() {
         timerIntervalRef.current = null;
       }
 
+      const isSuccess = result === 'success';
+
       setGameResult(result);
       setIsResolvingPair(false);
       setActiveIndexes([]);
+      setIsPaused(false);
 
-      if (result === 'success') {
+      if (isSuccess) {
         completeLevel(selectedLevel);
       }
 
@@ -229,6 +295,8 @@ export function MemoGameScreen() {
           navigate('/');
         },
       });
+
+      void submitGameResult(isSuccess);
     },
     [
       gameResult,
@@ -240,6 +308,7 @@ export function MemoGameScreen() {
       pairs,
       turnsCount,
       navigate,
+      submitGameResult,
     ],
   );
 
@@ -278,24 +347,32 @@ export function MemoGameScreen() {
     <>
       <PageContainer fullscreen title="Мемо" onBack={() => navigate(-1)}>
         <S.GameWrapper>
-          <S.TopBar>
-            <S.TopBarBlock aria-label={`Оставшееся время ${minutes}:${seconds}`}>
-              <S.TimerValue>
-                {minutes}:{seconds}
-              </S.TimerValue>
-            </S.TopBarBlock>
-            <S.TopBarBlock
-              aria-label={`Собрано снежинок ${matchedPairsCount} из ${pairs}`}
-              data-testid="memo-topbar-snowflakes"
-            >
-              <S.SnowflakeRow>
-                <S.SnowflakeIcon src="/assets/images/snowflake.png" alt="Снежинка" />
-                <S.SnowflakeCount>
-                  {matchedPairsCount}/{pairs}
-                </S.SnowflakeCount>
-              </S.SnowflakeRow>
-            </S.TopBarBlock>
-          </S.TopBar>
+          <S.TopRow>
+            <S.InfoBlock aria-label={`Оставшееся время ${minutes}:${seconds}`}>
+              <Flex align="center" gap="6px">
+                <img width={32} height={32} src="/assets/images/memo/timer-icon.png" />
+                <S.TimerValue>
+                  {minutes}:{seconds}
+                </S.TimerValue>
+              </Flex>
+            </S.InfoBlock>
+            <S.InfoGroup>
+              <S.InfoBlock
+                aria-label={`Собрано снежинок ${matchedPairsCount} из ${pairs}`}
+                data-testid="memo-topbar-snowflakes"
+              >
+                <S.SnowflakeRow>
+                  <SnowflakeIcon width={22} height={22} color="var(--main-blue)" />
+                  <S.SnowflakeCount>
+                    {matchedPairsCount}/{pairs}
+                  </S.SnowflakeCount>
+                </S.SnowflakeRow>
+              </S.InfoBlock>
+              <S.PauseButton type="button" onClick={handlePause} aria-label="Пауза">
+                <PauseIcon />
+              </S.PauseButton>
+            </S.InfoGroup>
+          </S.TopRow>
           <S.CardsGrid $columns={columns}>
             {cardDeck.map((card, index) => {
               const isMatched = matchedCards[index];
