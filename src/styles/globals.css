@@ -1,6 +1,11 @@
 @import "./reset.css";
 @import '@vkontakte/vkui/dist/vkui.css';
 
+:root {
+  --twa-safe-area-top: env(safe-area-inset-top, 0px);
+  --twa-safe-area-bottom: env(safe-area-inset-bottom, 0px);
+}
+
 html,
 body {
   margin: 0 auto;

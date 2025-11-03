@@ -1,6 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
-import { telegramService } from '../services/TelegramService';
+import { telegramService, type TelegramWebApp } from '../services/TelegramService';
 import { apiService } from '../services/ApiService';
 import { useUserStore, useStartDataStore } from '../shared/model';
 
@@ -8,12 +8,16 @@ interface TelegramContextValue {
   service: typeof telegramService;
   isTelegramWebApp: boolean;
   isReady: boolean;
+  safeAreaInsetTop: number;
+  safeAreaInsetBottom: number;
 }
 
 const initialContext: TelegramContextValue = {
   service: telegramService,
   isTelegramWebApp: false,
   isReady: false,
+  safeAreaInsetTop: 0,
+  safeAreaInsetBottom: 0,
 };
 
 export const TelegramContext = createContext<TelegramContextValue>(initialContext);
@@ -24,11 +28,28 @@ export function TelegramProvider({ children }: { children: ReactNode }) {
   const setUserData = useUserStore((s) => s.setUserData);
   const [isTelegramWebApp, setIsTelegramWebApp] = useState(initialContext.isTelegramWebApp);
   const [isReady, setIsReady] = useState(initialContext.isReady);
+  const [safeAreaInsetTop, setSafeAreaInsetTop] = useState(initialContext.safeAreaInsetTop);
+  const [safeAreaInsetBottom, setSafeAreaInsetBottom] = useState(initialContext.safeAreaInsetBottom);
+
+  useEffect(() => {
+    if (typeof document === 'undefined') return;
+
+    document.documentElement.style.setProperty(
+      '--twa-safe-area-top',
+      `${Math.max(0, safeAreaInsetTop)}px`,
+    );
+    document.documentElement.style.setProperty(
+      '--twa-safe-area-bottom',
+      `${Math.max(0, safeAreaInsetBottom)}px`,
+    );
+  }, [safeAreaInsetTop, safeAreaInsetBottom]);
 
   useEffect(() => {
     if (typeof window === 'undefined') {
       setIsTelegramWebApp(false);
       setIsReady(true);
+      setSafeAreaInsetTop(0);
+      setSafeAreaInsetBottom(0);
       return;
     }
 
@@ -36,11 +57,139 @@ export function TelegramProvider({ children }: { children: ReactNode }) {
     let timeoutId: number | null = null;
     let attempts = 0;
     const maxAttempts = 30; // ~3 seconds timeout
+    let detachSafeAreaListener: (() => void) | null = null;
+
+    const readCssSafeArea = (edge: 'top' | 'bottom') => {
+      if (typeof window === 'undefined' || typeof document === 'undefined') {
+        return 0;
+      }
+
+      try {
+        const value = window
+          .getComputedStyle(document.documentElement)
+          .getPropertyValue(`--tg-safe-area-inset-${edge}`);
+        const parsed = Number.parseFloat(value);
+        if (Number.isFinite(parsed)) {
+          return Math.max(0, parsed);
+        }
+      } catch (err) {
+        console.warn(`Failed to read CSS safe area inset (${edge}):`, err);
+      }
+
+      return 0;
+    };
+
+    const computeSafeAreaTop = (webApp?: TelegramWebApp | null) => {
+      if (!webApp) return readCssSafeArea('top');
+
+      const directValue = webApp.safeAreaInsetTop;
+      if (typeof directValue === 'number' && Number.isFinite(directValue)) {
+        return Math.max(0, directValue);
+      }
+
+      const safeAreaObjectTop = (webApp as TelegramWebApp & {
+        safeArea?: { top?: number };
+        safeAreaInsets?: { top?: number };
+      }).safeArea?.top;
+
+      if (typeof safeAreaObjectTop === 'number' && Number.isFinite(safeAreaObjectTop)) {
+        return Math.max(0, safeAreaObjectTop);
+      }
+
+      const safeAreaInsetsTop = (webApp as TelegramWebApp & {
+        safeAreaInsets?: { top?: number };
+      }).safeAreaInsets?.top;
+      if (typeof safeAreaInsetsTop === 'number' && Number.isFinite(safeAreaInsetsTop)) {
+        return Math.max(0, safeAreaInsetsTop);
+      }
+
+      const cssValue = readCssSafeArea('top');
+      if (cssValue > 0) {
+        return cssValue;
+      }
+
+      if (
+        typeof window !== 'undefined' &&
+        typeof webApp.viewportStableHeight === 'number' &&
+        Number.isFinite(webApp.viewportStableHeight) &&
+        webApp.viewportStableHeight > 0
+      ) {
+        const diff = window.innerHeight - webApp.viewportStableHeight;
+        if (diff > 0) {
+          return diff;
+        }
+      }
+
+      return 0;
+    };
+
+    const computeSafeAreaBottom = (
+      webApp: TelegramWebApp | null | undefined,
+      computedTop: number,
+    ) => {
+      if (!webApp) return readCssSafeArea('bottom');
+
+      const directValue = (webApp as TelegramWebApp & { safeAreaInsetBottom?: number })
+        .safeAreaInsetBottom;
+      if (typeof directValue === 'number' && Number.isFinite(directValue)) {
+        return Math.max(0, directValue);
+      }
+
+      const safeAreaObjectBottom = (webApp as TelegramWebApp & {
+        safeArea?: { bottom?: number };
+      }).safeArea?.bottom;
+
+      if (typeof safeAreaObjectBottom === 'number' && Number.isFinite(safeAreaObjectBottom)) {
+        return Math.max(0, safeAreaObjectBottom);
+      }
+
+      const safeAreaInsetsBottom = (webApp as TelegramWebApp & {
+        safeAreaInsets?: { bottom?: number };
+      }).safeAreaInsets?.bottom;
+      if (typeof safeAreaInsetsBottom === 'number' && Number.isFinite(safeAreaInsetsBottom)) {
+        return Math.max(0, safeAreaInsetsBottom);
+      }
+
+      const cssValue = readCssSafeArea('bottom');
+      if (cssValue > 0) {
+        return cssValue;
+      }
+
+      if (
+        typeof window !== 'undefined' &&
+        typeof webApp.viewportStableHeight === 'number' &&
+        Number.isFinite(webApp.viewportStableHeight) &&
+        webApp.viewportStableHeight > 0
+      ) {
+        const diff = window.innerHeight - webApp.viewportStableHeight;
+        if (diff > 0) {
+          const bottomCandidate = diff - Math.max(0, computedTop);
+          if (bottomCandidate > 0) {
+            return bottomCandidate;
+          }
+        }
+      }
+
+      return 0;
+    };
+
+    const applySafeArea = (webAppInstance?: TelegramWebApp | null) => {
+      if (cancelled) return;
+      const webApp = webAppInstance ?? telegramService.getWebApp();
+      const top = computeSafeAreaTop(webApp);
+      const bottom = computeSafeAreaBottom(webApp, top);
+      setSafeAreaInsetTop(top);
+      setSafeAreaInsetBottom(bottom);
+    };
 
     const complete = (value: boolean) => {
       if (cancelled) return;
       setIsTelegramWebApp(value);
       setIsReady(true);
+      if (!value) {
+        setSafeAreaInsetTop(0);
+        setSafeAreaInsetBottom(0);
+      }
     };
 
     const bootstrap = () => {
@@ -60,26 +209,52 @@ export function TelegramProvider({ children }: { children: ReactNode }) {
         return;
       }
 
+      const handleViewportChange = (event?: { isStateStable?: boolean }) => {
+        if (cancelled) return;
+        if (event && typeof event === 'object' && 'isStateStable' in event) {
+          if ((event as { isStateStable?: boolean }).isStateStable === false) {
+            return;
+          }
+        }
+
+        applySafeArea(telegramService.getWebApp());
+      };
+
       // Инициализация Telegram WebApp API
       telegramService.init();
 
       try {
         // Разворачиваем во весь экран
-        webApp.ready();
-        webApp.expand();
+        const webAppInstance = telegramService.getWebApp() ?? webApp;
+        webAppInstance.ready();
+        webAppInstance.expand();
         if (
-          (webApp.platform === 'ios' || webApp.platform === 'android') &&
-          !webApp.isFullscreen &&
-          typeof webApp.requestFullscreen === 'function'
+          (webAppInstance.platform === 'ios' || webAppInstance.platform === 'android') &&
+          !webAppInstance.isFullscreen &&
+          typeof webAppInstance.requestFullscreen === 'function'
         ) {
-          webApp.requestFullscreen();
+          webAppInstance.requestFullscreen();
         }
-        webApp.disableVerticalSwipes?.();
+        webAppInstance.disableVerticalSwipes?.();
       } catch (err) {
         console.warn('Failed to expand Telegram WebApp:', err);
       }
 
       complete(true);
+      applySafeArea(webApp);
+
+      try {
+        webApp.onEvent('viewportChanged', handleViewportChange);
+        detachSafeAreaListener = () => {
+          try {
+            webApp.offEvent?.('viewportChanged', handleViewportChange);
+          } catch (offErr) {
+            console.warn('Failed to detach viewportChanged listener:', offErr);
+          }
+        };
+      } catch (eventErr) {
+        console.warn('Failed to subscribe to viewport changes:', eventErr);
+      }
 
       const user = telegramService.getUser();
       const webAppInstance = telegramService.getWebApp();
@@ -127,6 +302,7 @@ export function TelegramProvider({ children }: { children: ReactNode }) {
       if (timeoutId) {
         window.clearTimeout(timeoutId);
       }
+      detachSafeAreaListener?.();
     };
   }, [setStartStoreData, setUser, setUserData]);
 
@@ -136,6 +312,8 @@ export function TelegramProvider({ children }: { children: ReactNode }) {
         service: telegramService,
         isTelegramWebApp,
         isReady,
+        safeAreaInsetTop,
+        safeAreaInsetBottom,
       }}
     >
       {children}

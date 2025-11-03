@@ -2,6 +2,9 @@ import styled from 'styled-components';
 
 export const WrapperInner = styled.div`
   padding: 24px 16px;
+  padding-top: calc(var(--twa-safe-area-top, 0px) + 24px);
+  padding-bottom: calc(var(--twa-safe-area-bottom, 0px) + 24px);
+  box-sizing: border-box;
 `;
 
 export const Wrapper = styled.div`

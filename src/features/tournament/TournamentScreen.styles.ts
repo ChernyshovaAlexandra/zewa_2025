@@ -26,7 +26,7 @@ export const TabButton = styled.button<{ $active?: boolean }>`
   cursor: pointer;
   background: ${({ $active }) =>
     $active ? 'linear-gradient(180deg, #f4fcff 0%, #e3f7ff 100%)' : 'transparent'};
-  color: ${({ $active }) => ($active ? '#1235AB' : '#fff')};
+  color: ${({ $active }) => ($active ? '#193F74' : '#fff')};
 
   box-shadow: ${({ $active }) =>
     $active

@@ -6,7 +6,8 @@ export const Wrapper = styled.div<{
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: url('./assets/images/bg.svg'), linear-gradient(180deg, #2d59df 0%, #1945cb 100%);
+  background: url('./assets/images/game-bg.webp');
+  box-sizing: border-box;
 
   ${({ $fullscreen }) =>
     $fullscreen &&
@@ -36,7 +37,7 @@ export const ScrollArea = styled.div<{ $withPadding?: boolean }>`
   font-weight: 400;
   padding-left: 16px;
   padding-right: 16px;
-  padding-bottom: 24px;
+  padding-bottom: calc(var(--twa-safe-area-bottom, 0px) + 24px);
   line-height: 140%;
 
   ${({ $withPadding }) =>

@@ -18,6 +18,21 @@ export interface TelegramWebApp {
   };
   platform?: string;
   isFullscreen?: boolean;
+  safeAreaInsetTop?: number;
+  safeArea?: {
+    top?: number;
+    bottom?: number;
+    left?: number;
+    right?: number;
+  };
+  safeAreaInsets?: {
+    top?: number;
+    bottom?: number;
+    left?: number;
+    right?: number;
+  };
+  viewportHeight?: number;
+  viewportStableHeight?: number;
   requestFullscreen?: () => void;
   close: () => void;
   expand: () => void;

@@ -1,6 +1,6 @@
 import { rulesText } from './rulesText';
 import { applyNbsp } from '@/utils';
-import { PageContainer, Text, ZewaButton } from '@/shared/ui';
+import { PageContainer, Text } from '@/shared/ui';
 import { TabButton, Tabs, TabsWrapper } from '../tournament/TournamentScreen.styles';
 import { faqText } from '../faq/faqText';
 import { useState } from 'react';
@@ -75,7 +75,7 @@ const Linked = styled.a`
   font-size: 14px;
   background: linear-gradient(180deg, #f4fcff 0%, #e3f7ff 100%);
 
-  color: #1235ab !important;
+  color: #193F74 !important;
   font-weight: 700;
 
   box-shadow:

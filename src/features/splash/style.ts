@@ -7,7 +7,7 @@ export const fill = keyframes`
 // fin
 export const Wrapper = styled.div`
   height: 100vh;
-  background: url('./assets/images/bg.svg'), linear-gradient(180deg, #2d59df 0%, #1945cb 100%);
+  background: url('./assets/images/game-bg.webp');
   display: flex;
   flex-direction: column;
   align-items: center;

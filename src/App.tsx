@@ -12,10 +12,13 @@ const ONBOARDING_KEY = 'onboardingCompleted_christmas';
 
 export default function App() {
   const [stage, setStage] = useState<Stage>('splash');
-  const { isReady: isTelegramReady, isTelegramWebApp } = useTelegram();
+  const {
+    isReady: isTelegramReady,
+    isTelegramWebApp,
+    safeAreaInsetTop,
+    safeAreaInsetBottom,
+  } = useTelegram();
 
-
-  
   useEffect(() => {
     const id = setTimeout(() => {
       const hasSeen = localStorage.getItem(ONBOARDING_KEY) === 'true';
@@ -26,8 +29,8 @@ export default function App() {
   }, []);
 
   const insets: SafeAreaInsets = {
-    top: 20,
-    bottom: 0,
+    top: Math.max(0, safeAreaInsetTop),
+    bottom: Math.max(0, safeAreaInsetBottom),
     left: 0,
     right: 0,
   };
@@ -144,7 +147,7 @@ export default function App() {
               style={{
                 width: '100%',
                 margin: '0 auto',
-                height: '100vh',
+                height: '100dvh',
               }}
             >
               <Suspense fallback={<SplashScreen />}>
