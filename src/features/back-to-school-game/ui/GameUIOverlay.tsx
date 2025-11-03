@@ -89,7 +89,7 @@ export const InfoBlock = styled.div`
   padding: 0px 10px;
   display: grid;
   place-items: center;
-  color: #1235ab;
+  color: var(--main-blue);
   text-align: center;
   font-family: 'Foco Trial';
   font-size: 21px;

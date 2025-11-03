@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 import { Card, EllipsisText, HorizontalScroll } from '@vkontakte/vkui';
 import { ButtonProps, ButtonStyles } from '@/components';
-import { Text } from '@/shared/ui';
+import { Text, ZewaButton } from '@/shared/ui';
 
 export const ContentWithDomovenok = styled.div`
   position: absolute;
-  bottom: 0;
-  left: 0;
+  bottom: -15px;
+  left: -30px;
   width: 198px;
   height: 142px;
   touch-action: none;
@@ -17,18 +17,6 @@ export const ContentWithDomovenok = styled.div`
     height: 100%;
     object-fit: cover;
   }
-`;
-
-export const PaperRoll = styled.div`
-  width: 4.5rem;
-  height: 5rem;
-  background: url(/assets/images/toilet-paper.png) no-repeat center;
-  position: absolute;
-  right: -20px;
-  background-size: contain;
-  bottom: -3px;
-  z-index: 2;
-  transition: all 4s ease-in-out;
 `;
 
 export const RollingLine = styled.div<{ $isOpen: boolean }>`
@@ -77,7 +65,7 @@ export const DomovenokOpened = styled.picture<{ $isOpen: boolean }>`
 export const DrawerWrapper = styled.div<{ $isOpen: boolean }>`
   position: absolute;
   bottom: 0;
-  height: ${({ $isOpen }) => ($isOpen ? '40%' : `4rem`)};
+  height: ${({ $isOpen }) => ($isOpen ? '290px' : `4rem`)};
   width: 100%;
   background: url('/assets/images/scale/bg.webp') no-repeat center;
   background-size: cover;
@@ -122,7 +110,8 @@ export const DrawerWrapper = styled.div<{ $isOpen: boolean }>`
     right: 0;
     margin: auto;
     border-radius: 100%;
-    clip-path: polygon(0 56%, 100% 56%, 100% 0, 0 0);
+    border: 1px solid #ebf9ff;
+    clip-path: polygon(0 54%, 100% 54%, 100% 0, 0 0);
     z-index: 5;
   }
 `;
@@ -152,39 +141,24 @@ export const Bubble = styled.div<{ $activated: boolean; $isOpen: boolean }>`
   position: relative;
   flex-shrink: 0;
   text-align: center;
-  display: grid;
-  place-items: center;
+  display: flex;
+  gap: 14px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   opacity: ${({ $isOpen }) => ($isOpen ? 1 : 0)};
   transition: transform 0.5s ease-in-out;
-  padding-bottom: 12px;
   user-select: none;
-  height: 110px;
-  margin-bottom: 20px;
-  padding-top: 10px;
-
-  width: 155px;
+  width: 170px;
+  height: 140px;
   padding: 5px;
-  border-radius: var(--14, 14px);
+  border-radius: 14px;
   background: ${({ $activated }) =>
-    $activated ? 'linear-gradient(180deg, #2D59DF 0%, #0F3BC1 100%)' : '#fff'};
-  border: ${({ $activated }) => ($activated ? '' : '1px dashed #1235ab')};
-  filter: ${({ $activated }) => ($activated ? 'drop-shadow(0px 5px 0px #1235ab)' : '')};
+    $activated ? 'radial-gradient(50% 50% at 50% 50%, #eb65a7 0%, #e53375 100%), #e53375' : '#fff'};
+  backdrop-filter: blur(4px);
 
-  span {
-    font-family: 'Foco Trial';
-    font-size: 15px;
-    font-weight: 400;
-    line-height: 18px;
-    text-align: center;
-    color: ${({ $activated }) => ($activated ? '#fff' : '#1235ab')};
-  }
   video {
     pointer-events: none;
-  }
-  @media screen and (min-width: 560px) {
-    width: 165px;
-    height: 115px;
-    margin-bottom: 20px;
   }
 `;
 
@@ -198,26 +172,19 @@ export const Zewa = styled.span<{ $isOpen: boolean; $isActivated: boolean }>`
   font-family: 'Foco Trial';
   font-weight: 900;
   font-size: 12px;
-  color: ${({ $isActivated }) => ($isActivated ? '#f994b9' : '#3054c1')};
+  color: ${({ $isActivated }) => ($isActivated ? '#f994b9' : '#FAFBFF')};
   opacity: ${({ $isOpen }) => ($isOpen ? 1 : 0)};
+  bottom: -38px;
+  z-index: 20;
 
   &::after {
     content: '';
     position: absolute;
-    left: 24px;
-    right: 0;
-    height: 40px;
+    right: -75px;
+    height: 8px;
     width: 2px;
-    background: repeating-linear-gradient(
-      to bottom,
-      #1d3ea3 0%,
-      #1d3ea3 10%,
-      /* Высота штриха */ transparent 10%,
-      transparent 15% /* Прозрачный зазор */
-    );
-    transform: skewX(32deg);
-    top: 28px;
-    z-index: 100;
+    background: #f994b9;
+    bottom: 4px;
   }
 `;
 
@@ -229,19 +196,48 @@ export const StyledCard = styled(Card)`
 export const StyledSpan = styled(EllipsisText)`
   position: relative;
   z-index: 16;
-  font-weight: bold;
-  color: #fff;
+  text-align: center;
+
+  color: #ffffff;
+  font-family: 'Foco Trial';
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 120%;
+  letter-spacing: 0;
+
+  -webkit-text-stroke-width: 3px;
+  -webkit-text-stroke-color: #003980;
+
+  paint-order: stroke fill;
+  text-rendering: geometricPrecision;
+
+  text-shadow:
+    0 0 0 #003980,
+    0.5px 0.5px 0 #003980,
+    -0.5px -0.5px 0 #003980;
 `;
 
 export const StyledSpanPink = styled(StyledSpan)`
   color: #e22c6e;
   position: absolute;
+  border-radius: 4px;
+  background: #fff;
 
   padding: 2px 5px;
-  top: -2px;
-  left: 5px;
+  right: 8.5px;
+  top: -8px;
+
   > span {
-    font-size: 10px;
+    color: #e53375;
+    text-align: center;
+    font-feature-settings:
+      'liga' off,
+      'clig' off;
+    font-family: 'Foco Trial';
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 100%; /* 12px */
   }
 `;
 
@@ -305,63 +301,78 @@ export const StyledCell = styled.div<{
   opacity: ${({ $isEmpty }) => ($isEmpty ? '0' : '1')};
   position: relative;
   padding: 0;
-  padding: 0 5px 10px;
+  padding: 0 5px 20px;
   height: fit-content;
   flex-shrink: 0;
-  border-bottom: 40px solid #3054c1;
-
-  &::after {
-    content: '';
-    position: absolute;
-    width: 65px;
-    height: 65px;
-    visibility: ${({ $showPaper, $isFirstEmpty }) =>
-      $showPaper || $isFirstEmpty ? 'visible' : 'hidden'};
-    background: url(/assets/images/toilet-paper.png) no-repeat center;
-    left: ${({ $isFirstEmpty }) => ($isFirstEmpty ? '-20%' : ' 60%')};
-    z-index: 100;
-    background-size: contain;
-    bottom: -40px;
-  }
+  border-bottom: 20px solid #b0d3e9;
 
   &::before {
     content: '';
     position: absolute;
     visibility: ${({ $isActivated }) => ($isActivated ? 'visible' : 'hidden')};
-    height: 40px;
-    bottom: -40px;
-    background: url(/assets/images/paper-pattern.jpg) repeat-x;
+    height: 20px;
+    bottom: -20px;
+    background: var(--main-pink);
     background-size: 170px 50px;
     width: 120%;
     display: block;
     left: -45%;
     border: 0;
-    z-index: 10;
-    transform: skewX(32deg);
+    z-index: 1;
+  }
+
+  &::after {
+    content: '';
+    left: ${({ $isFirstEmpty }) => ($isFirstEmpty ? '-20%' : ' 65%')};
+    visibility: ${({ $showPaper, $isFirstEmpty }) =>
+      $showPaper || $isFirstEmpty ? 'visible' : 'hidden'};
+    position: absolute;
+    background: url('/assets/images/snowflake-after.webp') no-repeat center;
+    background-size: contain;
+    width: 32px;
+    height: 31.354px;
+    bottom: 14px;
   }
 `;
 
 export const ScaleTitle = styled(Text)`
-  color: #fff;
+  color: #ffffff;
+  text-align: center;
+  font-family: 'Foco Trial';
+  font-weight: 900;
+  font-style: normal;
+  line-height: 110%;
+  font-size: clamp(1.4rem, 1.6vw + 0.8rem, 1.6rem);
+
+  /* Контур и объём */
+  -webkit-text-stroke-width: 2px;
+  -webkit-text-stroke-color: #193f74;
+  paint-order: stroke fill;
+  text-shadow:
+    0 1px 0 rgba(18, 53, 171, 0.5),
+    0 0.5px 1px rgba(0, 0, 0, 0.2);
+
+  font-feature-settings:
+    'liga' off,
+    'clig' off;
+  margin-top: 0.5rem;
+
+  /* защита от схлопывания шрифта на Android */
+  text-rendering: geometricPrecision;
+  -webkit-font-smoothing: antialiased;
+`;
+
+export const SpanDraw = styled.span`
+  color: var(---main-pink, #e22c6e);
   text-align: center;
   font-feature-settings:
     'liga' off,
     'clig' off;
-  text-shadow: 0 1px 0 rgba(18, 53, 171, 0.5);
-
-  /* H2 */
-  -webkit-text-stroke-width: 1.3px;
-  -webkit-text-stroke-color: var(---, #193f74);
   font-family: 'Foco Trial';
-  font-size: 1.5rem;
+  font-size: 12px;
   font-style: normal;
-  font-weight: 900;
-  line-height: 110%;
-  margin-top: 10px;
-`;
-
-export const SpanDraw = styled.span`
-  color: #7186cd;
+  font-weight: 400;
+  line-height: 100%; /* 12px */
 `;
 
 export const Button = styled.button<ButtonProps>`
@@ -390,4 +401,26 @@ export const Button = styled.button<ButtonProps>`
   @media screen and (min-width: 505px) {
     padding: 0.7rem 1.3rem !important;
   }
+`;
+export const ButtonScale = styled(ZewaButton)`
+  color: var(---, #193f74);
+  font-feature-settings:
+    'liga' off,
+    'clig' off;
+  font-family: 'Foco Trial';
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 100%;
+  text-transform: uppercase;
+  padding: 0 16px;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  border-radius: var(--10, 10px);
+  background: linear-gradient(180deg, #f4fcff 0%, #e3f7ff 100%);
+  box-shadow:
+    0 -1px 2px 0 #b3c7e9 inset,
+    0 2px 0 0 #b3c7e9;
+  height: 38px;
 `;

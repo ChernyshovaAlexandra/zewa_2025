@@ -1,6 +1,6 @@
 import { HomeWrapper, ButtonsWrapper, Navigation } from './HomeScreen.styles';
 import { PlayIcon, ScanIcon, TournamentIcon, UserIcon, ZewaButton } from '@/shared/ui';
-import { renderQrScannerModal } from '@/features';
+import { renderQrScannerModal, renderWeeklyRulesModal } from '@/features';
 import { useNavigate } from 'react-router-dom';
 import { Flex } from 'antd';
 import PrizesScale from '../prizes-scale';
@@ -68,7 +68,11 @@ export function HomeScreen() {
         <ZewaButton
           style={{ padding: '14px', color: '#E53375' }}
           variant="white"
-          onClick={() => navigate('/club')}
+          onClick={() =>
+            renderWeeklyRulesModal(() => {
+              navigate('/club');
+            })
+          }
         >
           Клуб помощников Домовёнка
         </ZewaButton>

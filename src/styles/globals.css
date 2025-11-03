@@ -3,7 +3,8 @@
 
 :root {
   --twa-safe-area-top: env(safe-area-inset-top, 0px);
-  --twa-safe-area-bottom: env(safe-area-inset-bottom, 0px);
+  --main-blue: #193F74;
+  --main-pink: #E53375;
 }
 
 html,

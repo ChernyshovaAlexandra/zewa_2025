@@ -24,7 +24,7 @@ export const StyledButton = styled.button<{ $variant: ZewaButtonVariant }>`
         return css`
           padding: 10px 10px;
           background: linear-gradient(180deg, #f4fcff 0%, #e3f7ff 100%);
-          color: #1235ab;
+          color: var(--main-blue);
           box-shadow:
             0px -2px 3px 0px #b3c7e9 inset,
             0px 3px 0px 0px #b3c7e9,
@@ -45,7 +45,7 @@ export const StyledButton = styled.button<{ $variant: ZewaButtonVariant }>`
           font-size: 14px;
           background: linear-gradient(180deg, #f4fcff 0%, #e3f7ff 100%);
           span {
-            color: #1235ab !important;
+            color: var(--main-blue) !important;
             font-weight: 700;
           }
           box-shadow:

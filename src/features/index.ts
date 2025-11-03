@@ -12,4 +12,5 @@ export * from './memo-game';
 export * from './error/ErrorPage';
 export * from './profile/ProfileScreen';
 export * from './checks/lib/renderQrScannerModal';
+export * from './club/lib/renderWeeklyRulesModal';
 export * from './onboarding';

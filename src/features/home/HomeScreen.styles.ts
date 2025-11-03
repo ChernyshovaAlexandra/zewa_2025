@@ -4,8 +4,7 @@ export const HomeWrapper = styled.div<{ $withImage?: boolean }>`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: calc(var(--twa-safe-area-top, 0px) + 24px) 16px
-    calc(var(--twa-safe-area-bottom, 0px) + 24px);
+  padding: calc(var(--twa-safe-area-top, 0px) + 24px) 16px;
   background: url('./assets/images/Game-interface.webp') no-repeat bottom;
   min-height: 100vh;
   box-sizing: border-box;

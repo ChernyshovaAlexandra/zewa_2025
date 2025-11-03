@@ -8,13 +8,13 @@ import {
   StyledSpanPink,
   SpanDraw,
   PrizeImg,
+  ButtonScale,
 } from './styles';
 
 import useWindowSize from '@/helpers/windowSize';
 import { prize_types_data } from '../prizes/mocks';
 import { useUserStore } from '@/shared/model';
-import { Coupon } from '@/types';
-import { ZewaButton } from '@/shared/ui';
+// import { Coupon } from '@/types';
 import { useNavigate } from 'react-router-dom';
 
 interface PrizesListProps {
@@ -29,38 +29,83 @@ const PrizesList: React.FC<PrizesListProps> = ({ isDrawerOpen }) => {
   const navigate = useNavigate();
 
   // Активированные и новые купоны из данных пользователя
-  const activatedCouponsArray = React.useMemo(
-    () =>
-      userData?.coupons?.map((i: Coupon) => ({
-        activated: true,
-        points: i.points,
-        type: 'coupon',
-        name: i.name,
-      })) || [],
-    [userData],
-  );
+  // const activatedCouponsArray = React.useMemo(
+  //   () =>
+  //     userData?.coupons?.map((i: Coupon) => ({
+  //       activated: true,
+  //       points: i.points,
+  //       type: 'coupon',
+  //       name: i.name,
+  //     })) || [],
+  //   [userData],
+  // );
 
+  // const modifiedPrizes = React.useMemo(() => {
+  //   if (!userData) return [];
+
+  //   const emptyPrize = {
+  //     points: 0,
+  //     type: 'empty',
+  //     name: '',
+  //     new: false,
+  //     activated: false,
+  //   };
+
+  //   const coupons = activatedCouponsArray;
+
+  //   const prizesWithoutDuplicates = userData.prizes.filter(
+  //     (p) => !coupons.some((c) => c.points === p.points),
+  //   );
+
+  //   const sorted = [...prizesWithoutDuplicates, ...coupons].sort((a, b) => a.points - b.points);
+
+  //   return [emptyPrize, ...sorted];
+  // }, [userData, activatedCouponsArray]);
   const modifiedPrizes = React.useMemo(() => {
-    if (!userData) return [];
-
-    const emptyPrize = {
-      points: 0,
-      type: 'empty',
-      name: '',
-      new: false,
-      activated: false,
-    };
-
-    const coupons = activatedCouponsArray;
-
-    const prizesWithoutDuplicates = userData.prizes.filter(
-      (p) => !coupons.some((c) => c.points === p.points),
-    );
-
-    const sorted = [...prizesWithoutDuplicates, ...coupons].sort((a, b) => a.points - b.points);
-
-    return [emptyPrize, ...sorted];
-  }, [userData, activatedCouponsArray]);
+    return [
+      { points: 0, type: 'empty', name: '', new: false, activated: false },
+      {
+        points: 10,
+        name: 'Купон на 20%',
+        value: 10,
+        code: 'dasdasd',
+        activated: true,
+        type: 'coupon',
+      },
+      {
+        points: 20,
+        name: 'Годовой запас Zewa',
+        value: 20,
+        code: 'dasdasd',
+        activated: false,
+        type: 'prize',
+      },
+      {
+        points: 30,
+        name: '1',
+        value: 20,
+        code: 'dasdasd',
+        activated: false,
+        type: 'coupon',
+      },
+      {
+        points: 40,
+        name: '1',
+        value: 20,
+        code: 'dasdasd',
+        activated: false,
+        type: 'coupon',
+      },
+      {
+        points: 90,
+        name: '1',
+        value: 20,
+        code: 'dasdasd',
+        activated: false,
+        type: 'coupon',
+      },
+    ];
+  }, []);
 
   const lastActivatedIndex = modifiedPrizes.reduce((lastIndex, prize, index) => {
     if (!userData) return 0;
@@ -92,7 +137,7 @@ const PrizesList: React.FC<PrizesListProps> = ({ isDrawerOpen }) => {
           <Bubble $isOpen={isDrawerOpen} $activated={isActivated}>
             <StyledSpanPink>
               {prize.type === 'coupon' ? null : points >= prize.points ? (
-                <SpanDraw>Участвуете</SpanDraw>
+                <SpanDraw>Участвуете в розыгрыше</SpanDraw>
               ) : null}
             </StyledSpanPink>
 
@@ -121,9 +166,9 @@ const PrizesList: React.FC<PrizesListProps> = ({ isDrawerOpen }) => {
               {prize.name}
             </StyledSpan>
             {isActivated ? (
-              <ZewaButton variant="white-small" onClick={() => navigate('/prizes')}>
+              <ButtonScale variant="white-small" onClick={() => navigate('/prizes')}>
                 Мои призы
-              </ZewaButton>
+              </ButtonScale>
             ) : (
               <></>
             )}

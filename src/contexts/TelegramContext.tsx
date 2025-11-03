@@ -124,7 +124,9 @@ export function TelegramProvider({ children }: { children: ReactNode }) {
       if (cancelled) return;
       const webApp = webAppInstance ?? telegramService.getWebApp();
       const top = computeSafeAreaTop(webApp);
-      setSafeAreaInsetTop(top + 20);
+      setSafeAreaInsetTop(
+        top + (webApp?.platform === 'ios' || webApp?.platform === 'android' ? 20 : 0),
+      );
     };
 
     const complete = (value: boolean) => {

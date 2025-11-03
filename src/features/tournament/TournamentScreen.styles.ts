@@ -66,7 +66,7 @@ export const PrizeItem = styled.div`
   background: linear-gradient(180deg, #f4fcff 0%, #e3f7ff 100%);
   border-radius: 10px;
   padding: 8px;
-  color: #1235ab;
+  color: var(--main-blue);
   font-family: 'Foco Trial';
   font-size: 16px;
   margin-bottom: 8px;

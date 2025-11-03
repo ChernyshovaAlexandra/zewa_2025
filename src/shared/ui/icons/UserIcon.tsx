@@ -15,7 +15,7 @@ export const UserIcon = () => {
           gradientUnits="userSpaceOnUse"
         >
           <stop stopColor="#3A5DD3" />
-          <stop offset="1" stopColor="#1235AB" />
+          <stop offset="1" stopColor="var(--main-blue)" />
         </linearGradient>
       </defs>
     </svg>

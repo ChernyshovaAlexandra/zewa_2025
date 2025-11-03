@@ -187,7 +187,7 @@ export function TournamentScreen() {
                     return (
                       <S.PrizeItem key={i}>
                         <div>
-                          <Text color="#1235AB" weight={900}>
+                          <Text color="var(--main-blue)" weight={900}>
                             {smartMaskName(w.name)}
                           </Text>
                           <Text size="p4" color="#596471">

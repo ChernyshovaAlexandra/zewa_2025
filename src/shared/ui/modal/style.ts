@@ -30,7 +30,7 @@ export const ModalCard = styled.div`
   height: fit-content;
   max-width: 95%;
   text-align: center;
-  border: 6px solid #1235ab;
+  border: 6px solid var(--main-blue);
   background: #c5dfe9;
   filter: drop-shadow(0px 4px 0px #00098f);
   position: relative;

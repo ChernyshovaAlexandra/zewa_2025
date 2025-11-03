@@ -17,7 +17,7 @@ export const Card = styled.div`
   box-shadow:
     0px -2px 4px rgba(48, 104, 222, 0.12) inset,
     0px 6px 12px rgba(12, 43, 120, 0.18);
-  color: #1235ab;
+  color: var(--main-blue);
 `;
 
 export const CardHeader = styled.div`

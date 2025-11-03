@@ -3,7 +3,6 @@ import { PageContainer, PrizeIcon, TournamentIcon, ZewaButton } from '@/shared/u
 import { FlexBetweenDiv, FlexColumnDiv, GroupStyled } from './style';
 import { useNavigate } from 'react-router-dom';
 import { Coins } from '../coins/Coins';
-import { HistoryIcon } from '@/shared/ui/icons/HistoryIcon';
 import PrizesScale from '../prizes-scale';
 import { telegramService } from '@/services/TelegramService';
 import { useStartDataStore } from '@/shared/model';
@@ -28,6 +27,7 @@ export function ProfileScreen() {
       title="Личный кабинет"
       scrollable={false}
       onBack={() => navigate('/')}
+      style={{ background: "url('/assets/images/lk.webp') no-repeat bottom", backgroundSize: 'cover' }}
     >
       <GroupStyled style={{ marginTop: 0 }}>
         <FlexBetweenDiv>
@@ -41,7 +41,7 @@ export function ProfileScreen() {
             <PrizeIcon /> Мои призы
           </ZewaButton>
           <ZewaButton variant="white" onClick={() => navigate('/history')}>
-            <HistoryIcon />
+            <img src="/assets/images/snowflake.svg" />
             История начислений
           </ZewaButton>
           <ZewaButton variant="white" onClick={handleShare}>

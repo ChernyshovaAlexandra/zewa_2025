@@ -82,11 +82,11 @@ export function ClubScreen() {
             <S.Card key={task.title}>
               <S.CardHeader>
                 <S.Badge>{task.title}</S.Badge>
-                <Text color="#1235AB" weight={700} size="p2">
+                <Text color="var(--main-blue)" weight={700} size="p2">
                   {task.reward}
                 </Text>
               </S.CardHeader>
-              <Text as="p" size="p4" color="#1235AB">
+              <Text as="p" size="p4" color="var(--main-blue)">
                 {task.description}
               </Text>
             </S.Card>
@@ -100,7 +100,7 @@ export function ClubScreen() {
               <S.WinnerList>
                 {group.participants.map((participant) => (
                   <li key={participant.name}>
-                    <Text as="span" weight={700} color="#1235AB">
+                    <Text as="span" weight={700} color="var(--main-blue)">
                       {participant.name}
                     </Text>
                     <Text as="span" size="p4" color="#4076FF">

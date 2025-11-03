@@ -15,7 +15,7 @@ export const FlexBetween = styled.div`
 `;
 
 export const CheckNumber = styled.span`
-  color: #1235ab;
+  color: var(--main-blue);
   font-feature-settings:
     'liga' off,
     'clig' off;
@@ -87,7 +87,7 @@ export const StyledCoins = styled.div`
   align-items: center;
 
   p {
-    color: #1235ab;
+    color: var(--main-blue);
     text-align: right;
     font-feature-settings:
       'liga' off,

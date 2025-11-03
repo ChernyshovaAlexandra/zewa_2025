@@ -11,7 +11,7 @@ type TextProps = {
 };
 
 export const Title = styled(Text)`
-  color: #1235ab;
+  color: var(--main-blue);
   font-feature-settings:
     'liga' off,
     'clig' off;
@@ -30,7 +30,7 @@ const TextContainer: React.FC<TextProps> = ({ title, description, isOffline }) =
       <Flex gap={'5px'} align="center" justify="space-between">
         <Flex gap={'5px'} align="center">
           <img src={isOffline? "/assets/images/offline-promo.svg":"/assets/images/online-promo.svg"} alt="" />
-          <Title style={{ margin: 0, color: '#1235AB' }}>{title}</Title>
+          <Title style={{ margin: 0, color: 'var(--main-blue)' }}>{title}</Title>
         </Flex>
         <Flex gap={'5px'} align="center">
           <img style={{ height: '1.5rem' }} src="/assets/images/zewa-logo.png" alt="" />

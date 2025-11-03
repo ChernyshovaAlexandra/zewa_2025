@@ -101,7 +101,7 @@ export const FlexColumnDiv = styled(Div)`
 
   > button {
     width: 100%;
-    max-width: 240px;
+    max-width: 280px;
     > span {
       font-size: 1.2rem;
       display: flex;
@@ -118,7 +118,6 @@ export const FlexColumnDiv = styled(Div)`
   }
 
   @media screen and (min-width: 405px) {
-
     > button {
       > img {
         display: block;

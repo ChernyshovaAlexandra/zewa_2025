@@ -53,7 +53,7 @@ const PrizeContainer: React.FC<PrizeContainerProps> = ({ prize }) => {
             <Flex gap="5px">
               <ImageContainer img={img} />
               <div>
-                <Title style={{ margin: 0, color: '#1235AB' }}>{prize.name}</Title>
+                <Title style={{ margin: 0, color: 'var(--main-blue)' }}>{prize.name}</Title>
                 <Description>{applyNbsp(description)}</Description>
                 <ZewaButton
                   style={{

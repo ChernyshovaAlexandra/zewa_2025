@@ -32,7 +32,7 @@ export const TopBarBlock = styled.div`
   justify-content: center;
   padding: 6px 12px;
   gap: 4px;
-  color: #1235ab;
+  color: var(--main-blue);
   text-align: center;
 `;
 
