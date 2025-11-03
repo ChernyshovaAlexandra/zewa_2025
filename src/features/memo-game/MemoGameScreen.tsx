@@ -13,6 +13,7 @@ import {
 } from './config/memoLevelsConfig';
 import { renderMemoFinishModal } from './lib/renderMemoFinishModal';
 import { renderMemoPauseModal } from './lib/renderMemoPauseModal';
+import { renderMemoRulesModal } from './lib/renderMemoRulesModal';
 import { apiService } from '@/services';
 
 const CARD_IMAGE_BASE_PATH = '/assets/images/memo/cards';
@@ -236,10 +237,11 @@ export function MemoGameScreen() {
         setIsPaused(false);
       },
       onRules: async () => {
-        setGameResult('timeout');
-        setIsPaused(false);
-        await submitGameResult(false);
-        navigate('/game/memo/levels');
+        renderMemoRulesModal({
+          onClose: () => {
+            setIsPaused(false);
+          },
+        });
       },
       onExit: async () => {
         setGameResult('timeout');
@@ -345,7 +347,13 @@ export function MemoGameScreen() {
 
   return (
     <>
-      <PageContainer fullscreen title="Мемо" onBack={() => navigate(-1)}>
+      <PageContainer
+        fullscreen
+        style={{
+          background: "url('/assets/images/memo/bg.webp') no-repeat center",
+          backgroundSize: 'cover',
+        }}
+      >
         <S.GameWrapper>
           <S.TopRow>
             <S.InfoBlock aria-label={`Оставшееся время ${minutes}:${seconds}`}>
@@ -373,6 +381,7 @@ export function MemoGameScreen() {
               </S.PauseButton>
             </S.InfoGroup>
           </S.TopRow>
+          <S.GameTitle>{selectedLevel} уровень</S.GameTitle>
           <S.CardsGrid $columns={columns}>
             {cardDeck.map((card, index) => {
               const isMatched = matchedCards[index];
