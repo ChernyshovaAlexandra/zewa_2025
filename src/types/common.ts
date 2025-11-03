@@ -14,6 +14,7 @@ export interface Coupon {
   value: number;
   code?: string;
   barcode?: string;
+  can_change?: boolean;
 }
 
 export type DisplayCoupon = {
