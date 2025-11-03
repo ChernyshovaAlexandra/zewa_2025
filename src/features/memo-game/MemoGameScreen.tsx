@@ -32,7 +32,7 @@ export function MemoGameScreen() {
     handleFrontImageLoad,
     handleFrontImageError,
   } = useMemoGameLogic({ onExit: handleExit });
-
+  // todo: check
   return (
     <>
       <PageContainer
