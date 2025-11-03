@@ -1,5 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
-import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
+import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from 'react';
 import { telegramService, type TelegramWebApp } from '../services/TelegramService';
 import { apiService } from '../services/ApiService';
 import { useUserStore, useStartDataStore } from '../shared/model';
@@ -27,6 +27,7 @@ export function TelegramProvider({ children }: { children: ReactNode }) {
   const [isTelegramWebApp, setIsTelegramWebApp] = useState(initialContext.isTelegramWebApp);
   const [isReady, setIsReady] = useState(initialContext.isReady);
   const [safeAreaInsetTop, setSafeAreaInsetTop] = useState(initialContext.safeAreaInsetTop);
+  const startRequestSentRef = useRef(false);
 
   useEffect(() => {
     if (typeof document === 'undefined') return;
@@ -228,17 +229,21 @@ export function TelegramProvider({ children }: { children: ReactNode }) {
         Number.isFinite(authDate) ? authDate : 0,
       );
 
-      apiService
-        .start({
-          username: user.username ?? '',
-        })
-        .then((res) => {
-          setStartStoreData(res.data.data);
-          setUserData(res.data.data);
-        })
-        .catch((err) => {
-          console.error('start error', err);
-        });
+      if (!startRequestSentRef.current) {
+        startRequestSentRef.current = true;
+        apiService
+          .start({
+            username: user.username ?? '',
+          })
+          .then((res) => {
+            setStartStoreData(res.data.data);
+            setUserData(res.data.data);
+          })
+          .catch((err) => {
+            console.error('start error', err);
+            startRequestSentRef.current = false;
+          });
+      }
     };
 
     bootstrap();

@@ -77,7 +77,7 @@ const PrizesList: React.FC<PrizesListProps> = ({ isDrawerOpen }) => {
         name: 'Годовой запас Zewa',
         value: 20,
         code: 'dasdasd',
-        activated: false,
+        activated: true,
         type: 'prize',
       },
       {
@@ -135,11 +135,11 @@ const PrizesList: React.FC<PrizesListProps> = ({ isDrawerOpen }) => {
           key={`${prize.points}-${id}`}
         >
           <Bubble $isOpen={isDrawerOpen} $activated={isActivated}>
-            <StyledSpanPink>
-              {prize.type === 'coupon' ? null : points >= prize.points ? (
-                <SpanDraw>Участвуете в розыгрыше</SpanDraw>
-              ) : null}
-            </StyledSpanPink>
+            {prize.type === 'coupon' ? null : points >= prize.points ? (
+              <StyledSpanPink>
+                <SpanDraw>Участвуете в розыгрыше</SpanDraw>{' '}
+              </StyledSpanPink>
+            ) : null}
 
             {prize.type !== 'coupon' && (
               <>
@@ -165,7 +165,7 @@ const PrizesList: React.FC<PrizesListProps> = ({ isDrawerOpen }) => {
             <StyledSpan maxWidth={100} maxLines={2}>
               {prize.name}
             </StyledSpan>
-            {isActivated ? (
+            {isActivated && prize.type !== 'prize' ? (
               <ButtonScale variant="white-small" onClick={() => navigate('/prizes')}>
                 Мои призы
               </ButtonScale>

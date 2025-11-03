@@ -217,15 +217,17 @@ export const StyledSpan = styled(EllipsisText)`
     -0.5px -0.5px 0 #003980;
 `;
 
-export const StyledSpanPink = styled(StyledSpan)`
+export const StyledSpanPink = styled.span`
   color: #e22c6e;
   position: absolute;
   border-radius: 4px;
   background: #fff;
-
-  padding: 2px 5px;
-  right: 8.5px;
-  top: -8px;
+  display: flex;
+  padding: 2px 6px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  top: -6px;
 
   > span {
     color: #e53375;
@@ -276,9 +278,13 @@ export const ButtonComponentStyled = styled.div`
 export const ScrollContainer = styled(HorizontalScroll)`
   width: 100%;
   position: relative;
-  /* bottom: -2.5rem; */
+  margin-top: -15px;
   z-index: 100;
 
+  .vkuiHorizontalScroll__in {
+    overflow-y: visible;
+    padding-top: 15px;
+  }
   > div > div > div {
     &:first-child {
       display: flex;
@@ -372,7 +378,7 @@ export const SpanDraw = styled.span`
   font-size: 12px;
   font-style: normal;
   font-weight: 400;
-  line-height: 100%; /* 12px */
+  line-height: 100%;
 `;
 
 export const Button = styled.button<ButtonProps>`
