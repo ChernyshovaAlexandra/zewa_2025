@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { SplashScreen } from './features/splash/SplashScreen';
 
 const HomeScreen = lazy(
@@ -24,9 +24,18 @@ const FaqScreen = lazy(() =>
 const TournamentScreen = lazy(() =>
   import('@/features/tournament/TournamentScreen').then((m) => ({ default: m.TournamentScreen })),
 );
-const GameRulesScreen = lazy(() =>
-  import('@/features/game/GameRulesScreen').then((m) => ({ default: m.GameRulesScreen })),
+
+const BackToSchoolGameScreen = lazy(() =>
+  import('@/features/back-to-school-game/GameScreen').then((m) => ({
+    default: m.GameScreen,
+  })),
 );
+const BackToSchoolGameRulesScreen = lazy(() =>
+  import('@/features/back-to-school-game/GameRulesScreen').then((m) => ({
+    default: m.GameRulesScreen,
+  })),
+);
+
 const MemoGameScreen = lazy(() =>
   import('@/features/memo-game/MemoGameScreen').then((m) => ({ default: m.MemoGameScreen })),
 );
@@ -35,9 +44,7 @@ const MemoGameLevelsScreen = lazy(() =>
     default: m.MemoGameLevelsScreen,
   })),
 );
-const GameScreen = lazy(() =>
-  import('@/features/game/GameScreen').then((m) => ({ default: m.GameScreen })),
-);
+
 const ProfileScreen = lazy(() =>
   import('@/features/profile/ProfileScreen').then((m) => ({ default: m.ProfileScreen })),
 );
@@ -56,10 +63,14 @@ export function AppRouter() {
           <Route path="/rules" element={<RulesScreen />} />
           <Route path="/faq" element={<FaqScreen />} />
 
-          <Route path="/game/rules" element={<GameRulesScreen />} />
+          <Route path="/back-to-school-game" element={<BackToSchoolGameScreen />} />
+          <Route path="/back-to-school-game/rules" element={<BackToSchoolGameRulesScreen />} />
+
+          <Route path="/memo/levels" element={<Navigate to="/game/memo/levels" replace />} />
+          <Route path="/game" element={<Navigate to="/game/memo" replace />} />
           <Route path="/game/memo/levels" element={<MemoGameLevelsScreen />} />
           <Route path="/game/memo" element={<MemoGameScreen />} />
-          <Route path="/game" element={<GameScreen />} />
+
           <Route path="/profile" element={<ProfileScreen />} />
         </Routes>
       </Suspense>

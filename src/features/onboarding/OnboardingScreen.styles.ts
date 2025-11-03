@@ -6,7 +6,7 @@ export const Wrapper = styled.div`
   align-items: center;
   padding: 24px 16px;
   height: 100vh;
-  background: url('./assets/images/bg.svg'), linear-gradient(180deg, #2d59df 0%, #1945cb 100%);
+  background: #182f5d;
   color: #fff;
 `;
 

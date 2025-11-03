@@ -1,10 +1,4 @@
-import {
-  HomeWrapper,
-  ButtonsWrapper,
-  Backpack,
-  BackpackContainer,
-  Navigation,
-} from './HomeScreen.styles';
+import { HomeWrapper, ButtonsWrapper, Navigation } from './HomeScreen.styles';
 import { PlayIcon, ScanIcon, TournamentIcon, UserIcon, ZewaButton } from '@/shared/ui';
 import { renderQrScannerModal } from '@/features';
 import { useNavigate } from 'react-router-dom';
@@ -30,27 +24,53 @@ export function HomeScreen() {
           </Flex>
         </Flex>
       </Navigation>
-      <BackpackContainer>
-        <Backpack src="./assets/images/backpack.webp" alt="Backpack" />
-        <ZewaButton
-          variant="play"
-          icon={<PlayIcon />}
-          onClick={() => navigate('/game/memo/levels')}
-        >
-          ИГРАТЬ
-        </ZewaButton>
-      </BackpackContainer>
+
       <ButtonsWrapper>
+        <div
+          style={{
+            width: '100%',
+            marginTop: '-5.5rem',
+            position: 'relative',
+          }}
+        >
+          <img
+            style={{
+              position: 'relative',
+              top: '1rem',
+              width: '100%',
+            }}
+            src="/assets/images/btn-bg.webp"
+            alt="btn-bg"
+          />
+          <ZewaButton
+            style={{
+              position: 'relative',
+              width: '100%',
+            }}
+            variant="play"
+            icon={<PlayIcon />}
+            onClick={() => navigate('/game/memo/levels')}
+          >
+            ИГРАТЬ
+          </ZewaButton>
+        </div>
         <ZewaButton
           style={{ padding: '14px' }}
           variant="white"
           icon={<ScanIcon />}
           onClick={renderQrScannerModal}
         >
-          Загрузить чек
+          ЗАГРУЗИТЬ ЧЕК
         </ZewaButton>
         <ZewaButton style={{ padding: '14px' }} variant="white" onClick={() => navigate('/rules')}>
           Правила участия и FAQ
+        </ZewaButton>
+        <ZewaButton
+          style={{ padding: '14px', color: '#E53375' }}
+          variant="white"
+          onClick={() => navigate('/')}
+        >
+          Клуб помощников Домовёнка
         </ZewaButton>
       </ButtonsWrapper>
       <PrizesScale />

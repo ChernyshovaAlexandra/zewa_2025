@@ -14,29 +14,46 @@ export interface TelegramWebApp {
     user?: TelegramUser;
     hash?: string;
     auth_date?: string;
+    query_id?: string;
   };
   platform?: string;
+  isFullscreen?: boolean;
+  requestFullscreen?: () => void;
   close: () => void;
   expand: () => void;
   disableVerticalSwipes?: () => void;
   ready: () => void;
   closeScanQrPopup: () => void;
   sendData: (data: string) => void;
-  onEvent: (eventType: string, callback: (...args: any) => void) => void;
-  offEvent: (eventType: string, callback: (...args: any) => void) => void;
+  onEvent: (eventType: string, callback: (...args: any[]) => void) => void;
+  offEvent: (eventType: string, callback: (...args: any[]) => void) => void;
   showScanQrPopup?: (params: { text?: string }) => void;
   allowVerticalSwipe?: boolean;
-  // openTelegramLink is available in Telegram Web App but missing in types
   openTelegramLink?: (url: string) => void;
   openLink?: (url: string) => void;
 }
 
 type Events = { qrText: string };
 
+const ALLOW_BROWSER_MODE = import.meta.env.VITE_ALLOW_BROWSER_MODE === 'true';
+const TELEGRAM_BOT_USERNAME = import.meta.env.VITE_TELEGRAM_BOT_USERNAME;
+const TELEGRAM_STARTAPP_PARAM = import.meta.env.VITE_TELEGRAM_STARTAPP_PARAM ?? '';
+
 export class TelegramService {
   private tg?: TelegramWebApp;
   private isScanPopupOpen = false;
   private listeners = new Map<keyof Events, Set<(p: any) => void>>();
+  private readonly desktopPlatforms = [
+    'macos',
+    'tdesktop',
+    'weba',
+    'desktop',
+    'linux',
+    'windows',
+    'web',
+  ];
+  private hasAttemptedLaunchRedirect = false;
+
   private emit<K extends keyof Events>(name: K, payload: Events[K]) {
     this.listeners.get(name)?.forEach((h) => h(payload));
   }
@@ -44,11 +61,7 @@ export class TelegramService {
     this.tg = window?.Telegram?.WebApp;
     this.tg?.ready();
 
-    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-    if (isMobile) {
-      this.expand();
-      this.disableVerticalSwipes();
-    }
+    this.maybeExpandToFullscreen();
   }
 
   getUser() {
@@ -73,6 +86,31 @@ export class TelegramService {
 
   expand() {
     this.tg?.expand?.();
+  }
+
+  maybeExpandToFullscreen() {
+    if (!this.tg) {
+      return;
+    }
+
+    this.expand();
+    this.disableVerticalSwipes();
+    this.redirectToLaunchAppIfNeeded();
+  }
+
+  isDesktop() {
+    const platform = this.tg?.platform?.toLowerCase();
+    if (platform) {
+      return this.desktopPlatforms.some((token) => platform.includes(token));
+    }
+
+    if (typeof navigator !== 'undefined') {
+      const ua = navigator.userAgent.toLowerCase();
+      const isMobile = /android|iphone|ipad|ipod/i.test(ua);
+      return !isMobile;
+    }
+
+    return false;
   }
 
   close() {
@@ -138,6 +176,63 @@ export class TelegramService {
         console.error('Failed to open Telegram link:', err2);
       }
     }
+  }
+
+  private redirectToLaunchAppIfNeeded() {
+    if (this.hasAttemptedLaunchRedirect || !this.tg || ALLOW_BROWSER_MODE) {
+      return;
+    }
+
+    const isInlineWebView = Boolean(
+      (this.tg.initDataUnsafe as { query_id?: string } | undefined)?.query_id,
+    );
+    if (!isInlineWebView || !TELEGRAM_BOT_USERNAME) {
+      return;
+    }
+
+    this.hasAttemptedLaunchRedirect = true;
+
+    const startAppParam = encodeURIComponent(TELEGRAM_STARTAPP_PARAM);
+    const startAppQuery = TELEGRAM_STARTAPP_PARAM ? `startapp=${startAppParam}` : 'startapp';
+    const deepLink = `tg://resolve?domain=${TELEGRAM_BOT_USERNAME}&${startAppQuery}`;
+    const httpsLink = `https://t.me/${TELEGRAM_BOT_USERNAME}?${startAppQuery}`;
+
+    const tryOpen = (url: string) => {
+      const tg = this.tg;
+      if (tg?.openTelegramLink) {
+        try {
+          tg.openTelegramLink(url);
+          return true;
+        } catch (err) {
+          console.error('openTelegramLink failed', err);
+        }
+      }
+      if (tg?.openLink) {
+        try {
+          tg.openLink(url);
+          return true;
+        } catch (err) {
+          console.error('openLink failed', err);
+        }
+      }
+      if (typeof window !== 'undefined') {
+        window.location.href = url;
+        return true;
+      }
+      return false;
+    };
+
+    if (!tryOpen(deepLink)) {
+      tryOpen(httpsLink);
+    }
+
+    window.setTimeout(() => {
+      try {
+        this.close();
+      } catch (closeErr) {
+        console.error('Failed to close inline webview after redirect', closeErr);
+      }
+    }, 300);
   }
 }
 

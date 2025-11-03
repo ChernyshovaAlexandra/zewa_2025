@@ -4,21 +4,67 @@ export const GameWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
-  padding: 20px 12px 24px;
   min-height: 100%;
+  max-width: 100%;
+  padding: 0 12px 24px;
 `;
 
-export const InfoBlock = styled.div`
+export const TopBar = styled.div`
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 12px;
+`;
+
+export const TopBarBlock = styled.div`
+  flex: 1;
+  border-radius: 10px;
+  background: linear-gradient(180deg, #f4fcff 0%, #e3f7ff 100%);
+  box-shadow:
+    0px 1px 2px rgba(255, 255, 255, 0.6) inset,
+    0px -2px 3px #b3c7e9 inset,
+    0px 3px 0 #b3c7e9,
+    0px 5px 5px rgba(0, 53, 116, 0.3);
+  min-height: 56px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  padding: 6px 12px;
   gap: 4px;
+  color: #1235ab;
   text-align: center;
+`;
+
+export const TimerValue = styled.span`
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 1.1;
+  color: #1f2532;
+`;
+
+export const SnowflakeRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 0;
+`;
+
+export const SnowflakeIcon = styled.img`
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+`;
+
+export const SnowflakeCount = styled.span`
+  font-size: 18px;
+  font-weight: 700;
+  color: #1f2532;
 `;
 
 export const CardsGrid = styled.div<{ $columns: number }>`
   display: grid;
-  grid-template-columns: repeat(${({ $columns }) => $columns}, minmax(80px, 1fr));
+  grid-template-columns: repeat(${({ $columns }) => $columns}, minmax(60px, 1fr));
   gap: 10px;
   justify-items: center;
   align-items: center;

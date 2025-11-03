@@ -13,6 +13,7 @@ export const base = css`
   gap: 10px;
   border: none;
   cursor: pointer;
+  text-transform: uppercase;
 `;
 
 export const StyledButton = styled.button<{ $variant: ZewaButtonVariant }>`
@@ -71,11 +72,24 @@ export const StyledButton = styled.button<{ $variant: ZewaButtonVariant }>`
         `;
       case 'play':
         return css`
-          padding: 14px 26px;
-          height: 60px;
-          background: linear-gradient(180deg, #f55496 0%, #e22c6e 100%);
-          color: white;
-          box-shadow: 0px 1px 2px 0px rgba(231, 64, 128, 0.6);
+          padding: 14px;
+          background: linear-gradient(180deg, #f4fcff 0%, #e3f7ff 100%);
+          color: #fff;
+          transition: all ease-in-out 0.3s;
+          border-radius: var(--10, 10px);
+          background: #f23177;
+          box-shadow:
+            0px -2px 3px 1px rgb(121 29 69 / 40%) inset,
+            0px 3px 0px 0px rgb(206 14 84),
+            0px 5px 5px 0px rgb(94 4 44 / 75%);
+
+          &:hover {
+            box-shadow:
+              0px -2px 3px 1px rgb(121 29 69) inset,
+              0px 3px 0px 0px rgb(206 14 84),
+              0px 5px 5px 0px rgb(94 4 44 / 5%);
+            transition: all ease-in-out 0.3s;
+          }
         `;
       case 'icon':
         return css`
