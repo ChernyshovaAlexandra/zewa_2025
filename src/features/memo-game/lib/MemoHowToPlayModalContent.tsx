@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import { Flex } from 'antd';
 import { ZewaButton, Text } from '@/shared/ui';
-import { useMemoGameProgressStore } from '../model/memoGameProgressStore';
-import { useModalStore } from '@/shared/model/modalStore';
 import { apiService } from '@/services';
 import { useMemoGameStore } from '../model/memoGameStore';
 
@@ -13,12 +11,12 @@ interface MemoHowToPlayModalContentProps {
   closeModal: () => void;
 }
 
-function MemoHowToPlayModalContent({
+export const MemoHowToPlayModalContent = ({
   markHowToPlaySeen,
   hasCompletedOnboarding,
   startOnboarding,
   closeModal,
-}: MemoHowToPlayModalContentProps) {
+}: MemoHowToPlayModalContentProps) => {
   const selectedLevel = useMemoGameStore((s) => s.selectedLevel);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -63,23 +61,4 @@ function MemoHowToPlayModalContent({
       </ZewaButton>
     </Flex>
   );
-}
-
-export const renderMemoHowToPlayModal = () => {
-  const { openModal, closeModal } = useModalStore.getState();
-  const { markHowToPlaySeen, hasCompletedOnboarding, startOnboarding } =
-    useMemoGameProgressStore.getState();
-
-  openModal({
-    title: 'Как играть?',
-    closable: false,
-    content: (
-      <MemoHowToPlayModalContent
-        markHowToPlaySeen={markHowToPlaySeen}
-        hasCompletedOnboarding={hasCompletedOnboarding}
-        startOnboarding={startOnboarding}
-        closeModal={closeModal}
-      />
-    ),
-  });
 };

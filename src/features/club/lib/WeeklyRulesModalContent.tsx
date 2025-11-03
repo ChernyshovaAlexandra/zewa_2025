@@ -1,4 +1,5 @@
 import { Flex } from 'antd';
+import { FC } from 'react';
 import { useModalStore } from '@/shared/model/modalStore';
 import { Text, ZewaButton } from '@/shared/ui';
 
@@ -6,7 +7,7 @@ interface WeeklyRulesModalContentProps {
   onOpenClub?: () => void;
 }
 
-const WeeklyRulesModalContent = ({ onOpenClub }: WeeklyRulesModalContentProps) => {
+export const WeeklyRulesModalContent: FC<WeeklyRulesModalContentProps> = ({ onOpenClub }) => {
   const closeModal = useModalStore((state) => state.closeModal);
 
   const handleOpenClub = () => {
@@ -27,12 +28,4 @@ const WeeklyRulesModalContent = ({ onOpenClub }: WeeklyRulesModalContentProps) =
       </ZewaButton>
     </Flex>
   );
-};
-
-export const renderWeeklyRulesModal = (onOpenClub?: () => void) => {
-  useModalStore.getState().openModal({
-    title: 'Правила недели',
-    closable: true,
-    content: <WeeklyRulesModalContent onOpenClub={onOpenClub} />,
-  });
 };

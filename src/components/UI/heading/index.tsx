@@ -1,5 +1,5 @@
 // components/Heading.tsx
-import React, { ReactNode } from 'react';
+import React, { CSSProperties, ReactNode } from 'react';
 import styled, { css } from 'styled-components';
 
 interface HeadingProps {
@@ -8,7 +8,7 @@ interface HeadingProps {
     children: string | TrustedHTML;
     $center?: boolean;
     title?: ReactNode;
-    style?: any;
+    style?: CSSProperties;
 }
 
 const baseStyles = css<{ $blue?: boolean, $center?: boolean }>`

@@ -7,8 +7,13 @@ export interface ApiHookResult<TRequest, TResponse> {
   call: (payload: TRequest) => Promise<TResponse>;
 }
 
+type ApiResponse<T> = T | { data: T };
+
+const hasDataField = <T,>(value: ApiResponse<T>): value is { data: T } =>
+  typeof value === 'object' && value !== null && 'data' in value;
+
 export function useApi<TRequest, TResponse>(
-  requestFn: (payload: TRequest) => Promise<TResponse> | Promise<{ data: TResponse }>,
+  requestFn: (payload: TRequest) => Promise<ApiResponse<TResponse>>,
 ): ApiHookResult<TRequest, TResponse> {
   const [data, setData] = useState<TResponse | null>(null);
   const [loading, setLoading] = useState(false);
@@ -20,9 +25,9 @@ export function useApi<TRequest, TResponse>(
       setError(null);
       try {
         const res = await requestFn(payload);
-        const result = (res as any).data ?? res;
+        const result = hasDataField(res) ? res.data : res;
         setData(result);
-        return result as TResponse;
+        return result;
       } catch (err) {
         setError(err);
         throw err as Error;
