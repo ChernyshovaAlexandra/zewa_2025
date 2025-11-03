@@ -13,3 +13,5 @@ export * from './ScanWhiteIcon';
 export * from './ScreenshotIcon';
 export * from './KeyboardIcon';
 export * from './PrizeIcon';
+export * from './TimerIcon';
+export * from './SnowflakeIcon';

@@ -2,11 +2,7 @@ import styled from 'styled-components';
 
 export const HeaderWrapper = styled.header`
   padding: 16px;
-  padding-left: 12px;
   padding-top: calc(var(--twa-safe-area-top, 0px) + 24px);
-  display: flex;
-  align-items: center;
-  gap: 8px;
   width: 100%;
 `;
 
@@ -41,5 +37,4 @@ export const Title = styled.h1`
   line-height: 110%;
   text-align: center;
   width: 100%;
-  margin-left: -24px;
 `;

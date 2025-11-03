@@ -50,7 +50,7 @@ export function TelegramProvider({ children }: { children: ReactNode }) {
     let cancelled = false;
     let timeoutId: number | null = null;
     let attempts = 0;
-    const maxAttempts = 30; // ~3 seconds timeout
+    const maxAttempts = 30; 
     let detachSafeAreaListener: (() => void) | null = null;
 
     const readCssSafeArea = (edge: 'top' | 'bottom') => {
@@ -124,10 +124,11 @@ export function TelegramProvider({ children }: { children: ReactNode }) {
     const applySafeArea = (webAppInstance?: TelegramWebApp | null) => {
       if (cancelled) return;
       const webApp = webAppInstance ?? telegramService.getWebApp();
+      const platform = webApp?.platform?.toLowerCase() ?? '';
+      const isMobile = platform === 'ios' || platform === 'android';
+
       const top = computeSafeAreaTop(webApp);
-      setSafeAreaInsetTop(
-        top + (webApp?.platform === 'ios' || webApp?.platform === 'android' ? 20 : 0),
-      );
+      setSafeAreaInsetTop(top + (isMobile ? 20 : 0));
     };
 
     const complete = (value: boolean) => {
@@ -156,22 +157,14 @@ export function TelegramProvider({ children }: { children: ReactNode }) {
         return;
       }
 
-      const handleViewportChange = (event?: { isStateStable?: boolean }) => {
+      const handleViewportChange = () => {
         if (cancelled) return;
-        if (event && typeof event === 'object' && 'isStateStable' in event) {
-          if ((event as { isStateStable?: boolean }).isStateStable === false) {
-            return;
-          }
-        }
-
         applySafeArea(telegramService.getWebApp());
       };
 
-      // Инициализация Telegram WebApp API
       telegramService.init();
 
       try {
-        // Разворачиваем во весь экран
         const webAppInstance = telegramService.getWebApp() ?? webApp;
         webAppInstance.ready();
         webAppInstance.expand();

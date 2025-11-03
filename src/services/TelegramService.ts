@@ -46,6 +46,13 @@ export interface TelegramWebApp {
   allowVerticalSwipe?: boolean;
   openTelegramLink?: (url: string) => void;
   openLink?: (url: string) => void;
+  BackButton?: {
+    isVisible?: boolean;
+    show?: () => void;
+    hide?: () => void;
+    onClick?: (callback: () => void) => void;
+    offClick?: (callback: () => void) => void;
+  };
 }
 
 type Events = { qrText: string };

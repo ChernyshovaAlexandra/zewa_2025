@@ -1,33 +1,38 @@
-import { PageContainer, Text, ZewaButton, Heading } from '@/shared/ui';
+import { PageContainer, Heading, Text, SnowflakeIcon, PlayIcon } from '@/shared/ui';
 import { useNavigate } from 'react-router-dom';
 import { useMemoGameStore } from './model/memoGameStore';
 import * as S from './MemoGameLevelsScreen.styles';
-import {
-  getMemoLevelConfig,
-  getWeeklyMemoImageSet,
-  MEMO_IMAGE_SETS,
-} from './config/memoLevelsConfig';
+
 import type { MemoLevel } from './types';
+import { Flex } from 'antd';
 
 const LEVELS: Array<{
   id: MemoLevel;
   title: string;
-  description: string;
+  description: string | null;
+  time: string;
+  snowflakes: number;
 }> = [
   {
     id: 1,
     title: '1 уровень',
-    description: 'Спокойное начало для знакомства с механикой.',
+    description: null,
+    time: '30 c',
+    snowflakes: 6,
   },
   {
     id: 2,
     title: '2 уровень',
-    description: 'Больше карточек и чуть меньше времени на раздумья.',
+    description: 'Загрузите чек с продукцией Zewa, чтобы продолжить игру',
+    time: '1 мин',
+    snowflakes: 10,
   },
   {
     id: 3,
     title: '3 уровень',
-    description: 'Испытание для самых быстрых и внимательных.',
+    description: 'Загрузите больше чеков с продукцией Zewa, чтобы продолжить игру',
+    time: '2 мин',
+    snowflakes: 15,
   },
 ];
 
@@ -35,9 +40,6 @@ export function MemoGameLevelsScreen() {
   const navigate = useNavigate();
   const lockedLevels = useMemoGameStore((s) => s.lockedLevels);
   const setSelectedLevel = useMemoGameStore((s) => s.setSelectedLevel);
-  const currentImageSetId = useMemoGameStore((s) => s.currentImageSetId);
-  const weeklySet =
-    MEMO_IMAGE_SETS.find((set) => set.id === currentImageSetId) ?? getWeeklyMemoImageSet();
 
   const handlePlay = (level: MemoLevel) => {
     setSelectedLevel(level);
@@ -45,33 +47,47 @@ export function MemoGameLevelsScreen() {
   };
 
   return (
-    <PageContainer onBack={() => navigate('/')}>
-      <Text align="center" size="p3" color="#596471">
-        Выберите уровень перед стартом. По мере обновлений мы сможем разблокировать новые режимы.
-      </Text>
-      <Text align="center" size="p4" color="#596471">
-        Текущий набор карточек: {weeklySet.label}
-      </Text>
+    <PageContainer
+      fullscreen
+      style={{
+        background: 'rgba(0, 0, 0, 0.65)',
+        backdropFilter: 'blur(8.5px)',
+      }}
+    >
       <S.LevelsWrapper>
         {LEVELS.map((level) => {
           const isLocked = lockedLevels[level.id];
-          const config = getMemoLevelConfig(level.id);
+
           return (
             <S.LevelCard key={level.id} $locked={isLocked}>
               <S.LevelHeader>
                 <S.LevelInfo>
-                  <Heading size="h3">{level.title}</Heading>
-                  <Text size="p4" color="#596471">
-                    {level.description}
-                  </Text>
-                  <Text size="p4" color="#8893A0">
-                    Поле: {config.rows} × {config.columns} • {config.pairs} пар
-                  </Text>
+                  <Heading size="h2">{level.title}</Heading>
                 </S.LevelInfo>
               </S.LevelHeader>
-              <ZewaButton variant="blue-b" disabled={isLocked} onClick={() => handlePlay(level.id)}>
-                {isLocked ? 'Скоро' : 'Играть'}
-              </ZewaButton>
+              <Flex gap={'10px'} style={{ marginBottom: '1rem' }}>
+                <S.BlueInfoBlock>
+                  <Flex gap="3px" align="center">
+                    <img src="/assets/images/timer.svg" alt="" width={22} height={22} />
+                    <Text>{level.time}</Text>
+                  </Flex>
+                  <Flex gap="3px" align="center">
+                    <SnowflakeIcon width={22} height={22} color="#fff" />
+                    <Text>{level.snowflakes}</Text>
+                  </Flex>
+                </S.BlueInfoBlock>
+                <S.GameBtnWrapper>
+                  <S.GameBtnImg src="/assets/images/play-btn-bg.webp" />
+                  <S.GameBtn
+                    variant="play"
+                    icon={<PlayIcon />}
+                    onClick={() => handlePlay(level.id)}
+                  >
+                    Играть
+                  </S.GameBtn>
+                </S.GameBtnWrapper>
+              </Flex>
+              <S.LevelDescription>{level.description}</S.LevelDescription>
             </S.LevelCard>
           );
         })}

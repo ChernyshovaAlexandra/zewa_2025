@@ -25,7 +25,7 @@ export const PageContainer = ({
 }: PageContainerProps) => {
   return (
     <Wrapper $fullscreen={fullscreen} style={style}>
-      <PageHeader title={title} onBack={onBack} />
+      {title ? <PageHeader title={title} onBack={onBack} /> : <></>}
       {scrollable ? (
         <ScrollArea $withPadding={withPadding} onScroll={onScroll}>
           {children}

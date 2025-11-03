@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SplashScreen } from './features/splash/SplashScreen';
 import { AppRouter } from './router';
 import { ZewaModal } from './shared/ui';
@@ -26,6 +26,29 @@ export default function App() {
 
     return () => clearTimeout(id);
   }, []);
+
+  useEffect(() => {
+    if (stage !== 'app' || typeof window === 'undefined') {
+      return;
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      const imageAssets = [
+        '/assets/images/Game-interface.webp',
+        '/assets/images/lk.webp',
+        '/assets/images/btn-bg.webp',
+      ];
+
+      imageAssets.forEach((src) => {
+        const img = new Image();
+        img.src = src;
+      });
+    }, 0);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
+  }, [stage]);
 
   const insets: SafeAreaInsets = {
     top: Math.max(0, safeAreaInsetTop),
@@ -140,7 +163,13 @@ export default function App() {
         colorScheme="light"
       >
         <AdaptivityProvider>
-          <AppRoot mode="full" safeAreaInsets={insets} scroll="contain" userSelectMode="disabled">
+          <AppRoot
+            mode="full"
+            safeAreaInsets={insets}
+            scroll="contain"
+            userSelectMode="disabled"
+            style={{ backgroundColor: '#182F5D' }}
+          >
             <div
               style={{
                 width: '100%',
@@ -148,9 +177,7 @@ export default function App() {
                 height: '100dvh',
               }}
             >
-              <Suspense fallback={<SplashScreen />}>
-                <AppRouter />
-              </Suspense>
+              <AppRouter />
               <ZewaModal />
             </div>
           </AppRoot>

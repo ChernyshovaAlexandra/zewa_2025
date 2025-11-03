@@ -36,8 +36,8 @@ const StyledFormItem = styled(FormItem)`
     color: #1d2023;
   }
   label {
-    background: linear-gradient(180deg, #2d59df 0%, #0f3bc1 100%) !important;
-    box-shadow: 0px -1px 2px 0px #001da3 !important;
+    background: #193f74 !important;
+    box-shadow: none !important;
     span {
       color: white !important;
     }
