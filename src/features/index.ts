@@ -4,6 +4,7 @@ export * from './prizes/PrizesScreen';
 export * from './history/HistoryScreen';
 export * from './rules/RulesScreen';
 export * from './club/ClubScreen';
+export * from './club/ClubOnboardingScreen';
 export * from './faq/FaqScreen';
 export * from './tournament/TournamentScreen';
 export * from './memo-game';

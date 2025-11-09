@@ -7,6 +7,7 @@ import { RulesScreen } from '@/features/rules/RulesScreen';
 import { FaqScreen } from '@/features/faq/FaqScreen';
 import { TournamentScreen } from '@/features/tournament/TournamentScreen';
 import { ClubScreen } from '@/features/club/ClubScreen';
+import { ClubOnboardingScreen } from '@/features/club/ClubOnboardingScreen';
 import { MemoGameScreen } from '@/features/memo-game/MemoGameScreen';
 import { MemoGameLevelsScreen } from '@/features/memo-game/MemoGameLevelsScreen';
 import { ProfileScreen } from '@/features/profile/ProfileScreen';
@@ -30,6 +31,7 @@ export function AppRouter() {
         <Route path="/history" element={<HistoryScreen />} />
         <Route path="/rules" element={<RulesScreen />} />
         <Route path="/faq" element={<FaqScreen />} />
+        <Route path="/club/onboarding" element={<ClubOnboardingScreen />} />
         <Route path="/club" element={<ClubScreen />} />
         <Route path="/memo/levels" element={<Navigate to="/game/memo/levels" replace />} />
         <Route path="/game" element={<Navigate to="/game/memo" replace />} />

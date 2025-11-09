@@ -93,7 +93,7 @@ export const CardBack = styled(CardFace)`
 
 export const CardFront = styled(CardFace)<{ $matched: boolean }>`
   transform: rotateY(180deg);
-  background: #ffffff;
+  background: linear-gradient(160deg, #fff6dd 0%, #f9df9c 45%, #f2d28a 70%, #e2b76b 100%);
   position: relative;
   width: 100%;
   height: 100%;
@@ -105,7 +105,7 @@ export const CardFront = styled(CardFace)<{ $matched: boolean }>`
         content: '';
         position: absolute;
         inset: 0;
-        background: rgba(63, 191, 138, 0.24);
+        /* background: rgba(63, 191, 138, 0.24); */
         border: 2px solid rgba(63, 191, 138, 0.9);
         border-radius: 6px;
         box-shadow: inset 0 0 12px rgba(63, 191, 138, 0.35);

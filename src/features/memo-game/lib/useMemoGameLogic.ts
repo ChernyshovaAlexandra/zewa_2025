@@ -12,8 +12,8 @@ import { renderMemoPauseModal } from './renderMemoPauseModal';
 import { renderMemoRulesModal } from './renderMemoRulesModal';
 import type { MemoLevel } from '../types';
 
-const CARD_IMAGE_BASE_PATH = '/assets/images/memo/cards';
-const CARD_IMAGE_COUNT = 6;
+const CARD_IMAGE_BASE_PATH = '/assets/images/memo/cards/upd';
+const CARD_IMAGE_COUNT = 10;
 const CARD_REVEAL_DELAY_MS = 900;
 const HUE_SHIFT_STEP = 45;
 
@@ -71,7 +71,7 @@ export function useMemoGameLogic({ onExit }: UseMemoGameLogicParams): UseMemoGam
     const basePairs = Array.from({ length: pairs }, (_, pairId) => {
       const imageIndex = pairId % CARD_IMAGE_COUNT;
       const variant = Math.floor(pairId / CARD_IMAGE_COUNT);
-      const imageSrc = `${CARD_IMAGE_BASE_PATH}/${imageIndex + 1}.png`;
+      const imageSrc = `${CARD_IMAGE_BASE_PATH}/${imageIndex + 1}.webp`;
       const hueShift = (variant * HUE_SHIFT_STEP) % 360;
 
       return [

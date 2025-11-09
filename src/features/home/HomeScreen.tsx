@@ -1,10 +1,11 @@
 import { HomeWrapper, ButtonsWrapper, Navigation } from './HomeScreen.styles';
 import { PlayIcon, ScanIcon, TournamentIcon, UserIcon, ZewaButton } from '@/shared/ui';
-import { renderQrScannerModal, renderWeeklyRulesModal } from '@/features';
+import { renderQrScannerModal } from '@/features';
 import { useNavigate } from 'react-router-dom';
 import { Flex } from 'antd';
 import PrizesScale from '../prizes-scale';
 import { Coins } from '../coins/Coins';
+import { CLUB_ONBOARDING_KEY } from '../club/constants';
 
 export function HomeScreen() {
   const navigate = useNavigate();
@@ -63,11 +64,12 @@ export function HomeScreen() {
         <ZewaButton
           style={{ padding: '14px', color: '#E53375' }}
           variant="white"
-          onClick={() =>
-            renderWeeklyRulesModal(() => {
-              navigate('/club');
-            })
-          }
+          onClick={() => {
+            const hasWindow = typeof window !== 'undefined';
+            const hasSeenClub =
+              hasWindow && window.localStorage.getItem(CLUB_ONBOARDING_KEY) === 'true';
+            navigate(hasSeenClub ? '/club' : '/club/onboarding');
+          }}
         >
           Клуб помощников Домовёнка
         </ZewaButton>

@@ -24,6 +24,8 @@ export const imageManifest = [
   '/assets/images/onboarding/2_christmas.webp',
   '/assets/images/onboarding/3_christmas.webp',
   '/assets/images/onboarding/4_christmas.webp',
+  '/assets/images/onboarding/club-1.webp',
+  '/assets/images/onboarding/club-2.webp',
   '/assets/images/online-promo.svg',
   '/assets/images/play-btn-bg.webp',
   '/assets/images/prize-bg.png',
