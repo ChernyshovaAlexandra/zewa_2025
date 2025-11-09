@@ -1,7 +1,6 @@
 import { Icon24Copy } from '@vkontakte/icons';
 import React from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import useGlobal from '@/contexts/GlobalProvider';
 import { PromoCodeContainer, PromoText } from './style';
 
 type Codetype = {
@@ -9,11 +8,7 @@ type Codetype = {
 };
 
 const Code: React.FC<Codetype> = ({ code }) => {
-  const { audioManager } = useGlobal();
-
-  const handleCopy = React.useCallback(() => {
-    audioManager.playClickSound();
-  }, [audioManager]);
+  const handleCopy = React.useCallback(() => {}, []);
 
   return (
     <PromoCodeContainer>

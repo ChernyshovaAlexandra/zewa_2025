@@ -4,7 +4,7 @@ export const fill = keyframes`
   0% { width: 0; }
   100% { width: 100%; }
 `;
-// fin
+
 export const Wrapper = styled.div`
   height: 100vh;
   background: url('/assets/images/game-bg.webp');
