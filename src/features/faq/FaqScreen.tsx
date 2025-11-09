@@ -5,13 +5,16 @@ import { faqText } from './faqText';
 export function FaqScreen() {
   return (
     <PageContainer title="FAQ" scrollable={true}>
-      <Text
-        color="#fff"
-        as="div"
-        size="p4"
-        dangerouslySetInnerHTML={{ __html: applyNbsp(faqText) }}
-      />
-      <ZewaButton variant="white">Задать вопрос</ZewaButton>
+      <div style={{ padding: '0 20px 30px' }}>
+        <Text
+          color="#fff"
+          as="div"
+          size="p4"
+          style={{ padding: '0 10px' }}
+          dangerouslySetInnerHTML={{ __html: applyNbsp(faqText) }}
+        />
+        <ZewaButton variant="white">Задать вопрос</ZewaButton>
+      </div>
     </PageContainer>
   );
 }

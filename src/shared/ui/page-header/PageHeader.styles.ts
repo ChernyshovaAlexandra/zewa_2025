@@ -1,9 +1,8 @@
 import styled from 'styled-components';
 
 export const HeaderWrapper = styled.header`
-  padding: 16px;
-  padding-top: calc(var(--twa-safe-area-top, 0px) + 24px);
   width: 100%;
+  padding-bottom: 15px;
 `;
 
 export const BackButton = styled.button`

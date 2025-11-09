@@ -26,60 +26,76 @@ export function RulesScreen() {
           </TabButton>
         </Tabs>
       </TabsWrapper>
-      {active === 'rules' ? (
-        <>
-          <Text
-            color="#fff"
-            as="div"
-            size="p4"
-            dangerouslySetInnerHTML={{ __html: applyNbsp(rulesText) }}
-          />
-          <Linked
-            href="https://back.zemma-chatbot.ru/docs/Правила_акции Zewa_Магнит.pdf"
-            target="_blank"
-          >
-            Полные правила
-          </Linked>
-        </>
-      ) : (
-        <>
-          <Text
-            color="#fff"
-            as="div"
-            size="p4"
-            dangerouslySetInnerHTML={{ __html: applyNbsp(faqText) }}
-          />
-          <Linked href="https://t.me/zemma_zewa_support">Задать вопрос</Linked>
-        </>
-      )}
+      <div style={{ paddingBottom: '60px' }}>
+        {active === 'rules' ? (
+          <>
+            <RulesText
+              as="div"
+              style={{ padding: '0 10px' }}
+              size="p4"
+              dangerouslySetInnerHTML={{ __html: applyNbsp(rulesText) }}
+            />
+            <Linked
+              style={{ width: '200px' }}
+              href="https://back.zemma-chatbot.ru/docs/Правила_акции Zewa_Магнит.pdf"
+              target="_blank"
+            >
+              Полные правила
+            </Linked>
+          </>
+        ) : (
+          <>
+            <RulesText
+              as="div"
+              size="p4"
+              style={{ padding: '0 10px' }}
+              dangerouslySetInnerHTML={{ __html: applyNbsp(faqText) }}
+            />
+            <Linked href="https://t.me/zemma_zewa_support" target="_blank">
+              Задать вопрос
+            </Linked>
+          </>
+        )}
+      </div>
     </PageContainer>
   );
 }
 
-const Linked = styled.a`
-  display: flex;
-  align-items: center;
+const RulesText = styled(Text)`
+  color: #fff;
+  font-feature-settings:
+    'liga' off,
+    'clig' off;
   font-family: 'Foco Trial';
-  justify-content: center;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 140%;
+`;
+
+const Linked = styled.a`
   border-radius: 10px;
-  font-weight: 700;
-  font-size: 18px;
-  line-height: 1;
-  gap: 10px;
-  border: none;
-  cursor: pointer;
-  text-decoration: none;
-  width: fit-content;
-  margin: 2rem auto 0;
-  padding: 6px 12px;
-  font-size: 14px;
   background: linear-gradient(180deg, #f4fcff 0%, #e3f7ff 100%);
-
-  color: #193F74 !important;
-  font-weight: 700;
-
   box-shadow:
-    0px -2px 3px 0px #b3c7e9 inset,
-    0px 3px 0px 0px #b3c7e9,
-    0px 5px 5px 0px rgba(0, 53, 116, 0.5);
+    0 -2px 3px 0 #b3c7e9 inset,
+    0 3px 0 0 #b3c7e9,
+    0 5px 5px 0 rgba(0, 53, 116, 0.5);
+  width: 180px;
+  height: 48px;
+  padding: 14px 24px;
+  justify-content: center;
+  align-items: center;
+  display: block;
+  text-align: center;
+  color: #1235ab;
+  font-feature-settings:
+    'liga' off,
+    'clig' off;
+  font-family: 'Foco Trial';
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 100%;
+  text-decoration: none;
+  margin: 17px auto 0;
 `;
