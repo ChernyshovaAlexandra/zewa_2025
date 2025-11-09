@@ -63,7 +63,7 @@ export default function App() {
     botUsername != null ? `https://t.me/${botUsername}?${telegramStartAppQuery}` : undefined;
   const telegramDeepLink =
     botUsername != null ? `tg://resolve?domain=${botUsername}&${telegramStartAppQuery}` : undefined;
-  const shouldShowSplash = true; // stage === 'splash' || !isTelegramReady;
+  const shouldShowSplash = stage === 'splash' || !isTelegramReady;
 
   useEffect(() => {
     if (!isTelegramReady || isTelegramWebApp || allowBrowserMode || !telegramDeepLink) {

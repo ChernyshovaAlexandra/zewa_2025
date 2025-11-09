@@ -76,7 +76,7 @@ export const CloseBtn = styled.button`
   &::before {
     content: '';
     position: absolute;
-    background: url('./assets/images/corner.svg') no-repeat right top;
+    background: url('/assets/images/corner.svg') no-repeat right top;
     width: 2.5rem;
     height: 2.5rem;
     background-size: contain;

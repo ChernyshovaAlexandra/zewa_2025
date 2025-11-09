@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
 import { ZewaButton } from '@/shared/ui';
 import * as S from './OnboardingScreen.styles';
 import { applyNbsp } from '@/utils';
@@ -9,28 +9,28 @@ interface OnboardingScreenProps {
 
 const steps = [
   {
-    image: './assets/images/onboarding/1_christmas.webp',
+    image: '/assets/images/onboarding/1_christmas.webp',
     header: 'Скучали? Я вернулся!',
     text: applyNbsp(
       'Перед Новым годом дел невпроворот. Но с Zewa дом сияет! Добавим немного волшебства. Поможете разобрать игрушки и нарядить ёлку?',
     ),
   },
   {
-    image: './assets/images/onboarding/2_christmas.webp',
+    image: '/assets/images/onboarding/2_christmas.webp',
     header: 'Не проЗЕВАй праздник!',
     text: applyNbsp(
       'Покупайте Zewa в «Магните», побеждайте в игре, зарабатывайте снежинки, чтобы продвинуться по шкале призов, и получайте ценные подарки.',
     ),
   },
   {
-    image: './assets/images/onboarding/3_christmas.webp',
+    image: '/assets/images/onboarding/3_christmas.webp',
     header: 'Встречайте новую игру!',
     text: applyNbsp(
       'Переверните все парные карточки, чтобы получить снежинки. Количество попыток не ограничено.',
     ),
   },
   {
-    image: './assets/images/onboarding/4_christmas.webp',
+    image: '/assets/images/onboarding/4_christmas.webp',
     header: 'Продвигайтесь по шкале призов',
     text: applyNbsp(
       'Загружайте чеки с товарами Zewa, проходите 3 уровня игры каждую неделю и вступайте в Клуб помощников Домовёнка.',
@@ -38,8 +38,11 @@ const steps = [
   },
 ];
 
+const SWIPE_THRESHOLD = 40;
+
 export function OnboardingScreen({ onFinish }: OnboardingScreenProps) {
   const [step, setStep] = useState(0);
+  const swipeStartXRef = useRef<number | null>(null);
 
   const handleNext = () => {
     if (step < steps.length - 1) {
@@ -49,8 +52,38 @@ export function OnboardingScreen({ onFinish }: OnboardingScreenProps) {
     }
   };
 
+  const handlePrev = () => {
+    if (step > 0) {
+      setStep(step - 1);
+    }
+  };
+
+  const handlePointerDown = (event: ReactPointerEvent<HTMLDivElement>) => {
+    swipeStartXRef.current = event.clientX;
+  };
+
+  const handlePointerUp = (event: ReactPointerEvent<HTMLDivElement>) => {
+    if (swipeStartXRef.current === null) return;
+    const deltaX = event.clientX - swipeStartXRef.current;
+    if (deltaX <= -SWIPE_THRESHOLD) {
+      handleNext();
+    } else if (deltaX >= SWIPE_THRESHOLD) {
+      handlePrev();
+    }
+    swipeStartXRef.current = null;
+  };
+
+  const handlePointerCancel = () => {
+    swipeStartXRef.current = null;
+  };
+
   return (
-    <S.Wrapper>
+    <S.Wrapper
+      onPointerDown={handlePointerDown}
+      onPointerUp={handlePointerUp}
+      onPointerLeave={handlePointerCancel}
+      onPointerCancel={handlePointerCancel}
+    >
       <S.Image src={steps[step].image} alt="onboarding" />
       <S.Header>{steps[step].header}</S.Header>
       <S.Text>{applyNbsp(steps[step].text)}</S.Text>

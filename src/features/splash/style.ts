@@ -7,7 +7,7 @@ export const fill = keyframes`
 // fin
 export const Wrapper = styled.div`
   height: 100vh;
-  background: url('./assets/images/game-bg.webp');
+  background: url('/assets/images/game-bg.webp');
   display: flex;
   flex-direction: column;
   align-items: center;

@@ -65,7 +65,7 @@ const GameContainer: React.FC<GameProps> = ({
           {points_earned ? (
             <StyledCoins>
               <Text style={{ fontSize: '14px' }}> +{points_earned} </Text>
-              <img src="./assets/images/backpack-icon.png" alt="иконка рюкзак" />
+              <img src="/assets/images/backpack-icon.png" alt="иконка рюкзак" />
             </StyledCoins>
           ) : null}
         </ResultContainer>

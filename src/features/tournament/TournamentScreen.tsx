@@ -76,7 +76,7 @@ export function TournamentScreen() {
                 <th>
                   <img
                     style={{ width: '22px' }}
-                    src="./assets/images/snowflake.svg"
+                    src="/assets/images/snowflake.svg"
                     alt="иконка снежинки"
                   />
                 </th>

@@ -23,7 +23,7 @@ export const Coins = () => {
           justifyContent: 'center',
         }}
       >
-        <img width="22" src="./assets/images/snowflake.svg" alt="иконка снежинка" />
+        <img width="22" src="/assets/images/snowflake.svg" alt="иконка снежинка" />
         <span style={{ fontWeight: 900, letterSpacing: '-0.7px' }}>
           {userData?.user?.coins || 0}
         </span>
