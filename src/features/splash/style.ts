@@ -11,21 +11,25 @@ export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0 16px;
-  padding-top: 3rem;
+  padding-top: calc(
+    44px + var(--twa-safe-area-top, 0px) + (min(var(--twa-safe-area-top, 0px), 1px) * 30)
+  );
+  padding-bottom: calc(
+    20px + var(--twa-safe-area-bottom, 0px) + (min(var(--twa-safe-area-bottom, 0px), 1px) * 30)
+  );
   position: relative;
 `;
 
 export const Logo = styled.img`
   width: 130px;
-  margin-bottom: 10px;
+  margin-bottom: 28px;
   position: relative;
   z-index: 2;
 `;
 
 export const ProgressContainer = styled.div`
   width: 80%;
-  max-width: 320px;
+  max-width: 307px;
   height: 25px;
   position: relative;
   z-index: 2;
@@ -79,9 +83,9 @@ export const Label = styled.div`
 export const BottomImage = styled.img`
   position: absolute;
   top: 0;
-  width: auto;
-  min-width: 100vw;
+  width: 100vw;
   height: 100vh;
   pointer-events: none;
+  object-fit: cover;
   z-index: 0;
 `;
