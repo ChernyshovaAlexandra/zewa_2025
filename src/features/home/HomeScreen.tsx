@@ -54,15 +54,10 @@ export function HomeScreen() {
             ИГРАТЬ
           </ZewaButton>
         </div>
-        <ZewaButton
-          style={{ padding: '14px' }}
-          variant="white"
-          icon={<ScanIcon />}
-          onClick={renderQrScannerModal}
-        >
+        <ZewaButton variant="white" icon={<ScanIcon />} onClick={renderQrScannerModal}>
           ЗАГРУЗИТЬ ЧЕК
         </ZewaButton>
-        <ZewaButton style={{ padding: '14px' }} variant="white" onClick={() => navigate('/rules')}>
+        <ZewaButton variant="white" onClick={() => navigate('/rules')}>
           Правила участия и FAQ
         </ZewaButton>
         <ZewaButton

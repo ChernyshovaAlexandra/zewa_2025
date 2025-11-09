@@ -26,12 +26,12 @@ const CheckDataModal: React.FC<CheckProps> = ({ caption, coins_earned, status, c
       )}
       {status === 'Засчитан' ? (
         <Text style={{ color: '#596471', margin: 0 }}>
-          В вашем чеке есть товар бренда Zewa, и вам начислено {coins_earned}{' '}
+          В вашем чеке есть товар бренда Zewa, и вы получили в награду {coins_earned}{' '}
           {Helper.getCoinsForm(coins_earned)}.
         </Text>
       ) : coins_earned ? (
         <Text style={{ color: '#596471', margin: 0 }}>
-          Вам начислено {coins_earned} {Helper.getCoinsForm(coins_earned)}.
+          Вы получили в награду {coins_earned} {Helper.getCoinsForm(coins_earned)}.
         </Text>
       ) : (
         <></>

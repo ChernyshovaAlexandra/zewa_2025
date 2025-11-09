@@ -12,15 +12,11 @@ const ONBOARDING_KEY = 'onboardingCompleted_christmas';
 
 export default function App() {
   const [stage, setStage] = useState<Stage>('splash');
-  const {
-    isReady: isTelegramReady,
-    isTelegramWebApp,
-    safeAreaInsetTop
-  } = useTelegram();
+  const { isReady: isTelegramReady, isTelegramWebApp, safeAreaInsetTop } = useTelegram();
 
   useEffect(() => {
     const id = setTimeout(() => {
-      const hasSeen = localStorage.getItem(ONBOARDING_KEY) === 'true';
+      const hasSeen = false; // localStorage.getItem(ONBOARDING_KEY) === 'true';
       setStage(hasSeen ? 'app' : 'onboarding');
     }, 1500);
 

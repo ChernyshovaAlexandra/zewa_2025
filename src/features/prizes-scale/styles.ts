@@ -330,8 +330,7 @@ export const StyledCell = styled.div<{
   &::after {
     content: '';
     left: ${({ $isFirstEmpty }) => ($isFirstEmpty ? '-20%' : ' 65%')};
-    visibility: ${({ $showPaper, $isFirstEmpty }) =>
-      $showPaper || $isFirstEmpty ? 'visible' : 'hidden'};
+    visibility: ${({ $showPaper }) => ($showPaper ? 'visible' : 'hidden')};
     position: absolute;
     background: url('/assets/images/snowflake-after.webp') no-repeat center;
     background-size: contain;

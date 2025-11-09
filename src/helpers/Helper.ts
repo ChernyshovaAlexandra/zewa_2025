@@ -56,18 +56,18 @@ class Helper {
     const lastTwoDigits = count % 100;
 
     if (lastTwoDigits >= 11 && lastTwoDigits <= 19) {
-      return 'монет';
+      return 'снежинок';
     }
 
     if (lastDigit === 1) {
-      return 'монета';
+      return 'снежнка';
     }
 
     if (lastDigit >= 2 && lastDigit <= 4) {
-      return 'монеты';
+      return 'снежинки';
     }
 
-    return 'монет';
+    return 'снежинок';
   }
 
   static getCorrectForm(tissues: number): string {

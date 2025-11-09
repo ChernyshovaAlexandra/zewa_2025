@@ -4,8 +4,8 @@ export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 24px 16px;
-  padding-top: calc(var(--twa-safe-area-top, 0px) + 24px);
+  padding: 10px;
+  padding-top: calc(var(--twa-safe-area-top, 0px) + 30px + 10px);
   padding-bottom: calc(var(--twa-safe-area-bottom, 0px) + 24px);
   height: 100vh;
   background: #182f5d;
@@ -13,24 +13,44 @@ export const Wrapper = styled.div`
   box-sizing: border-box;
 `;
 
+export const Header = styled.h1`
+  color: #fff;
+  text-align: center;
+  font-feature-settings:
+    'liga' off,
+    'clig' off;
+  font-family: 'Foco Trial';
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 110%;
+  margin-top: 20px;
+  white-space: pre-wrap;
+`;
+
 export const Image = styled.img`
   width: 100%;
   background-color: #fff;
-  aspect-ratio: 370 / 370;
+  aspect-ratio: 370 / 430;
   object-fit: cover;
   object-position: bottom;
   border-radius: 20px;
   margin-bottom: 15px;
-  max-height: 50vh;
 `;
 
 export const Text = styled.p`
-  text-align: center;
-  font-family: 'Foco Trial';
-  font-size: 15px;
-  line-height: 130%;
-  margin-bottom: 15px;
   color: #fff;
+  text-align: center;
+  font-feature-settings:
+    'liga' off,
+    'clig' off;
+
+  font-family: 'Foco Trial';
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 140%;
+  margin-top: 8px;
 `;
 
 export const Pagination = styled.div`
@@ -54,4 +74,5 @@ export const SkipButton = styled.button`
   font-size: 16px;
   margin-top: 8px;
   cursor: pointer;
+  text-decoration: underline;
 `;

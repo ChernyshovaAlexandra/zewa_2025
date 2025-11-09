@@ -30,13 +30,15 @@ export function PrizesScreen() {
     if (!userData) return <></>;
     return (
       <>
-        {userData?.user?.coupons ? (
+        {userData?.user?.coupons?.length ? (
           userData.user.coupons.map((item, id) => (
             // {newCouponsMock.map((item, id) => (
             <CouponContainer key={id} coupon={item} activated showSnackbar={() => {}} />
           ))
         ) : (
-          <Text>У вас пока нет промокодов</Text>
+          <Text weight={700} color="white" align="center">
+            Эх. Промокодов пока нет
+          </Text>
         )}
       </>
     );
@@ -51,7 +53,7 @@ export function PrizesScreen() {
           .map((prize, id) => <PrizeContainer key={id} prize={prize} />)
       ) : (
         <Text weight={700} color="white" align="center">
-          У вас пока нет призов.
+          Эх. Призов пока нет
         </Text>
       )}
     </>

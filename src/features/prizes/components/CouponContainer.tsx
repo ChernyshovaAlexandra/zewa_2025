@@ -16,15 +16,12 @@ import { ToggleIcon } from '@/shared/ui/icons/ToggleIcon';
 import { apiService } from '@/services';
 import Code from './Code';
 import { useUserStore } from '@/shared/model';
+import { Coupon } from '@/types/common';
 
 interface PrizeContainerProps {
-  coupon: {
+  coupon: Coupon & {
     id?: number;
-    name: string;
-    code?: string;
-    barcode?: string;
-    value: number;
-    can_change: boolean;
+    can_change?: boolean;
   };
   activated?: boolean;
   showSnackbar?: (message: string) => void;

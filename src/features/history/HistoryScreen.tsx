@@ -7,7 +7,6 @@ import * as S from '../tournament/TournamentScreen.styles';
 import GameContainer from '../game-container';
 import { mockChecks } from './mocks';
 import CheckContainer from '../checks/check-container';
-import { useNavigate } from 'react-router-dom';
 
 interface HistoryCheck {
   date_time_raw: string;
@@ -62,7 +61,7 @@ export function HistoryScreen() {
   const [visibleGames, setVisibleGames] = useState(10);
 
   const user = useUserStore((s) => s.user);
-  const navigate = useNavigate();
+
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
     const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
     if (scrollTop + clientHeight >= scrollHeight - 10) {
@@ -109,7 +108,7 @@ export function HistoryScreen() {
     if (!data.length) {
       return (
         <Text weight={700} color="white" align="center">
-          Нет загруженных чеков
+          Хммм... Чеков пока нет
         </Text>
       );
     }
@@ -136,7 +135,7 @@ export function HistoryScreen() {
     if (!sortedGames.length) {
       return (
         <Text weight={700} color="white" align="center">
-          История игр пока пуста
+          Оп-па! Снежинки пока не начислены
         </Text>
       );
     }
@@ -145,7 +144,11 @@ export function HistoryScreen() {
         {sortedGames.slice(0, visibleGames).map((item, id) => (
           <GameContainer
             key={id}
-            header={item.code !== 'referral' ? `Игра «Снова в школу»` : `Друг присоединился к игре`}
+            header={
+              item.code !== 'referral'
+                ? `Игра «Не проЗЕВАй праздник!»`
+                : `Друг присоединился к игре`
+            }
             caption={item.day}
             status={item.status}
             coins_earned={item.coins_earned}
@@ -157,12 +160,7 @@ export function HistoryScreen() {
   };
 
   return (
-    <PageContainer
-      fullscreen
-      title="Начисление монет"
-      onScroll={handleScroll}
-      onBack={() => navigate('/profile')}
-    >
+    <PageContainer fullscreen title="Начисление снежинок" onScroll={handleScroll}>
       <S.TabsWrapper>
         <S.Tabs>
           <S.TabButton $active={active === 'checks'} onClick={() => setActive('checks')}>
