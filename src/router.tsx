@@ -7,8 +7,6 @@ import { RulesScreen } from '@/features/rules/RulesScreen';
 import { FaqScreen } from '@/features/faq/FaqScreen';
 import { TournamentScreen } from '@/features/tournament/TournamentScreen';
 import { ClubScreen } from '@/features/club/ClubScreen';
-import { GameScreen as BackToSchoolGameScreen } from '@/features/back-to-school-game/GameScreen';
-import { GameRulesScreen as BackToSchoolGameRulesScreen } from '@/features/back-to-school-game/GameRulesScreen';
 import { MemoGameScreen } from '@/features/memo-game/MemoGameScreen';
 import { MemoGameLevelsScreen } from '@/features/memo-game/MemoGameLevelsScreen';
 import { ProfileScreen } from '@/features/profile/ProfileScreen';
@@ -33,15 +31,10 @@ export function AppRouter() {
         <Route path="/rules" element={<RulesScreen />} />
         <Route path="/faq" element={<FaqScreen />} />
         <Route path="/club" element={<ClubScreen />} />
-
-        <Route path="/back-to-school-game" element={<BackToSchoolGameScreen />} />
-        <Route path="/back-to-school-game/rules" element={<BackToSchoolGameRulesScreen />} />
-
         <Route path="/memo/levels" element={<Navigate to="/game/memo/levels" replace />} />
         <Route path="/game" element={<Navigate to="/game/memo" replace />} />
         <Route path="/game/memo/levels" element={<MemoGameLevelsScreen />} />
         <Route path="/game/memo" element={<MemoGameScreen />} />
-
         <Route path="/profile" element={<ProfileScreen />} />
       </Routes>
     </BrowserRouter>

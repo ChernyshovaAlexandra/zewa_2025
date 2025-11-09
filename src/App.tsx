@@ -78,7 +78,7 @@ export default function App() {
           window.location.href = telegramHttpsLink;
         }
       }
-    }, 250);
+    }, 250000);
 
     return () => {
       window.clearTimeout(timer);

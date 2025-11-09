@@ -4,9 +4,13 @@ export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 10px;
-  padding-top: calc(var(--twa-safe-area-top, 0px) + 30px + 10px);
-  padding-bottom: calc(var(--twa-safe-area-bottom, 0px) + 24px);
+  padding-inline: 10px;
+  padding-top: calc(
+    10px + var(--twa-safe-area-top, 0px) + (min(var(--twa-safe-area-top, 0px), 1px) * 30)
+  );
+  padding-bottom: calc(
+    20px + var(--twa-safe-area-bottom, 0px) + (min(var(--twa-safe-area-bottom, 0px), 1px) * 30)
+  );
   height: 100vh;
   background: #182f5d;
   color: #fff;
