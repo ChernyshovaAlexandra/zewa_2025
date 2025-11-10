@@ -6,6 +6,7 @@ import { useMemoHowToPlayEntry } from './lib/useMemoHowToPlayEntry';
 import { useNavigate } from 'react-router-dom';
 import { useCallback } from 'react';
 import { useMemoGameLogic } from './lib/useMemoGameLogic';
+import { getMemoCardImageStyle } from './config/memoCardImageConfig';
 
 export function MemoGameScreen() {
   useMemoHowToPlayEntry();
@@ -89,11 +90,10 @@ export function MemoGameScreen() {
                     <S.CardFront $matched={isMatched}>
                       <S.CardFrontImage
                         src={card.imageSrc}
-                        style={
-                          card.hueShift
-                            ? { filter: `hue-rotate(${card.hueShift}deg)` }
-                            : { filter: 'none' }
-                        }
+                        style={{
+                          ...getMemoCardImageStyle(card.imageId),
+                          filter: card.hueShift ? `hue-rotate(${card.hueShift}deg)` : 'none',
+                        }}
                         loading="lazy"
                         alt=""
                         onLoad={handleFrontImageLoad}

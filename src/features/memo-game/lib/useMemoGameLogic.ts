@@ -19,6 +19,7 @@ const HUE_SHIFT_STEP = 45;
 
 export interface MemoCardSlot {
   pairId: number;
+  imageId: number;
   imageSrc: string;
   instance: number;
   hueShift: number;
@@ -71,12 +72,13 @@ export function useMemoGameLogic({ onExit }: UseMemoGameLogicParams): UseMemoGam
     const basePairs = Array.from({ length: pairs }, (_, pairId) => {
       const imageIndex = pairId % CARD_IMAGE_COUNT;
       const variant = Math.floor(pairId / CARD_IMAGE_COUNT);
-      const imageSrc = `${CARD_IMAGE_BASE_PATH}/${imageIndex + 1}.webp`;
+      const imageId = imageIndex + 1;
+      const imageSrc = `${CARD_IMAGE_BASE_PATH}/${imageId}.webp`;
       const hueShift = (variant * HUE_SHIFT_STEP) % 360;
 
       return [
-        { pairId, imageSrc, instance: 0, hueShift },
-        { pairId, imageSrc, instance: 1, hueShift },
+        { pairId, imageId, imageSrc, instance: 0, hueShift },
+        { pairId, imageId, imageSrc, instance: 1, hueShift },
       ];
     }).flat();
 
