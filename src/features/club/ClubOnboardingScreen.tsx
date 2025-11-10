@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { OnboardingScreen, type OnboardingStep } from '@/features/onboarding/OnboardingScreen';
+import { OnboardingScreen } from '@/features/onboarding/OnboardingScreen';
 import { CLUB_ONBOARDING_KEY } from './constants';
+import { OnboardingStep } from '../onboarding/config';
 
 const CLUB_STEPS: OnboardingStep[] = [
   {
