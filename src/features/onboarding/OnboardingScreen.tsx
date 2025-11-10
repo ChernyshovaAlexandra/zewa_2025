@@ -2,18 +2,14 @@ import { useRef, useState, type PointerEvent as ReactPointerEvent } from 'react'
 import { ZewaButton } from '@/shared/ui';
 import * as S from './OnboardingScreen.styles';
 import { applyNbsp } from '@/utils';
-import { DEFAULT_ONBOARDING_STEPS, OnboardingStep } from './config';
-
-interface OnboardingScreenProps {
-  onFinish: () => void;
-  steps?: OnboardingStep[];
-}
-
-
+import { DEFAULT_ONBOARDING_STEPS, OnboardingScreenProps } from './config';
 
 const SWIPE_THRESHOLD = 40;
 
-export function OnboardingScreen({ onFinish, steps = DEFAULT_ONBOARDING_STEPS }: OnboardingScreenProps) {
+export function OnboardingScreen({
+  onFinish,
+  steps = DEFAULT_ONBOARDING_STEPS,
+}: OnboardingScreenProps) {
   const content = steps.length > 0 ? steps : DEFAULT_ONBOARDING_STEPS;
   const [step, setStep] = useState(0);
   const swipeStartXRef = useRef<number | null>(null);

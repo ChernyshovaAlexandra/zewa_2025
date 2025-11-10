@@ -3,6 +3,10 @@ export interface OnboardingStep {
   header: string;
   text: string;
 }
+export interface OnboardingScreenProps {
+  onFinish: () => void;
+  steps?: OnboardingStep[];
+}
 
 export const DEFAULT_ONBOARDING_STEPS: OnboardingStep[] = [
   {
