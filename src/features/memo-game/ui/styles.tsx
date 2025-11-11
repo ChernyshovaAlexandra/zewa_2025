@@ -30,6 +30,21 @@ export const Content = styled.div`
   padding-bottom: calc(
     var(--twa-safe-area-bottom, 0px) + (min(var(--twa-safe-area-bottom, 0px), 1px) * 30)
   );
+  --intro-ease: cubic-bezier(0.33, 1, 0.68, 1);
+`;
+
+export const IntroItem = styled.div<{ $introReady: boolean }>`
+  width: 100%;
+  display: block;
+  transform-origin: center;
+  opacity: ${({ $introReady }) => ($introReady ? 1 : 0)};
+  transform: ${({ $introReady }) =>
+    $introReady ? 'translate3d(0, 0, 0) scale(1)' : 'translate3d(0, 8px, 0) scale(0.95)'};
+  transition:
+    opacity 500ms var(--intro-ease),
+    transform 500ms var(--intro-ease);
+  transition-delay: var(--intro-delay, 0ms);
+  will-change: opacity, transform;
 `;
 
 export const ContentInner = styled.div`
@@ -280,6 +295,7 @@ export const Mascot = styled.img`
   width: 77%;
   max-width: 250px;
   align-self: center;
+  margin: 0 auto;
   justify-self: flex-end;
 `;
 
