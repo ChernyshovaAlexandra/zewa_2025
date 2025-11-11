@@ -66,10 +66,7 @@ export function MemoGameLevelsScreen() {
               ? true
               : userSnowflakes > level.requiredSnowflakes;
           const isLocked = lockedLevels[level.id] || !hasRequiredSnowflakes;
-          const levelDescription =
-            !hasRequiredSnowflakes && level.requiredSnowflakes
-              ? `Заработайте более ${level.requiredSnowflakes} снежинок, чтобы продолжить игру`
-              : level.description;
+          const levelDescription = level.description;
 
           return (
             <S.LevelCard key={level.id} $locked={isLocked}>
@@ -105,7 +102,9 @@ export function MemoGameLevelsScreen() {
                   </S.GameBtn>
                 </S.GameBtnWrapper>
               </Flex>
-              <S.LevelDescription>{levelDescription}</S.LevelDescription>
+              {!hasRequiredSnowflakes && (
+                <S.LevelDescription>{levelDescription}</S.LevelDescription>
+              )}
             </S.LevelCard>
           );
         })}
