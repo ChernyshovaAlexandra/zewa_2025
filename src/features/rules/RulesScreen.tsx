@@ -71,6 +71,24 @@ const RulesText = styled(Text)`
   font-style: normal;
   font-weight: 400;
   line-height: 140%;
+  white-space: normal;
+
+  ol {
+    margin: 18px 0;
+    padding-left: 28px;
+  }
+
+  li {
+    padding-left: 4px;
+  }
+
+  li + li {
+    margin-top: 14px;
+  }
+
+  p {
+    margin: 12px 0;
+  }
 `;
 
 const Linked = styled.a`

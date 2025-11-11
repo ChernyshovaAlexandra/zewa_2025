@@ -1,12 +1,13 @@
-import { Fragment, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PageContainer, Text } from '@/shared/ui';
 import { useUserStore } from '@/shared/model';
 import { TabsWrapper, Tabs, TabButton } from '../tournament/TournamentScreen.styles';
 import * as S from './ClubScreen.styles';
 import Heading from '@/components/UI/heading';
-import { TASKS, WINNERS } from './constants';
+import { TASKS } from './constants';
 import { useStandings } from '../tournament/useStandings';
+import { smartMaskName } from '@/utils';
 
 type Tab = 'tasks' | 'winners';
 
@@ -15,12 +16,23 @@ export function ClubScreen() {
   const navigate = useNavigate();
   const isInClub = useUserStore((s) => s.userData?.user.is_in_club ?? false);
   const clubTasks = useUserStore((s) => s.userData?.user.club_tasks ?? null);
-  const telegramId = useUserStore((s) => s.userData?.user.id ?? null);
-  const { data } = useStandings(telegramId || 0);
+  const user = useUserStore((s) => s.user);
 
-  console.info(data);
+  const { data } = useStandings(user?.id || 0);
 
-  if (!telegramId) return <></>;
+  const clubWinnerEntries = Object.entries(data?.club_winners ?? {})
+    .map(([period, winner]) => {
+      const normalizedWinners = Array.isArray(winner) ? winner : winner ? [winner] : [];
+      return [period, normalizedWinners] as [string, { name: string; prize: string }[]];
+    })
+    .filter(([, winners]) => winners.length)
+    .sort((a, b) => {
+      const left = Number(a[0]);
+      const right = Number(b[0]);
+      const bothNumeric = !Number.isNaN(left) && !Number.isNaN(right);
+      return bothNumeric ? left - right : a[0].localeCompare(b[0]);
+    });
+
   return (
     <PageContainer
       fullscreen
@@ -75,25 +87,43 @@ export function ClubScreen() {
         </>
       ) : (
         <>
-          <S.Description>
-            <Text as="p" size="p4" color="#fff" align="center">
-              Победители розыгрыша новогоднего бокса
-            </Text>
-          </S.Description>
-
           <S.Content>
-            {WINNERS.length
-              ? WINNERS.map((group, idx) => (
-                  <Fragment key={`group-${idx}`}>
+            {clubWinnerEntries.length ? (
+              clubWinnerEntries.map(([period, winners]) => {
+                const isNumericPeriod = !Number.isNaN(Number(period));
+                const title = isNumericPeriod ? `Неделя ${period}` : period;
+
+                return (
+                  <S.WinnerGroup key={period}>
                     <Heading level={3} style={{ margin: 0 }}>
-                      {group.period}
+                      {title}
                     </Heading>
-                    <Text as="p" size="p4" align="center" color="#fff" style={{ margin: 0 }}>
-                      {group.duration}
+                    <Text as="p" size="p4" align="center" color="#fff">
+                      Победители розыгрыша новогоднего бокса
                     </Text>
-                  </Fragment>
-                ))
-              : null}
+                    <S.WinnerList>
+                      {winners.map((winner, idx) => {
+                        const isCurrentUser = winner.name === user?.username;
+                        return (
+                          <S.WinnerItem
+                            key={`${period}-${idx}`}
+                            data-me={isCurrentUser ? 'true' : undefined}
+                          >
+                            <S.WinnerName>{smartMaskName(winner.name)}</S.WinnerName>
+                            {isCurrentUser ? <S.YouBadge>Это вы</S.YouBadge> : null}
+                            <S.Badge>{winner.prize}</S.Badge>
+                          </S.WinnerItem>
+                        );
+                      })}
+                    </S.WinnerList>
+                  </S.WinnerGroup>
+                );
+              })
+            ) : (
+              <Text as="p" size="p4" align="center" color="#fff">
+                Победители появятся после проведения розыгрыша
+              </Text>
+            )}
           </S.Content>
         </>
       )}

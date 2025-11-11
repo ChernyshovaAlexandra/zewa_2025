@@ -22,6 +22,7 @@ export function MemoGameScreen() {
     pairs,
     minutes,
     seconds,
+    timeRemainingSeconds,
     matchedPairsCount,
     cardDeck,
     matchedCards,
@@ -45,10 +46,16 @@ export function MemoGameScreen() {
       >
         <S.GameWrapper>
           <S.TopRow>
-            <S.InfoBlock aria-label={`Оставшееся время ${minutes}:${seconds}`}>
+            <S.InfoBlock
+              aria-label={`Оставшееся время ${minutes}:${seconds}`}
+              data-critical={timeRemainingSeconds <= 5 ? 'true' : undefined}
+            >
               <Flex align="center" gap="6px">
                 <img width={32} height={32} src="/assets/images/memo/timer-icon.png" />
-                <S.TimerValue>
+                <S.TimerValue
+                  data-pulse={timeRemainingSeconds <= 5 && timeRemainingSeconds > 0 ? 'true' : undefined}
+                  data-critical={timeRemainingSeconds <= 5 ? 'true' : undefined}
+                >
                   {minutes}:{seconds}
                 </S.TimerValue>
               </Flex>

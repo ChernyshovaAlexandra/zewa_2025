@@ -16,7 +16,7 @@ export interface Winner {
 interface StandingsResponse {
   topPlayers: TopPlayer[];
   draw_winners: Record<string, Winner[]>;
-  game_winners: Record<
+  club_winners: Record<
     string,
     {
       name: string;

@@ -41,4 +41,6 @@ export const Navigation = styled.nav`
   display: block;
   width: 100%;
   margin-bottom: 16px;
+  position: relative;
+  z-index: 1000;
 `;

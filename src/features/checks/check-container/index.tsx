@@ -62,6 +62,7 @@ const CheckContainer: React.FC<CheckProps> = ({
         <Total>Статус</Total>
         {status === 'Засчитан' || coins_earned ? (
           <StyledCoins>
+            <Total>Чек принят</Total>
             <Text style={{ fontSize: '14px' }}> +{coins_earned} </Text>
             <img src={`/assets/images/snowflake-icon.png`} width="20" alt="coins-icon" loading="lazy" />
           </StyledCoins>

@@ -9,7 +9,7 @@ export interface MemoLevelConfig {
 }
 
 export const MEMO_LEVEL_CONFIG: Record<MemoLevel, MemoLevelConfig> = {
-  1: { level: 1, rows: 3, columns: 4, pairs: 6, timeLimitSeconds: 3000 },
+  1: { level: 1, rows: 3, columns: 4, pairs: 6, timeLimitSeconds: 30 },
   2: { level: 2, rows: 4, columns: 5, pairs: 10, timeLimitSeconds: 70 },
   3: { level: 3, rows: 5, columns: 6, pairs: 15, timeLimitSeconds: 135 },
 };

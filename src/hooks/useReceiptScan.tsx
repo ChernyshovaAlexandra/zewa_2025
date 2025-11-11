@@ -12,6 +12,7 @@ import { applyNbsp } from '../utils/nbsp';
 import { useUserStore } from '@/shared/model';
 import { ButtonManualAddCheck } from '@/features/checks/ButtonManualAddCheck';
 import { ButtonUploadCheck } from '@/features/checks/ButtonUploadCheck';
+import { Spinner } from '@vkontakte/vkui';
 
 export function useReceiptScan() {
   const [pending, setPending] = useState(false);
@@ -29,6 +30,21 @@ export function useReceiptScan() {
           </Text>
           <ButtonManualAddCheck />
           <ButtonUploadCheck />
+        </Flex>
+      ),
+    });
+  }, []);
+
+  const showPendingModal = useCallback(() => {
+    useModalStore.getState().openModal({
+      title: 'Проверка чека',
+      closable: false,
+      content: (
+        <Flex vertical gap="12px" align="center" style={{ padding: '10px 0' }}>
+          <Spinner size="medium" />
+          <Text size="p4" align="center">
+            Пожалуйста, подождите — проверяем чек
+          </Text>
         </Flex>
       ),
     });
@@ -80,6 +96,7 @@ export function useReceiptScan() {
       }
 
       setPending(true);
+      showPendingModal();
       apiAbort.current?.abort();
       apiAbort.current = new AbortController();
 
@@ -104,13 +121,14 @@ export function useReceiptScan() {
         setPending(false);
       }
     },
-    [handleApiResponse, renderScanErrorModal],
+    [handleApiResponse, renderScanErrorModal, showPendingModal],
   );
 
   const handlePhotoUpload = useCallback(
     async (photoFile: File) => {
       try {
         setPending(true);
+        showPendingModal();
         const reader = new FileReader();
 
         reader.onloadend = async () => {
@@ -136,7 +154,7 @@ export function useReceiptScan() {
         setPending(false);
       }
     },
-    [handleApiResponse, renderScanErrorModal, user?.id],
+    [handleApiResponse, renderScanErrorModal, showPendingModal, user?.id],
   );
 
   const openTelegramScanner = async () => {

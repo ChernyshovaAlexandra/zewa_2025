@@ -1,4 +1,16 @@
-import styled, { css } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
+
+const timerPulse = keyframes`
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+`;
 
 export const TopRow = styled.div`
   display: flex;
@@ -52,6 +64,15 @@ export const InfoBlock = styled.div`
   min-width: 0;
   text-align: center;
   white-space: nowrap;
+
+  &[data-critical='true'] {
+    background: linear-gradient(180deg, #ffe1ef 0%, #ffc1dd 100%);
+    box-shadow:
+      0px 1px 2px 0px rgba(255, 255, 255, 0.6) inset,
+      0px -2px 3px 0px rgba(255, 100, 172, 0.4) inset,
+      0px 3px 0px 0px rgba(255, 100, 172, 0.4),
+      0px 5px 5px 0px rgba(255, 100, 172, 0.3);
+  }
 `;
 
 export const PauseButton = styled.button`
@@ -77,6 +98,16 @@ export const TimerValue = styled.span`
   font-style: normal;
   font-weight: 900;
   line-height: 100%;
+  display: inline-block;
+  transition: color 0.2s ease;
+
+  &[data-critical='true'] {
+    color: #ff2f92;
+  }
+
+  &[data-pulse='true'] {
+    animation: ${timerPulse} 1s infinite;
+  }
 `;
 
 export const SnowflakeRow = styled.div`

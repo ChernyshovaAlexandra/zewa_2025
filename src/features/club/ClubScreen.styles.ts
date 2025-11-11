@@ -147,3 +147,7 @@ export const YouBadge = styled.span`
   text-transform: uppercase;
   letter-spacing: 0.05em;
 `;
+
+export const WinnerGroup = styled.div`
+  padding: 0 16px;
+`;

@@ -35,6 +35,7 @@ interface UseMemoGameLogicResult {
   pairs: number;
   minutes: string;
   seconds: string;
+  timeRemainingSeconds: number;
   matchedPairsCount: number;
   cardDeck: MemoCardSlot[];
   matchedCards: boolean[];
@@ -368,6 +369,7 @@ export function useMemoGameLogic({ onExit }: UseMemoGameLogicParams): UseMemoGam
     pairs,
     minutes,
     seconds,
+    timeRemainingSeconds: timeRemaining,
     matchedPairsCount,
     cardDeck,
     matchedCards,
