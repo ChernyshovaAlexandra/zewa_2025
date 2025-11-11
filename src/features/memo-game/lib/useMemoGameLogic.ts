@@ -102,6 +102,18 @@ export function useMemoGameLogic({ onExit }: UseMemoGameLogicParams): UseMemoGam
     [matchedCards],
   );
 
+  useEffect(() => {
+    const startMemoGame = async () => {
+      try {
+        await apiService.gameStart({ game: 'memo', level: selectedLevel });
+      } catch (err) {
+        console.error('memo gameStart error', err);
+      }
+    };
+
+    startMemoGame();
+  }, [selectedLevel]);
+
   const resolutionTimeoutRef = useRef<number | null>(null);
   const timerIntervalRef = useRef<number | null>(null);
 

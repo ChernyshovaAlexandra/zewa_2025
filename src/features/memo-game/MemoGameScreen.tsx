@@ -1,16 +1,13 @@
 import { Flex } from 'antd';
 import { PageContainer, PauseIcon, SnowflakeIcon } from '@/shared/ui';
 import * as S from './MemoGameScreen.styles';
-import { MemoOnboardingOverlay } from './ui/MemoOnboardingOverlay';
-import { useMemoHowToPlayEntry } from './lib/useMemoHowToPlayEntry';
 import { useNavigate } from 'react-router-dom';
 import { useCallback } from 'react';
 import { useMemoGameLogic } from './lib/useMemoGameLogic';
 import { getMemoCardImageStyle } from './config/memoCardImageConfig';
+import { MemoOnboardingOverlay } from './ui/MemoOnboardingOverlay';
 
 export function MemoGameScreen() {
-  useMemoHowToPlayEntry();
-
   const navigate = useNavigate();
   const handleExit = useCallback(() => {
     navigate('/');
