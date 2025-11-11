@@ -2,16 +2,28 @@ import { Flex } from 'antd';
 import { PageContainer, PauseIcon, SnowflakeIcon } from '@/shared/ui';
 import * as S from './MemoGameScreen.styles';
 import { useNavigate } from 'react-router-dom';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useMemoGameLogic } from './lib/useMemoGameLogic';
 import { getMemoCardImageStyle } from './config/memoCardImageConfig';
 import { MemoOnboardingOverlay } from './ui/MemoOnboardingOverlay';
+import { useMemoOnboardingStore } from './model/memoOnboardingStore';
 
 export function MemoGameScreen() {
   const navigate = useNavigate();
   const handleExit = useCallback(() => {
     navigate('/');
   }, [navigate]);
+
+  const isOnboardingVisible = useMemoOnboardingStore((s) => s.isVisible);
+  const showOnboarding = useMemoOnboardingStore((s) => s.show);
+  const hideOnboarding = useMemoOnboardingStore((s) => s.hide);
+
+  useEffect(() => {
+    showOnboarding();
+    return () => {
+      hideOnboarding();
+    };
+  }, [showOnboarding, hideOnboarding]);
 
   const {
     selectedLevel,
@@ -30,7 +42,7 @@ export function MemoGameScreen() {
     handlePause,
     handleFrontImageLoad,
     handleFrontImageError,
-  } = useMemoGameLogic({ onExit: handleExit });
+  } = useMemoGameLogic({ onExit: handleExit, isInteractionLocked: isOnboardingVisible });
   // todo: check
   return (
     <>
@@ -50,7 +62,9 @@ export function MemoGameScreen() {
               <Flex align="center" gap="6px">
                 <img width={32} height={32} src="/assets/images/memo/timer-icon.png" />
                 <S.TimerValue
-                  data-pulse={timeRemainingSeconds <= 5 && timeRemainingSeconds > 0 ? 'true' : undefined}
+                  data-pulse={
+                    timeRemainingSeconds <= 5 && timeRemainingSeconds > 0 ? 'true' : undefined
+                  }
                   data-critical={timeRemainingSeconds <= 5 ? 'true' : undefined}
                 >
                   {minutes}:{seconds}

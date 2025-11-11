@@ -27,6 +27,7 @@ export interface MemoCardSlot {
 
 interface UseMemoGameLogicParams {
   onExit: () => void;
+  isInteractionLocked?: boolean;
 }
 
 interface UseMemoGameLogicResult {
@@ -57,7 +58,10 @@ const shuffleDeck = <T,>(items: T[]): T[] => {
   return array;
 };
 
-export function useMemoGameLogic({ onExit }: UseMemoGameLogicParams): UseMemoGameLogicResult {
+export function useMemoGameLogic({
+  onExit,
+  isInteractionLocked = false,
+}: UseMemoGameLogicParams): UseMemoGameLogicResult {
   const selectedLevel = useMemoGameStore((s) => s.selectedLevel);
   const currentImageSetId = useMemoGameStore((s) => s.currentImageSetId);
   const completeLevel = useMemoGameStore((s) => s.completeLevel);
@@ -164,7 +168,7 @@ export function useMemoGameLogic({ onExit }: UseMemoGameLogicParams): UseMemoGam
   }, [cardDeck]);
 
   useEffect(() => {
-    if (gameResult !== 'playing' || isPaused) {
+    if (gameResult !== 'playing' || isPaused || isInteractionLocked) {
       if (timerIntervalRef.current) {
         window.clearInterval(timerIntervalRef.current);
         timerIntervalRef.current = null;
@@ -191,7 +195,7 @@ export function useMemoGameLogic({ onExit }: UseMemoGameLogicParams): UseMemoGam
         timerIntervalRef.current = null;
       }
     };
-  }, [gameResult, isPaused]);
+  }, [gameResult, isPaused, isInteractionLocked]);
 
   useEffect(
     () => () => {
@@ -281,7 +285,7 @@ export function useMemoGameLogic({ onExit }: UseMemoGameLogicParams): UseMemoGam
 
   const handleCardClick = useCallback(
     (index: number) => {
-      if (gameResult !== 'playing' || isPaused || isResolvingPair) return;
+      if (gameResult !== 'playing' || isPaused || isResolvingPair || isInteractionLocked) return;
       if (matchedCards[index]) return;
       if (activeIndexes.includes(index)) return;
 
@@ -316,11 +320,11 @@ export function useMemoGameLogic({ onExit }: UseMemoGameLogicParams): UseMemoGam
         }, CARD_REVEAL_DELAY_MS);
       }
     },
-    [activeIndexes, cardDeck, gameResult, isPaused, isResolvingPair, matchedCards],
+    [activeIndexes, cardDeck, gameResult, isPaused, isResolvingPair, matchedCards, isInteractionLocked],
   );
 
   const handlePause = useCallback(() => {
-    if (gameResult !== 'playing' || isPaused) return;
+    if (gameResult !== 'playing' || isPaused || isInteractionLocked) return;
 
     setIsPaused(true);
 
@@ -342,7 +346,7 @@ export function useMemoGameLogic({ onExit }: UseMemoGameLogicParams): UseMemoGam
         onExit();
       },
     });
-  }, [gameResult, isPaused, onExit, submitGameResult]);
+  }, [gameResult, isPaused, isInteractionLocked, onExit, submitGameResult]);
 
   const handleFrontImageLoad = (event: SyntheticEvent<HTMLImageElement>) => {
     const target = event.currentTarget;
