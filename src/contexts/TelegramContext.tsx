@@ -163,6 +163,8 @@ export function TelegramProvider({ children }: { children: ReactNode }) {
       };
 
       telegramService.init();
+      telegramService.stopDeviceOrientation();
+      telegramService.toggleOrientationLock(true);
 
       try {
         const webAppInstance = telegramService.getWebApp() ?? webApp;
@@ -247,6 +249,7 @@ export function TelegramProvider({ children }: { children: ReactNode }) {
         window.clearTimeout(timeoutId);
       }
       detachSafeAreaListener?.();
+      telegramService.toggleOrientationLock(false);
     };
   }, [setStartStoreData, setUser, setUserData]);
 

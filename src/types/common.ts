@@ -41,6 +41,7 @@ export interface UserInfoExpanded extends UserInfo {
   prizes: Prize[];
   tg_referral_link: string;
   is_in_club: boolean;
+  club_tasks?: Record<string, boolean>;
 }
 
 export interface UserData {

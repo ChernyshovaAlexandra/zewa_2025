@@ -6,6 +6,7 @@ import { TabsWrapper, Tabs, TabButton } from '../tournament/TournamentScreen.sty
 import * as S from './ClubScreen.styles';
 import Heading from '@/components/UI/heading';
 import { TASKS, WINNERS } from './constants';
+import { useStandings } from '../tournament/useStandings';
 
 type Tab = 'tasks' | 'winners';
 
@@ -13,7 +14,13 @@ export function ClubScreen() {
   const [activeTab, setActiveTab] = useState<Tab>('tasks');
   const navigate = useNavigate();
   const isInClub = useUserStore((s) => s.userData?.user.is_in_club ?? false);
+  const clubTasks = useUserStore((s) => s.userData?.user.club_tasks ?? null);
+  const telegramId = useUserStore((s) => s.userData?.user.id ?? null);
+  const { data } = useStandings(telegramId || 0);
 
+  console.info(data);
+
+  if (!telegramId) return <></>;
   return (
     <PageContainer
       fullscreen
@@ -49,34 +56,46 @@ export function ClubScreen() {
             </>
           </S.Description>
           <S.Content>
-            {TASKS.map((task, id) => (
-              <S.Card key={`task-${id}`} $isCompleted={id === 0}>
-                <S.CardHeader>
-                  <S.RoundNumber $isCompleted={id === 0}>{id + 1}</S.RoundNumber>
-                  {task.reward}
-                </S.CardHeader>
-                <Text as="p" size="p4" style={{ margin: 0 }}>
-                  {task.description}
-                </Text>
-              </S.Card>
-            ))}
+            {TASKS.map((task, index) => {
+              const isTaskCompleted = Boolean(clubTasks?.[task.id]);
+
+              return (
+                <S.Card key={task.id} $isCompleted={isTaskCompleted}>
+                  <S.CardHeader>
+                    <S.RoundNumber $isCompleted={isTaskCompleted}>{index + 1}</S.RoundNumber>
+                    {task.reward}
+                  </S.CardHeader>
+                  <Text as="p" size="p4" style={{ margin: 0 }}>
+                    {task.description}
+                  </Text>
+                </S.Card>
+              );
+            })}
           </S.Content>
         </>
       ) : (
-        <S.Content>
-          {WINNERS.length
-            ? WINNERS.map((group, idx) => (
-                <Fragment key={`group-${idx}`}>
-                  <Heading level={3} style={{ margin: 0 }}>
-                    {group.period}
-                  </Heading>
-                  <Text as="p" size="p4" align="center" color="#fff" style={{ margin: 0 }}>
-                    {group.duration}
-                  </Text>
-                </Fragment>
-              ))
-            : null}
-        </S.Content>
+        <>
+          <S.Description>
+            <Text as="p" size="p4" color="#fff" align="center">
+              Победители розыгрыша новогоднего бокса
+            </Text>
+          </S.Description>
+
+          <S.Content>
+            {WINNERS.length
+              ? WINNERS.map((group, idx) => (
+                  <Fragment key={`group-${idx}`}>
+                    <Heading level={3} style={{ margin: 0 }}>
+                      {group.period}
+                    </Heading>
+                    <Text as="p" size="p4" align="center" color="#fff" style={{ margin: 0 }}>
+                      {group.duration}
+                    </Text>
+                  </Fragment>
+                ))
+              : null}
+          </S.Content>
+        </>
       )}
     </PageContainer>
   );

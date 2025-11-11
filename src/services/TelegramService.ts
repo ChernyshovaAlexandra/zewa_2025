@@ -53,6 +53,11 @@ export interface TelegramWebApp {
     onClick?: (callback: () => void) => void;
     offClick?: (callback: () => void) => void;
   };
+  web_app_stop_device_orientation?: () => void;
+  stopDeviceOrientation?: () => void;
+  isOrientationLocked?: boolean;
+  toggleOrientationLock?: (locked?: boolean) => void;
+  web_app_toggle_orientation_lock?: (params: { locked: boolean }) => void;
 }
 
 type Events = { qrText: string };
@@ -148,6 +153,52 @@ export class TelegramService {
       }
     } catch (err) {
       console.error('Failed to disable vertical swipes:', err);
+    }
+  }
+
+  stopDeviceOrientation() {
+    if (!this.tg) return;
+
+    try {
+      const extended = this.tg as TelegramWebApp & {
+        web_app_stop_device_orientation?: () => void;
+        stopDeviceOrientation?: () => void;
+      };
+
+      if (typeof extended.web_app_stop_device_orientation === 'function') {
+        extended.web_app_stop_device_orientation();
+        return;
+      }
+
+      extended.stopDeviceOrientation?.();
+    } catch (err) {
+      console.warn('Failed to stop device orientation:', err);
+    }
+  }
+
+  toggleOrientationLock(locked = true) {
+    if (!this.tg) return;
+
+    try {
+      const extended = this.tg as TelegramWebApp & {
+        isOrientationLocked?: boolean;
+        toggleOrientationLock?: (locked?: boolean) => void;
+        web_app_toggle_orientation_lock?: (params: { locked: boolean }) => void;
+      };
+
+      if (typeof extended.isOrientationLocked === 'boolean') {
+        extended.isOrientationLocked = locked;
+        return;
+      }
+
+      if (typeof extended.toggleOrientationLock === 'function') {
+        extended.toggleOrientationLock(locked);
+        return;
+      }
+
+      extended.web_app_toggle_orientation_lock?.({ locked });
+    } catch (err) {
+      console.warn('Failed to toggle orientation lock:', err);
     }
   }
   closeScanQrPopup() {}
