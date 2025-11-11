@@ -15,6 +15,34 @@ export const Wrapper = styled.div`
   background: #182f5d;
   color: #fff;
   box-sizing: border-box;
+  touch-action: pan-y;
+`;
+
+export const SlidesViewport = styled.div`
+  width: 100%;
+  overflow: hidden;
+  margin-bottom: 8px;
+  user-select: none;
+  touch-action: pan-y;
+`;
+
+export const SlideTrack = styled.div<{ $offset: number; $isDragging: boolean }>`
+  display: flex;
+  width: 100%;
+  transform: translate3d(${({ $offset }) => $offset}%, 0, 0);
+  transition: ${({ $isDragging }) =>
+    $isDragging ? 'none' : 'transform 500ms cubic-bezier(0.23, 1, 0.32, 1)'};
+  will-change: transform;
+`;
+
+export const Slide = styled.div`
+  flex: 0 0 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding-inline: 6px;
+  box-sizing: border-box;
 `;
 
 export const Header = styled.h1`

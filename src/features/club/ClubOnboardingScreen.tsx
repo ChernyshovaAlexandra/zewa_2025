@@ -6,12 +6,12 @@ import { OnboardingStep } from '../onboarding/config';
 
 const CLUB_STEPS: OnboardingStep[] = [
   {
-    image: '/assets/images/onboarding/club-1.webp',
+    image: '/assets/images/onboarding/club/1.webp',
     header: 'Клуб помощников Домовёнка',
     text: 'Играйте ежедневно, приглашайте друзей или выполните специальное задание недели, чтобы вступить в Клуб, получить новогодний бокс и 5 дополнительных снежинок.',
   },
   {
-    image: '/assets/images/onboarding/club-2.webp',
+    image: '/assets/images/onboarding/club/2.webp',
     header: 'Заполняйте шкалу призов полностью',
     text: 'Это увеличивает шансы на получение ценных подарков — от скидок и сертификатов до годового запаса Zewa и техники. Каждую неделю шкала обнуляется.',
   },
@@ -32,7 +32,7 @@ export function ClubOnboardingScreen() {
     if (typeof window === 'undefined') {
       return;
     }
-    const hasSeen = window.localStorage.getItem(CLUB_ONBOARDING_KEY) === 'true';
+    const hasSeen = false; // window.localStorage.getItem(CLUB_ONBOARDING_KEY) === 'true';
     if (hasSeen) {
       navigate('/club', { replace: true });
       return;

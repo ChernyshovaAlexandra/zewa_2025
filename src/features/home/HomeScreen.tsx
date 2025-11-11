@@ -64,11 +64,11 @@ export function HomeScreen() {
         <ZewaButton
           style={{ padding: '14px', color: '#E53375' }}
           variant="white"
-          onClick={() => {
-            const hasWindow = typeof window !== 'undefined';
-            const hasSeenClub =
-              hasWindow && window.localStorage.getItem(CLUB_ONBOARDING_KEY) === 'true';
-            navigate(hasSeenClub ? '/club' : '/club/onboarding');
+          onClick={() => { navigate('/club/onboarding')
+            // const hasWindow = typeof window !== 'undefined';
+            // const hasSeenClub =
+            //   hasWindow && window.localStorage.getItem(CLUB_ONBOARDING_KEY) === 'true';
+            // navigate(hasSeenClub ? '/club' : '/club/onboarding');
           }}
         >
           Клуб помощников Домовёнка
