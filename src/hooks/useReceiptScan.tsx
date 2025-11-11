@@ -41,7 +41,7 @@ export function useReceiptScan() {
       closable: false,
       content: (
         <Flex vertical gap="12px" align="center" style={{ padding: '10px 0' }}>
-          <Spinner size="medium" />
+          <Spinner size="l" />
           <Text size="p4" align="center">
             Пожалуйста, подождите — проверяем чек
           </Text>

@@ -6,6 +6,7 @@ export interface OnboardingStep {
 export interface OnboardingScreenProps {
   onFinish: () => void;
   steps?: OnboardingStep[];
+  forceCloseButton?: boolean;
 }
 
 export const DEFAULT_ONBOARDING_STEPS: OnboardingStep[] = [

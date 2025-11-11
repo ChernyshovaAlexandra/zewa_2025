@@ -1,4 +1,5 @@
 import {
+  useEffect,
   useMemo,
   useRef,
   useState,
@@ -9,13 +10,44 @@ import { ZewaButton } from '@/shared/ui';
 import * as S from './OnboardingScreen.styles';
 import { applyNbsp } from '@/utils';
 import { DEFAULT_ONBOARDING_STEPS, OnboardingScreenProps } from './config';
+import { useTelegram } from '@/contexts/TelegramContext';
 
 const SWIPE_THRESHOLD = 40;
+
+function useTelegramCloseButton(enabled: boolean | undefined) {
+  const { isTelegramWebApp, service } = useTelegram();
+
+  useEffect(() => {
+    if (!enabled || !isTelegramWebApp) {
+      return;
+    }
+
+    const webApp = service.getWebApp();
+    const backButton = webApp?.BackButton;
+    if (!backButton) {
+      return;
+    }
+
+    const handleClose = () => {
+      webApp?.close?.();
+    };
+
+    backButton.show?.();
+    backButton.onClick?.(handleClose);
+
+    return () => {
+      backButton.offClick?.(handleClose);
+      backButton.hide?.();
+    };
+  }, [enabled, isTelegramWebApp, service]);
+}
 
 export function OnboardingScreen({
   onFinish,
   steps = DEFAULT_ONBOARDING_STEPS,
+  forceCloseButton,
 }: OnboardingScreenProps) {
+  useTelegramCloseButton(forceCloseButton);
   const content = steps.length > 0 ? steps : DEFAULT_ONBOARDING_STEPS;
   const [step, setStep] = useState(0);
   const [dragOffsetPercent, setDragOffsetPercent] = useState(0);

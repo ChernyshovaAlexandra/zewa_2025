@@ -88,6 +88,9 @@ export function ClubScreen() {
       ) : (
         <>
           <S.Content>
+            <Text as="p" size="p4" align="center" color="#fff">
+              Победители розыгрыша новогоднего бокса
+            </Text>
             {clubWinnerEntries.length ? (
               clubWinnerEntries.map(([period, winners]) => {
                 const isNumericPeriod = !Number.isNaN(Number(period));
@@ -98,20 +101,16 @@ export function ClubScreen() {
                     <Heading level={3} style={{ margin: 0 }}>
                       {title}
                     </Heading>
-                    <Text as="p" size="p4" align="center" color="#fff">
-                      Победители розыгрыша новогоднего бокса
-                    </Text>
                     <S.WinnerList>
                       {winners.map((winner, idx) => {
                         const isCurrentUser = winner.name === user?.username;
+
                         return (
                           <S.WinnerItem
                             key={`${period}-${idx}`}
                             data-me={isCurrentUser ? 'true' : undefined}
                           >
                             <S.WinnerName>{smartMaskName(winner.name)}</S.WinnerName>
-                            {isCurrentUser ? <S.YouBadge>Это вы</S.YouBadge> : null}
-                            <S.Badge>{winner.prize}</S.Badge>
                           </S.WinnerItem>
                         );
                       })}

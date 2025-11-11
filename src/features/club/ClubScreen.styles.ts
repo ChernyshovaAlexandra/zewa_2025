@@ -109,45 +109,28 @@ export const RoundNumber = styled.span<{ $isCompleted?: boolean }>`
 `;
 
 export const WinnerItem = styled.li`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 12px;
+  padding: 12px 10px;
+  border-bottom: 1px solid #ffffff20;
   border-radius: 10px;
-  background: transparent;
 
-  /* подсветка своего ника — «пилюля», как на маке */
   &[data-me='true'] {
-    background: rgba(17, 24, 39, 0.08);
-    /* можно заменить на градиент, если хочешь:
-       background: linear-gradient(180deg, #eef5ff 0%, #e6efff 100%); */
-    box-shadow: inset 0 0 0 1px rgba(25, 69, 203, 0.12);
+    background: #ffffff30;
   }
 `;
 
 export const WinnerName = styled.span`
-  flex: 1 1 auto;
-  min-width: 0; /* критично для ellipsis во flex-контейнере */
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  color: #fff;
+  font-feature-settings:
+    'liga' off,
+    'clig' off;
 
   font-family: 'Foco Trial';
-  font-weight: 700;
-  color: var(--main-blue);
-`;
-
-export const YouBadge = styled.span`
-  padding: 2px 8px;
-  border-radius: 999px;
-  background: linear-gradient(180deg, #2d59df 0%, #1945cb 100%);
-  color: #fff !important;
-  font-size: 12px;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 140%;
 `;
 
 export const WinnerGroup = styled.div`
-  padding: 0 16px;
+  padding: 0;
 `;

@@ -146,6 +146,7 @@ export default function App() {
           localStorage.setItem(ONBOARDING_KEY, 'true');
           setStage('app');
         }}
+        forceCloseButton
       />
     );
   }
