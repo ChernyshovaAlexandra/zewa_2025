@@ -1,62 +1,18 @@
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PageContainer, Text } from '@/shared/ui';
+import { useUserStore } from '@/shared/model';
 import { TabsWrapper, Tabs, TabButton } from '../tournament/TournamentScreen.styles';
 import * as S from './ClubScreen.styles';
+import Heading from '@/components/UI/heading';
+import { TASKS, WINNERS } from './constants';
 
 type Tab = 'tasks' | 'winners';
-
-const TASKS = [
-  {
-    title: 'Неделя 1',
-    description:
-      'Пройдите все уровни мемо-игры и загрузите чек с продукцией Zewa, чтобы получить статус помощника.',
-    reward: '10 баллов клуба',
-  },
-  {
-    title: 'Неделя 2',
-    description:
-      'Поделитесь приглашением другу через Telegram и вернитесь в игру, чтобы собрать награду.',
-    reward: 'Фирменный стикерпак',
-  },
-  {
-    title: 'Неделя 3',
-    description:
-      'Соберите 3 победы подряд в мемо-игре и поддержите команду Домовёнка в турнире.',
-    reward: 'Участие в розыгрыше призов недели',
-  },
-];
-
-const WINNERS = [
-  {
-    period: 'Неделя 1',
-    participants: [
-      { name: 'Анна Петрова', city: 'Москва' },
-      { name: 'Илья Смирнов', city: 'Санкт-Петербург' },
-      { name: 'Мария Котова', city: 'Нижний Новгород' },
-    ],
-  },
-  {
-    period: 'Неделя 2',
-    participants: [
-      { name: 'Ксения Лебедева', city: 'Екатеринбург' },
-      { name: 'Роман Федоров', city: 'Новосибирск' },
-      { name: 'Ольга Соколова', city: 'Краснодар' },
-    ],
-  },
-  {
-    period: 'Неделя 3',
-    participants: [
-      { name: 'Дмитрий Васильев', city: 'Воронеж' },
-      { name: 'Юлия Орлова', city: 'Казань' },
-      { name: 'Степан Никифоров', city: 'Самара' },
-    ],
-  },
-];
 
 export function ClubScreen() {
   const [activeTab, setActiveTab] = useState<Tab>('tasks');
   const navigate = useNavigate();
+  const isInClub = useUserStore((s) => s.userData?.user.is_in_club ?? false);
 
   return (
     <PageContainer
@@ -77,40 +33,49 @@ export function ClubScreen() {
       </TabsWrapper>
 
       {activeTab === 'tasks' ? (
-        <S.Content>
-          {TASKS.map((task) => (
-            <S.Card key={task.title}>
-              <S.CardHeader>
-                <S.Badge>{task.title}</S.Badge>
-                <Text color="var(--main-blue)" weight={700} size="p2">
+        <>
+          <S.Description>
+            <>
+              {isInClub ? (
+                <>
+                  <Heading level={2}>Задание выполнено!</Heading>
+                  <Text as="p" size="p4" color="#fff">
+                    Вы вступили в Клуб помощников Домовёнка
+                  </Text>
+                </>
+              ) : (
+                'Выполните одно из заданий, чтобы попасть в Клуб помощников Домовёнка'
+              )}
+            </>
+          </S.Description>
+          <S.Content>
+            {TASKS.map((task, id) => (
+              <S.Card key={`task-${id}`} $isCompleted={id === 0}>
+                <S.CardHeader>
+                  <S.RoundNumber $isCompleted={id === 0}>{id + 1}</S.RoundNumber>
                   {task.reward}
+                </S.CardHeader>
+                <Text as="p" size="p4" style={{ margin: 0 }}>
+                  {task.description}
                 </Text>
-              </S.CardHeader>
-              <Text as="p" size="p4" color="var(--main-blue)">
-                {task.description}
-              </Text>
-            </S.Card>
-          ))}
-        </S.Content>
+              </S.Card>
+            ))}
+          </S.Content>
+        </>
       ) : (
         <S.Content>
-          {WINNERS.map((group) => (
-            <S.Card key={group.period}>
-              <S.Badge>{group.period}</S.Badge>
-              <S.WinnerList>
-                {group.participants.map((participant) => (
-                  <li key={participant.name}>
-                    <Text as="span" weight={700} color="var(--main-blue)">
-                      {participant.name}
-                    </Text>
-                    <Text as="span" size="p4" color="#4076FF">
-                      {participant.city}
-                    </Text>
-                  </li>
-                ))}
-              </S.WinnerList>
-            </S.Card>
-          ))}
+          {WINNERS.length
+            ? WINNERS.map((group, idx) => (
+                <Fragment key={`group-${idx}`}>
+                  <Heading level={3} style={{ margin: 0 }}>
+                    {group.period}
+                  </Heading>
+                  <Text as="p" size="p4" align="center" color="#fff" style={{ margin: 0 }}>
+                    {group.duration}
+                  </Text>
+                </Fragment>
+              ))
+            : null}
         </S.Content>
       )}
     </PageContainer>

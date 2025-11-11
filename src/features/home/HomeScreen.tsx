@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { Flex } from 'antd';
 import PrizesScale from '../prizes-scale';
 import { Coins } from '../coins/Coins';
-import { CLUB_ONBOARDING_KEY } from '../club/constants';
+// import { CLUB_ONBOARDING_KEY } from '../club/constants';
 
 export function HomeScreen() {
   const navigate = useNavigate();

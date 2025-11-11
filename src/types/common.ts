@@ -40,6 +40,7 @@ export interface UserInfoExpanded extends UserInfo {
   coupons: Coupon[];
   prizes: Prize[];
   tg_referral_link: string;
+  is_in_club: boolean;
 }
 
 export interface UserData {
