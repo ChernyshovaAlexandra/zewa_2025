@@ -27,7 +27,9 @@ export function PrizesScreen() {
   }, [user, setUserData]);
 
   const renderCoupons = () => {
+    console.log('userData', userData);
     if (!userData) return <></>;
+
     return (
       <>
         {userData?.user?.coupons?.length ? (

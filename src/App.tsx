@@ -16,7 +16,7 @@ export default function App() {
 
   useEffect(() => {
     const id = setTimeout(() => {
-      const hasSeen = false; // localStorage.getItem(ONBOARDING_KEY) === 'true';
+      const hasSeen = localStorage.getItem(ONBOARDING_KEY) === 'true';
       setStage(hasSeen ? 'app' : 'onboarding');
     }, 1500);
 
