@@ -3,10 +3,10 @@ import {
   useMemo,
   useRef,
   useState,
+  type CSSProperties,
   type PointerEvent as ReactPointerEvent,
   type TouchEvent as ReactTouchEvent,
 } from 'react';
-import { ZewaButton } from '@/shared/ui';
 import * as S from './OnboardingScreen.styles';
 import { applyNbsp } from '@/utils';
 import { DEFAULT_ONBOARDING_STEPS, OnboardingScreenProps } from './config';
@@ -52,10 +52,36 @@ export function OnboardingScreen({
   const [step, setStep] = useState(0);
   const [dragOffsetPercent, setDragOffsetPercent] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
+  const [introReady, setIntroReady] = useState(false);
   const swipeStartXRef = useRef<number | null>(null);
   const slidesRef = useRef<HTMLDivElement | null>(null);
   const currentStep = content[Math.min(step, content.length - 1)];
   const slideOffset = useMemo(() => -(step * 100) + dragOffsetPercent, [dragOffsetPercent, step]);
+  const introTimings = useMemo(() => {
+    const headerDelay = 0;
+    const headerDuration = 500;
+    const imageDelayAfterHeader = 120;
+    const imageStagger = 120;
+    const buttonDelayAfterImages = 200;
+    const imageBaseDelay = headerDuration + imageDelayAfterHeader;
+    const buttonDelay =
+      imageBaseDelay + Math.max(content.length - 1, 0) * imageStagger + buttonDelayAfterImages;
+    return { headerDelay, imageBaseDelay, imageStagger, buttonDelay };
+  }, [content.length]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      setIntroReady(true);
+      return;
+    }
+    const frame = window.requestAnimationFrame(() => setIntroReady(true));
+    return () => window.cancelAnimationFrame(frame);
+  }, []);
+
+  const getDelayStyle = (delay: number): CSSProperties => ({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ['--intro-delay' as any]: `${delay}ms`,
+  });
 
   const requestSmoothReset = () => {
     const raf = typeof window !== 'undefined' ? window.requestAnimationFrame : null;
@@ -185,26 +211,30 @@ export function OnboardingScreen({
         <S.SlideTrack $offset={slideOffset} $isDragging={isDragging}>
           {content.map((item, index) => (
             <S.Slide key={`${item.header}-${index}`}>
-              <S.Image src={item.image} alt="onboarding" />
-              <S.Header>{item.header}</S.Header>
+              <S.Image
+                src={item.image}
+                alt="onboarding"
+                $introReady={introReady}
+                style={getDelayStyle(
+                  introTimings.imageBaseDelay + index * introTimings.imageStagger,
+                )}
+              />
+              <S.Header $introReady={introReady} style={getDelayStyle(introTimings.headerDelay)}>
+                {item.header}
+              </S.Header>
               <S.Text>{applyNbsp(item.text)}</S.Text>
             </S.Slide>
           ))}
         </S.SlideTrack>
       </S.SlidesViewport>
-      <ZewaButton
-        style={{
-          marginTop: 'auto',
-          width: '180px',
-          fontSize: '18px',
-          fontWeight: 700,
-          textTransform: 'none',
-        }}
+      <S.ActionButton
         variant="white"
         onClick={handleNext}
+        $introReady={introReady}
+        style={getDelayStyle(introTimings.buttonDelay)}
       >
         Далее
-      </ZewaButton>
+      </S.ActionButton>
       <S.Pagination>
         {content.map((_, i) => (
           <S.Dot key={i} $active={i === step} />

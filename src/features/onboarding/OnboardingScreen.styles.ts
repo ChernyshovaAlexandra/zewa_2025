@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { ZewaButton } from '@/shared/ui';
 
 export const Wrapper = styled.div`
   display: flex;
@@ -16,6 +17,7 @@ export const Wrapper = styled.div`
   color: #fff;
   box-sizing: border-box;
   touch-action: pan-y;
+  --intro-ease: cubic-bezier(0.33, 1, 0.68, 1);
 `;
 
 export const SlidesViewport = styled.div`
@@ -45,7 +47,7 @@ export const Slide = styled.div`
   box-sizing: border-box;
 `;
 
-export const Header = styled.h1`
+export const Header = styled.h1<{ $introReady: boolean }>`
   color: #fff;
   text-align: center;
   font-feature-settings:
@@ -58,9 +60,16 @@ export const Header = styled.h1`
   line-height: 110%;
   margin-top: 20px;
   white-space: pre-wrap;
+  opacity: ${({ $introReady }) => ($introReady ? 1 : 0)};
+  transform: translate3d(0, ${({ $introReady }) => ($introReady ? '0' : '8px')}, 0);
+  transition:
+    opacity 500ms var(--intro-ease),
+    transform 500ms var(--intro-ease);
+  transition-delay: var(--intro-delay, 0ms);
+  will-change: opacity, transform;
 `;
 
-export const Image = styled.img`
+export const Image = styled.img<{ $introReady: boolean }>`
   width: 100%;
   background-color: #fff;
   aspect-ratio: 370 / 430;
@@ -68,6 +77,13 @@ export const Image = styled.img`
   object-position: bottom;
   border-radius: 20px;
   margin-bottom: 15px;
+  opacity: ${({ $introReady }) => ($introReady ? 1 : 0)};
+  transform: scale(${({ $introReady }) => ($introReady ? 1 : 0.95)});
+  transition:
+    opacity 500ms var(--intro-ease),
+    transform 500ms var(--intro-ease);
+  transition-delay: var(--intro-delay, 0ms);
+  will-change: opacity, transform;
 `;
 
 export const Text = styled.p`
@@ -107,4 +123,19 @@ export const SkipButton = styled.button`
   margin-top: 8px;
   cursor: pointer;
   text-decoration: underline;
+`;
+
+export const ActionButton = styled(ZewaButton)<{ $introReady: boolean }>`
+  margin-top: auto;
+  width: 180px;
+  font-size: 18px;
+  font-weight: 700;
+  text-transform: none;
+  opacity: ${({ $introReady }) => ($introReady ? 1 : 0)};
+  transform: translate3d(0, ${({ $introReady }) => ($introReady ? '0' : '8px')}, 0);
+  transition:
+    opacity 500ms var(--intro-ease),
+    transform 500ms var(--intro-ease);
+  transition-delay: var(--intro-delay, 0ms);
+  will-change: opacity, transform;
 `;
