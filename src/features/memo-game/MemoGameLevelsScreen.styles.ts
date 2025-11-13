@@ -9,7 +9,8 @@ export const LevelsWrapper = styled.div`
   gap: 1rem;
   width: 100%;
   max-width: 460px;
-  padding: 0 1rem 2rem;
+  min-height: calc(100dvh - 160px);
+  padding: max(20px, env(safe-area-inset-top)) 1rem 80px;
   box-sizing: border-box;
 `;
 
@@ -23,13 +24,17 @@ export const LevelCard = styled.div<{ $locked: boolean }>`
     linear-gradient(0deg, #f4fcff 0%, #f4fcff 100%),
     radial-gradient(50% 50% at 50% 50%, #061e66 0%, #23497e 100%);
   padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 `;
 
 export const LevelHeader = styled.div`
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
+  justify-content: center;
   gap: 8px;
+  align-self: flex-start;
 
   h2 {
     color: var(---, #193f74);
@@ -59,6 +64,9 @@ export const LevelInfo = styled.div`
     -webkit-text-stroke: 1px #193f74;
     color: #ffffff;
     text-shadow: 0 1px 0 rgba(25, 63, 116, 0.4);
+    text-align: left;
+    align-self: flex-start;
+    width: fit-content;
   }
 
   p {
@@ -89,6 +97,7 @@ export const BlueInfoBlock = styled.div`
   gap: 10px;
   justify-content: center;
   align-items: center;
+  margin: 0 auto;
 
   p,
   span {
@@ -120,6 +129,8 @@ export const LevelDescription = styled(Text)`
 export const GameBtnWrapper = styled.div`
   position: relative;
   flex: 1;
+  display: flex;
+  justify-content: center;
 `;
 
 export const GameBtn = styled(ZewaButton)<{ $isClosed?: boolean }>`

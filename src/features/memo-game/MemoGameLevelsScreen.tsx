@@ -75,7 +75,7 @@ export function MemoGameLevelsScreen() {
             <S.LevelCard key={level.id} $locked={isLocked}>
               <S.LevelHeader>
                 <S.LevelInfo>
-                  <Heading size="h2">{level.title}</Heading>
+                  <Heading size="h3">{level.title}</Heading>
                 </S.LevelInfo>
               </S.LevelHeader>
               <Flex gap={'10px'} style={{ marginBottom: '1rem' }}>

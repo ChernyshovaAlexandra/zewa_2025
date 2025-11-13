@@ -96,7 +96,7 @@ const PrizesScale: React.FC = () => {
           </DrawerContent>
         )}
       </DrawerWrapper>
-      {isDrawerOpen && <DomovenokImages isDrawerOpen={isDrawerOpen} paperWidth={paperWidth} />}
+      <DomovenokImages isDrawerOpen={isDrawerOpen} paperWidth={paperWidth} />
     </>
   );
 };

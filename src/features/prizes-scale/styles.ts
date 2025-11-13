@@ -3,14 +3,21 @@ import { Card, EllipsisText, HorizontalScroll } from '@vkontakte/vkui';
 import { ButtonProps, ButtonStyles } from '@/components';
 import { Text, ZewaButton } from '@/shared/ui';
 
-export const ContentWithDomovenok = styled.div`
+export const ContentWithDomovenok = styled.div<{ $isOpen: boolean }>`
   position: absolute;
-  bottom: -15px;
-  left: -30px;
-  width: 198px;
-  height: 142px;
+  bottom: ${({ $isOpen }) => ($isOpen ? '-40px' : '-15px')};
+  left: ${({ $isOpen }) => ($isOpen ? '-45px' : '-30px')};
+  width: ${({ $isOpen }) => ($isOpen ? '230px' : '198px')};
+  height: ${({ $isOpen }) => ($isOpen ? '170px' : '142px')};
   touch-action: none;
   z-index: 200;
+
+  pointer-events: none;
+  transition:
+    bottom 0.25s ease,
+    width 0.25s ease,
+    height 0.25s ease,
+    left 0.25s ease;
 
   img {
     width: 100%;
