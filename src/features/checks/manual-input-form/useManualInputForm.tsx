@@ -84,12 +84,10 @@ export function useManualInputForm() {
         date: formattedDate,
       });
 
-      showModal(
-        'Проверка чека',
+      const message =
         resp.data.message ??
-          'После проверки мы зарегистрируем чек, начислим вам монеты и пришлём уведомление об этом.',
-        true,
-      );
+        'После проверки мы зарегистрируем чек, начислим вам снежинки и пришлём уведомление об этом.';
+      showModal('Проверка чека', message, true, 'Хорошо');
     } catch {
       showModal(
         'Упс!',

@@ -18,6 +18,7 @@ export function renderMemoPauseModal({ onResume, onRules, onExit }: RenderMemoPa
       <Flex vertical gap="16px" align="center">
         <ZewaButton
           variant="blue-b"
+          style={{ textTransform: 'none', width: '210px', margin: 'auto' }}
           onClick={() => {
             closeModal();
             onResume();
@@ -27,6 +28,7 @@ export function renderMemoPauseModal({ onResume, onRules, onExit }: RenderMemoPa
         </ZewaButton>
         <ZewaButton
           variant="blue-b"
+          style={{ textTransform: 'none', width: '210px', margin: 'auto' }}
           onClick={() => {
             closeModal();
             onRules();
@@ -36,6 +38,7 @@ export function renderMemoPauseModal({ onResume, onRules, onExit }: RenderMemoPa
         </ZewaButton>
         <ZewaButton
           variant="blue-b"
+          style={{ textTransform: 'none', width: '210px', margin: 'auto' }}
           onClick={() => {
             closeModal();
             onExit();

@@ -2,7 +2,7 @@ import { Flex } from 'antd';
 import { PageContainer, PauseIcon } from '@/shared/ui';
 import * as S from './MemoGameScreen.styles';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { useMemoGameLogic } from './lib/useMemoGameLogic';
 import { getMemoCardImageStyle } from './config/memoCardImageConfig';
 import { MemoOnboardingOverlay } from './ui/MemoOnboardingOverlay';
@@ -15,6 +15,7 @@ export function MemoGameScreen() {
   const shouldShowPauseOnResume = useMemoGameStore((s) => s.shouldShowPauseOnResume);
   const setShouldShowPauseOnResume = useMemoGameStore((s) => s.setShouldShowPauseOnResume);
   const isRulesRoute = location.pathname.endsWith('/rules');
+  const wasRulesRouteRef = useRef(isRulesRoute);
   const handleExit = useCallback(() => {
     navigate('/');
   }, [navigate]);
@@ -56,11 +57,17 @@ export function MemoGameScreen() {
   });
 
   useEffect(() => {
-    if (!isRulesRoute && shouldShowPauseOnResume) {
+    if (wasRulesRouteRef.current && !isRulesRoute && shouldShowPauseOnResume) {
       openPauseModal();
       setShouldShowPauseOnResume(false);
     }
+    wasRulesRouteRef.current = isRulesRoute;
   }, [isRulesRoute, openPauseModal, setShouldShowPauseOnResume, shouldShowPauseOnResume]);
+
+  useEffect(() => {
+    setShouldShowPauseOnResume(false);
+    return () => setShouldShowPauseOnResume(false);
+  }, [setShouldShowPauseOnResume]);
   // todo: check
   return (
     <>
@@ -69,6 +76,7 @@ export function MemoGameScreen() {
         style={{
           background: "url('/assets/images/memo/bg.webp') no-repeat center",
           backgroundSize: 'cover',
+          paddingTop: `var(--twa-safe-area-top, 0px)`,
         }}
       >
         <S.GameWrapper>

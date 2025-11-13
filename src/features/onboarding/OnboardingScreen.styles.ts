@@ -72,7 +72,7 @@ export const Header = styled.h1<{ $introReady: boolean }>`
 export const Image = styled.img<{ $introReady: boolean }>`
   width: 100%;
   background-color: #fff;
-  aspect-ratio: 370 / 430;
+  aspect-ratio: 370 / 400;
   object-fit: cover;
   object-position: bottom;
   border-radius: 20px;
@@ -84,6 +84,12 @@ export const Image = styled.img<{ $introReady: boolean }>`
     transform 500ms var(--intro-ease);
   transition-delay: var(--intro-delay, 0ms);
   will-change: opacity, transform;
+  max-height: 47vh;
+
+  @media screen and (min-height: 750px) {
+    aspect-ratio: 370 / 430;
+    max-height: unset;
+  }
 `;
 
 export const Text = styled.p`

@@ -79,10 +79,17 @@ export function ScannerComponent() {
     <Flex vertical gap="10px">
       <ZewaButton
         variant="blue-b"
+        style={{
+          textTransform: 'none',
+          paddingRight: 0,
+          paddingLeft: 0,
+          width: '270px',
+          margin: 'auto',
+        }}
         onClick={isMobile ? openTelegramScanner : showLocalScanner}
         disabled={pending || scanerNotAllowed}
       >
-        <Flex align="center" gap="5px">
+        <Flex align="center" gap="10px">
           <ScanWhiteIcon /> Сканировать
         </Flex>
       </ZewaButton>

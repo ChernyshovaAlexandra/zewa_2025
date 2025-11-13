@@ -21,6 +21,7 @@ import {
 } from './styles';
 import { TimerValue } from '../MemoGameScreen.styles';
 import { ZewaButton } from '@/shared/ui';
+import { applyNbsp } from '@/utils';
 
 const LEVEL_REWARDS: Record<MemoLevel, number> = {
   1: 6,
@@ -104,8 +105,8 @@ export function MemoOnboardingOverlay() {
                 height={90}
               />
               <HintText>
-                Откройте все пары одинаковых картинок — и получите{' '}
-                <strong>{reward} снежинок</strong>
+                {applyNbsp(`Откройте все пары одинаковых картинок — и получите`)}{' '}
+                <strong>{applyNbsp(`${reward} снежинок`)}</strong>
               </HintText>
             </TopRow>
           </IntroItem>

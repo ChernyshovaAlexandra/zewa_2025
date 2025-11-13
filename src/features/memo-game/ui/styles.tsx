@@ -58,10 +58,10 @@ export const ContentInner = styled.div`
 
 export const TopRow = styled.div`
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
   gap: 16px;
   align-items: center;
-  width: 205px;
+  padding-bottom: 40px;
 `;
 
 export const CardsPreview = styled.div`
@@ -293,10 +293,15 @@ export const ClubHint = styled(Heading).attrs({ size: 'h4' })`
 
 export const Mascot = styled.img`
   width: 77%;
-  max-width: 250px;
+  max-width: 210px;
   align-self: center;
   margin: 0 auto;
   justify-self: flex-end;
+  display: none;
+  
+  @media screen and (min-height: 700px) {
+    display: block;
+  }
 `;
 
 export const ControlRow = styled.div`

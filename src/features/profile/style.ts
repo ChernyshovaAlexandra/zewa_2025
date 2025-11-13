@@ -1,5 +1,5 @@
 import { Button, Div, Text } from '@vkontakte/vkui';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { ButtonProps, ButtonStyles } from '@/components/UI/button/style';
 
 export const ProfileButton = styled(Button)`
@@ -242,4 +242,98 @@ export const StyledInput = styled.label<ButtonProps>`
   input {
     display: none;
   }
+`;
+
+export const BG = styled.div`
+  pointer-events: none;
+  overflow: hidden;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  background: url('/assets/images/main/after.webp') no-repeat;
+  background-size: 125%;
+  background-position: 10% 105%;
+
+  &::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 270px;
+    background: url('/assets/images/main/after.webp') no-repeat top;
+    background-size: 105%;
+    bottom: 0;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 270px;
+    background: url('/assets/images/main/prizes.webp') no-repeat top;
+    background-size: 100%;
+    background-position: center top;
+    bottom: 150px;
+  }
+`;
+
+export const Ellipse = styled.div`
+  border-radius: 100%;
+  background: #2667F4;
+  mix-blend-mode: color-dodge;
+  filter: blur(54.400001525878906px);
+  width: 100vw;
+  height: 100vw;
+  flex-shrink: 0;
+  bottom: 0%;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: auto;
+`;
+const sparkle = keyframes`
+  0% {
+    opacity: 0;
+    transform: scale(0.9) rotate(-2deg);
+    filter: blur(2px);
+  }
+  20% {
+    opacity: 1;
+    transform: scale(1.03) rotate(0deg);
+    filter: blur(0.5px);
+  }
+  40% {
+    opacity: 0.8;
+    transform: scale(1) rotate(2deg);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.02) rotate(-1deg);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.9) rotate(1deg);
+  }
+`;
+
+export const MagicArcContainer = styled.div`
+  position: absolute;
+  width: 300px;
+  left: 0;
+  bottom: 200px;
+  right: 0;
+  margin: auto;
+  transform: rotate(-58deg);
+  mix-blend-mode: screen;
+`;
+
+export const MagicArc = styled.img`
+  pointer-events: none;
+  animation-delay: var(--delay, 0s);
+  mix-blend-mode: screen;
+  width: 100%;
+  height: 100%;
+  animation: ${sparkle} 5s ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
 `;

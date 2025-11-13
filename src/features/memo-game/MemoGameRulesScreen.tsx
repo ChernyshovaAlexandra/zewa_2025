@@ -11,7 +11,7 @@ const MEMO_RULES_TEXT = `
   <li>В игре 3 уровня сложности.</li>
   <li><b>1-й уровень.</b> Не требует покупки Zewa и регистрации чека. Найдите 6 пар картинок за 30 секунд и получите за это 6 снежинок.</li>
   <li><b>2-й уровень.</b> Открывается при заполнении шкалы призов на 25 %. Найдите 10 пар картинок за минуту и получите за это 10 снежинок.</li>
-  <li><b>3-й уровень.</b> Доступен при заполнении шкалы призов на 75 %. Найдите 15 пар картинок за 2 минуты и получите за это 15 снежинок.</li>
+  <li><b>3-й уровень.</b> Доступен при заполнении шкалы призов на 65 %. Найдите 15 пар картинок за 2 минуты и получите за это 15 снежинок.</li>
 </ul>
 <ul>
   <li>Количество попыток не ограничено, но снежинки начисляются только за первое успешное прохождение уровня.</li>
@@ -23,17 +23,13 @@ const MEMO_RULES_TEXT = `
 export function MemoGameRulesScreen() {
   const navigate = useNavigate();
 
-  const handleBack = () => {
-    navigate('/game/memo', { replace: true, state: { openMemoPause: true } });
-  };
-
   return (
     <PageContainer
       fullscreen
       withPadding={false}
       title="Правила игры"
       scrollable={true}
-      onBack={handleBack}
+      onBack={() => navigate(-1)}
     >
       <Content>
         <RulesText

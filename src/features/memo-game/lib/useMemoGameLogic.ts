@@ -19,9 +19,16 @@ const HUE_SHIFT_STEP = 45;
 const ZEWA_LEVEL_IMAGE_IDS: Record<MemoLevel, number[]> = {
   1: [1],
   2: [2, 3],
-  3: [4, 5],
+  3: [4, 12],
 };
-const GENERAL_IMAGE_IDS = Array.from({ length: CARD_IMAGE_COUNT - 4 }, (_, idx) => idx + 5);
+const SPECIAL_IMAGE_SET = new Set<number>(
+  Object.values(ZEWA_LEVEL_IMAGE_IDS)
+    .flat()
+    .map((id) => id),
+);
+const GENERAL_IMAGE_IDS = Array.from({ length: CARD_IMAGE_COUNT }, (_, idx) => idx + 1).filter(
+  (id) => !SPECIAL_IMAGE_SET.has(id),
+);
 
 const isRecord = (value: unknown): value is Record<string, unknown> =>
   typeof value === 'object' && value !== null;
@@ -281,7 +288,7 @@ export function useMemoGameLogic({
         timerIntervalRef.current = null;
       }
     };
-  }, [gameResult, isPaused, isInteractionLocked]);
+  }, [gameResult, isPaused, isInteractionLocked, restartToken]);
 
   useEffect(
     () => () => {

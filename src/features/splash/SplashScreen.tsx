@@ -14,7 +14,7 @@ export function SplashScreen() {
         <S.ProgressBar />
       </S.ProgressContainer>
       <S.Label>Загрузка</S.Label>
-      <S.BottomImage src={rollBg} alt="Background" />
+      <S.BottomImage src={rollBg} alt="Background" width={780} height={1510} decoding="async" />
     </S.Wrapper>
   );
 }

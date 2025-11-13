@@ -1,5 +1,5 @@
 import { useModalStore } from '@/shared/model/modalStore';
-import { Text, ZewaButton } from '@/shared/ui';
+import { ReloadIcon, Text, ZewaButton } from '@/shared/ui';
 import { Flex } from 'antd';
 import Helper from '@/helpers/Helper';
 
@@ -48,10 +48,10 @@ export const renderMemoFinishModal = ({
   const { coinsAwarded, alreadyAwarded } = rewardInfo;
   const hasCoins = typeof coinsAwarded === 'number' && coinsAwarded > 0;
 
-  const headingText = isSuccess ? 'Оп-па! Вы выиграли!' : 'К сожалению, вы не успели';
+  const headingText = isSuccess ? 'Оп-па! Вы выиграли!' : 'Конец игры';
   const descriptionText = (() => {
     if (!isSuccess) {
-      return 'Снежинки не начислены.';
+      return 'К сожалению, вы не успели, снежинки не начислены.';
     }
 
     if (hasCoins) {
@@ -83,33 +83,21 @@ export const renderMemoFinishModal = ({
   }
 
   openModal({
-    title: 'Конец игры',
+    title: headingText,
     closable: false,
     content: (
       <Flex vertical gap="20px">
         <Flex vertical gap="8px">
-          <Text align="center" size="p3" color="#1F2532">
-            {headingText}
-          </Text>
           <Text align="center" size="p4" color="#596471">
             {descriptionText}
           </Text>
         </Flex>
-        <Flex vertical gap="10px">
-          {stats.map((stat) => (
-            <Flex key={stat.label} justify="space-between">
-              <Text size="p4" color="#8893A0">
-                {stat.label}
-              </Text>
-              <Text size="p4" color="#1F2532">
-                {stat.value}
-              </Text>
-            </Flex>
-          ))}
-        </Flex>
+
         <Flex vertical gap="8px">
           <ZewaButton
+            icon={<ReloadIcon />}
             variant="blue-b"
+            style={{ textTransform: 'none', width: '210px', margin: 'auto' }}
             onClick={() => {
               closeModal();
               onRestart();
@@ -118,13 +106,14 @@ export const renderMemoFinishModal = ({
             Играть ещё
           </ZewaButton>
           <ZewaButton
-            variant="white"
+            variant="blue-b"
+            style={{ textTransform: 'none', width: '210px', margin: 'auto' }}
             onClick={() => {
               closeModal();
               onExit();
             }}
           >
-            Главное меню
+            На главную
           </ZewaButton>
         </Flex>
       </Flex>

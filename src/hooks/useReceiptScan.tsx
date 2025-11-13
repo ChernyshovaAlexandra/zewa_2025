@@ -4,7 +4,7 @@ import { useCallback, useRef, useState } from 'react';
 import { useModalStore } from '@/shared/model/modalStore';
 import { telegramService } from '@/services/TelegramService';
 import { AddCheckResponse } from '@/services/ApiService';
-import { Text } from '@/shared/ui';
+import { Text, ZewaButton } from '@/shared/ui';
 import { Flex } from 'antd';
 import { parseReceipt } from '@/features/checks/lib/parseReceipt';
 import { apiService } from '@/services/ApiService';
@@ -60,8 +60,15 @@ export function useReceiptScan() {
             <>
               <Text size="p4" align="center">
                 {data.message ??
-                  `После проверки мы зарегистрируем чек, начислим вам монеты и пришлём уведомление об этом.`}
+                  `После проверки мы зарегистрируем чек, начислим вам снежинки и пришлём уведомление об этом.`}
               </Text>
+              <ZewaButton
+                style={{ marginTop: 16 }}
+                variant="blue-b"
+                onClick={() => useModalStore.getState().closeModal()}
+              >
+                Хорошо
+              </ZewaButton>
             </>
           ),
         });

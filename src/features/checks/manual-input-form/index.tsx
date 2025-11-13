@@ -1,11 +1,4 @@
-import {
-  Group,
-  FormItem,
-  FormLayoutGroup,
-  Input,
-  DateInput as DatePicker,
-  
-} from '@vkontakte/vkui';
+import { Group, FormItem, FormLayoutGroup, Input, DateInput as DatePicker } from '@vkontakte/vkui';
 // import { ManualInputFormState } from './helpers';
 import { useManualInputForm } from './useManualInputForm';
 import { CenteredTitle, StyledForm } from './styles';
@@ -110,7 +103,11 @@ export function ManualInputForm() {
 
         <FormItem>
           <ZewaButton
-            style={{ width: '250px', margin: '10px auto 0' }}
+            style={{
+              textTransform: 'none',
+              width: '250px',
+              margin: '20px auto 0',
+            }}
             variant="blue-b"
             pending={pending}
             type="submit"

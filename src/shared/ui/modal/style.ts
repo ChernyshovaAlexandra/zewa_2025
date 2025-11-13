@@ -32,9 +32,9 @@ export const ModalCard = styled.div`
   text-align: center;
   border: 6px solid var(--main-blue);
   background: #c5dfe9;
-  filter: drop-shadow(0px 4px 0px #00098f);
+  filter: drop-shadow(0px 4px 0px #002156);
   position: relative;
-  
+  min-height: 200px;
 `;
 
 export const ModalTitle = styled(Heading)`
@@ -53,6 +53,20 @@ export const ModalTitle = styled(Heading)`
   box-shadow: 0px 1px 2px 0px rgba(231, 64, 128, 0.6);
   padding: 6px 26px 8px;
   border-radius: 10px;
+
+  color: var(--White, #fff);
+  text-align: center;
+  font-feature-settings:
+    'liga' off,
+    'clig' off;
+  text-shadow: 0 1px 0 #b0003c;
+
+  /* H2 */
+  font-family: 'Foco Trial';
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 900;
+  line-height: 110%; /* 26.4px */
 `;
 
 export const ModalContent = styled.div`

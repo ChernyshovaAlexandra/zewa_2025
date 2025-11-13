@@ -36,7 +36,7 @@ const LEVELS: Array<{
     description: 'Загрузите больше чеков с продукцией Zewa, чтобы продолжить игру',
     time: '2 мин',
     snowflakes: 15,
-    requiredSnowflakes: 75,
+    requiredSnowflakes: 35,
   },
 ];
 
@@ -58,6 +58,7 @@ export function MemoGameLevelsScreen() {
       style={{
         background: 'rgba(0, 0, 0, 0.65)',
         backdropFilter: 'blur(.5px)',
+        padding: 0,
       }}
     >
       <S.LevelsWrapper>

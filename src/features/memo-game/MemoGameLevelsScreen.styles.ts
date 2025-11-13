@@ -9,7 +9,7 @@ export const LevelsWrapper = styled.div`
   gap: 1rem;
   width: 100%;
   max-width: 460px;
-  padding: 1.5rem 1rem 2rem;
+  padding: 0 1rem 2rem;
   box-sizing: border-box;
 `;
 

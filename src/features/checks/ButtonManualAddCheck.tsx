@@ -12,9 +12,19 @@ export const ButtonManualAddCheck = () => {
     });
   };
   return (
-    <ZewaButton style={{width: '100%'}} variant="blue-b" onClick={renderManualInputModal}>
-      <Flex align="center" gap="5px">
-        <KeyboardIcon /> Ввести вручную
+    <ZewaButton
+      variant="blue-b"
+      style={{
+        textTransform: 'none',
+        paddingRight: 0,
+        paddingLeft: 0,
+        width: '270px',
+        margin: 'auto',
+      }}
+      onClick={renderManualInputModal}
+    >
+      <Flex align="center" gap="10px">
+        <KeyboardIcon /> Ввести данные вручную
       </Flex>
     </ZewaButton>
   );
