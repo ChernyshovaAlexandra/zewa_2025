@@ -162,3 +162,12 @@ export const GameBtnImg = styled.img`
   right: -35px;
   top: -55px;
 `;
+
+export const CompletedRewardText = styled(Text)`
+  color: rgba(5, 43, 96, 0.7);
+  text-align: center;
+  font-family: 'Foco Trial';
+  font-size: 14px;
+  line-height: 140%;
+  margin-top: 8px;
+`;

@@ -11,6 +11,7 @@ import { ClubOnboardingScreen } from '@/features/club/ClubOnboardingScreen';
 import { MemoGameScreen } from '@/features/memo-game/MemoGameScreen';
 import { MemoGameLevelsScreen } from '@/features/memo-game/MemoGameLevelsScreen';
 import { ProfileScreen } from '@/features/profile/ProfileScreen';
+import { MemoGameRulesScreen } from '@/features/memo-game/MemoGameRulesScreen';
 import { useTelegramBackButton } from '@/hooks/useTelegramBackButton';
 
 function TelegramBackButtonGuard() {
@@ -36,7 +37,9 @@ export function AppRouter() {
         <Route path="/memo/levels" element={<Navigate to="/game/memo/levels" replace />} />
         <Route path="/game" element={<Navigate to="/game/memo" replace />} />
         <Route path="/game/memo/levels" element={<MemoGameLevelsScreen />} />
-        <Route path="/game/memo" element={<MemoGameScreen />} />
+        <Route path="/game/memo" element={<MemoGameScreen />}>
+          <Route path="rules" element={<MemoGameRulesScreen />} />
+        </Route>
         <Route path="/profile" element={<ProfileScreen />} />
       </Routes>
     </BrowserRouter>

@@ -32,3 +32,11 @@ export const GameTitle = styled.h1`
   text-rendering: geometricPrecision;
   -webkit-font-smoothing: antialiased;
 `;
+
+export const RulesOverlay = styled.div`
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  background: rgba(0, 0, 0, 0.85);
+  overflow-y: auto;
+`;

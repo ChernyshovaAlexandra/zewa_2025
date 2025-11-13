@@ -1,17 +1,25 @@
 import { Flex } from 'antd';
-import { PageContainer, PauseIcon, SnowflakeIcon } from '@/shared/ui';
+import { PageContainer, PauseIcon } from '@/shared/ui';
 import * as S from './MemoGameScreen.styles';
-import { useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useCallback, useEffect } from 'react';
 import { useMemoGameLogic } from './lib/useMemoGameLogic';
 import { getMemoCardImageStyle } from './config/memoCardImageConfig';
 import { MemoOnboardingOverlay } from './ui/MemoOnboardingOverlay';
 import { useMemoOnboardingStore } from './model/memoOnboardingStore';
+import { useMemoGameStore } from './model/memoGameStore';
 
 export function MemoGameScreen() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const shouldShowPauseOnResume = useMemoGameStore((s) => s.shouldShowPauseOnResume);
+  const setShouldShowPauseOnResume = useMemoGameStore((s) => s.setShouldShowPauseOnResume);
+  const isRulesRoute = location.pathname.endsWith('/rules');
   const handleExit = useCallback(() => {
     navigate('/');
+  }, [navigate]);
+  const handleOpenRules = useCallback(() => {
+    navigate('/game/memo/rules');
   }, [navigate]);
 
   const isOnboardingVisible = useMemoOnboardingStore((s) => s.isVisible);
@@ -28,11 +36,9 @@ export function MemoGameScreen() {
   const {
     selectedLevel,
     columns,
-    pairs,
     minutes,
     seconds,
     timeRemainingSeconds,
-    matchedPairsCount,
     cardDeck,
     matchedCards,
     activeIndexes,
@@ -42,7 +48,19 @@ export function MemoGameScreen() {
     handlePause,
     handleFrontImageLoad,
     handleFrontImageError,
-  } = useMemoGameLogic({ onExit: handleExit, isInteractionLocked: isOnboardingVisible });
+    openPauseModal,
+  } = useMemoGameLogic({
+    onExit: handleExit,
+    onShowRules: handleOpenRules,
+    isInteractionLocked: isOnboardingVisible,
+  });
+
+  useEffect(() => {
+    if (!isRulesRoute && shouldShowPauseOnResume) {
+      openPauseModal();
+      setShouldShowPauseOnResume(false);
+    }
+  }, [isRulesRoute, openPauseModal, setShouldShowPauseOnResume, shouldShowPauseOnResume]);
   // todo: check
   return (
     <>
@@ -72,17 +90,6 @@ export function MemoGameScreen() {
               </Flex>
             </S.InfoBlock>
             <S.InfoGroup>
-              <S.InfoBlock
-                aria-label={`Собрано снежинок ${matchedPairsCount} из ${pairs}`}
-                data-testid="memo-topbar-snowflakes"
-              >
-                <S.SnowflakeRow>
-                  <SnowflakeIcon width={22} height={22} color="var(--main-blue)" />
-                  <S.SnowflakeCount>
-                    {matchedPairsCount}/{pairs}
-                  </S.SnowflakeCount>
-                </S.SnowflakeRow>
-              </S.InfoBlock>
               <S.PauseButton type="button" onClick={handlePause} aria-label="Пауза">
                 <PauseIcon />
               </S.PauseButton>
@@ -127,6 +134,11 @@ export function MemoGameScreen() {
         </S.GameWrapper>
       </PageContainer>
       <MemoOnboardingOverlay />
+      {isRulesRoute && (
+        <S.RulesOverlay>
+          <Outlet />
+        </S.RulesOverlay>
+      )}
     </>
   );
 }

@@ -1,12 +1,10 @@
-export { GameWrapper, GameTitle } from './styles/MemoGameLayout.styles';
+export { GameWrapper, GameTitle, RulesOverlay } from './styles/MemoGameLayout.styles';
 export {
   TopRow,
   InfoGroup,
   InfoBlock,
   PauseButton,
   TimerValue,
-  SnowflakeRow,
-  SnowflakeCount,
 } from './styles/MemoGameTopBar.styles';
 export {
   CardsGrid,

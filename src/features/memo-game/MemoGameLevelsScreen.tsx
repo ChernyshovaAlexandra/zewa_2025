@@ -45,6 +45,7 @@ export function MemoGameLevelsScreen() {
   const lockedLevels = useMemoGameStore((s) => s.lockedLevels);
   const setSelectedLevel = useMemoGameStore((s) => s.setSelectedLevel);
   const userSnowflakes = useUserStore((s) => s.userData?.user?.coins ?? 0);
+  const completedMemoLevel = useUserStore((s) => s.userData?.user?.memo_level ?? 0);
 
   const handlePlay = (level: MemoLevel) => {
     setSelectedLevel(level);
@@ -67,6 +68,7 @@ export function MemoGameLevelsScreen() {
               : userSnowflakes > level.requiredSnowflakes;
           const isLocked = lockedLevels[level.id] || !hasRequiredSnowflakes;
           const levelDescription = level.description;
+          const isLevelCompleted = completedMemoLevel >= level.id;
 
           return (
             <S.LevelCard key={level.id} $locked={isLocked}>
@@ -81,10 +83,12 @@ export function MemoGameLevelsScreen() {
                     <img src="/assets/images/timer.svg" alt="" width={22} height={22} />
                     <Text>{level.time}</Text>
                   </Flex>
-                  <Flex gap="3px" align="center">
-                    <SnowflakeIcon width={22} height={22} color="#fff" />
-                    <Text>{level.snowflakes}</Text>
-                  </Flex>
+                  {!isLevelCompleted && (
+                    <Flex gap="3px" align="center">
+                      <SnowflakeIcon width={22} height={22} color="#fff" />
+                      <Text>{level.snowflakes}</Text>
+                    </Flex>
+                  )}
                 </S.BlueInfoBlock>
                 <S.GameBtnWrapper>
                   <S.GameBtnImg src="/assets/images/play-btn-bg.webp" />
@@ -102,6 +106,11 @@ export function MemoGameLevelsScreen() {
                   </S.GameBtn>
                 </S.GameBtnWrapper>
               </Flex>
+              {isLevelCompleted && (
+                <S.CompletedRewardText>
+                  Снежинки за этот уровень уже начислены
+                </S.CompletedRewardText>
+              )}
               {!hasRequiredSnowflakes && (
                 <S.LevelDescription>{levelDescription}</S.LevelDescription>
               )}

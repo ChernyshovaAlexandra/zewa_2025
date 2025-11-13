@@ -8,15 +8,59 @@ import {
   type MemoImageSet,
 } from '../config/memoLevelsConfig';
 import { useMemoGameStore } from '../model/memoGameStore';
-import { renderMemoFinishModal } from './renderMemoFinishModal';
+import { renderMemoFinishModal, type MemoGameRewardInfo } from './renderMemoFinishModal';
 import { renderMemoPauseModal } from './renderMemoPauseModal';
-import { renderMemoRulesModal } from './renderMemoRulesModal';
 import type { MemoLevel } from '../types';
 
 const CARD_IMAGE_BASE_PATH = '/assets/images/memo/cards/upd';
-const CARD_IMAGE_COUNT = 10;
+const CARD_IMAGE_COUNT = 25;
 const CARD_REVEAL_DELAY_MS = 900;
 const HUE_SHIFT_STEP = 45;
+const ZEWA_LEVEL_IMAGE_IDS: Record<MemoLevel, number[]> = {
+  1: [1],
+  2: [2, 3],
+  3: [4, 5],
+};
+const GENERAL_IMAGE_IDS = Array.from({ length: CARD_IMAGE_COUNT - 4 }, (_, idx) => idx + 5);
+
+const isRecord = (value: unknown): value is Record<string, unknown> =>
+  typeof value === 'object' && value !== null;
+
+const parsePossibleNumber = (value: unknown): number | null => {
+  if (typeof value === 'number' && Number.isFinite(value)) {
+    return value;
+  }
+  if (typeof value === 'string') {
+    const parsed = Number(value);
+    return Number.isFinite(parsed) ? parsed : null;
+  }
+  return null;
+};
+
+const extractCoinsFromGameResult = (payload: unknown): number | null => {
+  if (!isRecord(payload)) return null;
+
+  const data = isRecord(payload.data) ? payload.data : null;
+  const candidates = [
+    payload.coins,
+    payload.coins_earned,
+    payload.reward,
+    payload.points,
+    data?.coins,
+    data?.coins_earned,
+    data?.reward,
+    data?.points,
+  ];
+
+  for (const candidate of candidates) {
+    const parsed = parsePossibleNumber(candidate);
+    if (parsed != null) {
+      return parsed;
+    }
+  }
+
+  return null;
+};
 
 export interface MemoCardSlot {
   pairId: number;
@@ -28,6 +72,7 @@ export interface MemoCardSlot {
 
 interface UseMemoGameLogicParams {
   onExit: () => void;
+  onShowRules: () => void;
   isInteractionLocked?: boolean;
 }
 
@@ -48,6 +93,7 @@ interface UseMemoGameLogicResult {
   handlePause: () => void;
   handleFrontImageLoad: (event: SyntheticEvent<HTMLImageElement>) => void;
   handleFrontImageError: (event: SyntheticEvent<HTMLImageElement>) => void;
+  openPauseModal: () => void;
 }
 
 const shuffleDeck = <T,>(items: T[]): T[] => {
@@ -59,13 +105,43 @@ const shuffleDeck = <T,>(items: T[]): T[] => {
   return array;
 };
 
+const generateImageIdSequence = (pairs: number, requiredImageIds: number[]): number[] => {
+  const sequence: number[] = [];
+  const normalizedRequired = requiredImageIds.slice(0, pairs);
+  sequence.push(...normalizedRequired);
+
+  if (sequence.length >= pairs) {
+    return sequence;
+  }
+
+  let generalPool = shuffleDeck(GENERAL_IMAGE_IDS);
+  let poolIndex = 0;
+
+  while (sequence.length < pairs) {
+    if (!generalPool.length) {
+      generalPool = shuffleDeck(GENERAL_IMAGE_IDS);
+      poolIndex = 0;
+    }
+    if (poolIndex >= generalPool.length) {
+      generalPool = shuffleDeck(GENERAL_IMAGE_IDS);
+      poolIndex = 0;
+    }
+    sequence.push(generalPool[poolIndex]);
+    poolIndex += 1;
+  }
+
+  return sequence;
+};
+
 export function useMemoGameLogic({
   onExit,
+  onShowRules,
   isInteractionLocked = false,
 }: UseMemoGameLogicParams): UseMemoGameLogicResult {
   const selectedLevel = useMemoGameStore((s) => s.selectedLevel);
   const currentImageSetId = useMemoGameStore((s) => s.currentImageSetId);
   const completeLevel = useMemoGameStore((s) => s.completeLevel);
+  const setShouldShowPauseOnResume = useMemoGameStore((s) => s.setShouldShowPauseOnResume);
   const username = useUserStore((s) => s.user?.username ?? '');
   const setUserData = useUserStore((s) => s.setUserData);
   const setStartStoreData = useStartDataStore((s) => s.setStartData);
@@ -78,12 +154,16 @@ export function useMemoGameLogic({
   const [restartToken, setRestartToken] = useState(0);
 
   const cardDeck = useMemo<MemoCardSlot[]>(() => {
+    const requiredImages = ZEWA_LEVEL_IMAGE_IDS[selectedLevel] ?? [];
+    const pairImageSequence = generateImageIdSequence(pairs, requiredImages);
+    const imageUsageCount: Record<number, number> = {};
+
     const basePairs = Array.from({ length: pairs }, (_, pairId) => {
-      const imageIndex = pairId % CARD_IMAGE_COUNT;
-      const variant = Math.floor(pairId / CARD_IMAGE_COUNT);
-      const imageId = imageIndex + 1;
+      const imageId = pairImageSequence[pairId] ?? ((pairId % CARD_IMAGE_COUNT) + 1);
+      const usageCount = imageUsageCount[imageId] ?? 0;
+      imageUsageCount[imageId] = usageCount + 1;
       const imageSrc = `${CARD_IMAGE_BASE_PATH}/${imageId}.webp`;
-      const hueShift = (variant * HUE_SHIFT_STEP) % 360;
+      const hueShift = (usageCount * HUE_SHIFT_STEP) % 360;
 
       return [
         { pairId, imageId, imageSrc, instance: 0, hueShift },
@@ -93,7 +173,7 @@ export function useMemoGameLogic({
 
     return shuffleDeck(basePairs).slice(0, totalCards);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pairs, totalCards, restartToken]);
+  }, [pairs, totalCards, restartToken, selectedLevel]);
 
   const [activeIndexes, setActiveIndexes] = useState<number[]>([]);
   const [matchedCards, setMatchedCards] = useState<boolean[]>(() =>
@@ -228,15 +308,25 @@ export function useMemoGameLogic({
   }, [setStartStoreData, setUserData, username]);
 
   const submitGameResult = useCallback(
-    async (result: boolean) => {
+    async (result: boolean): Promise<MemoGameRewardInfo> => {
+      let rewardInfo: MemoGameRewardInfo = { coinsAwarded: null, alreadyAwarded: false };
+
       try {
-        await apiService.gameResult({ game: 'memo', result, level: selectedLevel });
-        if (result) {
+        const response = await apiService.gameResult({ game: 'memo', result, level: selectedLevel });
+        const coinsAwarded = extractCoinsFromGameResult(response?.data);
+        rewardInfo = {
+          coinsAwarded,
+          alreadyAwarded: Boolean(result && coinsAwarded === 0),
+        };
+
+        if (result && typeof coinsAwarded === 'number' && coinsAwarded > 0) {
           await refreshUserData();
         }
       } catch (err) {
         console.error('memo gameResult error', err);
       }
+
+      return rewardInfo;
     },
     [refreshUserData, selectedLevel],
   );
@@ -271,23 +361,26 @@ export function useMemoGameLogic({
         Math.max(0, timeLimitSeconds - timeRemaining),
       );
 
-      renderMemoFinishModal({
-        level: selectedLevel,
-        result,
-        totalPairs: pairs,
-        matchedPairs: matchedPairsCount,
-        turns: turnsCount,
-        timeLimitSeconds,
-        timeSpentSeconds: result === 'timeout' ? timeLimitSeconds : timeSpentSeconds,
-        onRestart: () => {
-          setRestartToken((prev) => prev + 1);
-        },
-        onExit: () => {
-          onExit();
-        },
-      });
+      const showFinishModal = async () => {
+        const rewardInfo = await submitGameResult(isSuccess);
+        renderMemoFinishModal({
+          result,
+          totalPairs: pairs,
+          matchedPairs: matchedPairsCount,
+          turns: turnsCount,
+          timeLimitSeconds,
+          timeSpentSeconds: result === 'timeout' ? timeLimitSeconds : timeSpentSeconds,
+          rewardInfo,
+          onRestart: () => {
+            setRestartToken((prev) => prev + 1);
+          },
+          onExit: () => {
+            onExit();
+          },
+        });
+      };
 
-      void submitGameResult(isSuccess);
+      void showFinishModal();
     },
     [
       gameResult,
@@ -343,30 +436,39 @@ export function useMemoGameLogic({
     [activeIndexes, cardDeck, gameResult, isPaused, isResolvingPair, matchedCards, isInteractionLocked],
   );
 
-  const handlePause = useCallback(() => {
-    if (gameResult !== 'playing' || isPaused || isInteractionLocked) return;
-
-    setIsPaused(true);
-
+  const openPauseModal = useCallback(() => {
     renderMemoPauseModal({
       onResume: () => {
         setIsPaused(false);
+        setShouldShowPauseOnResume(false);
       },
-      onRules: async () => {
-        renderMemoRulesModal({
-          onClose: () => {
-            setIsPaused(false);
-          },
-        });
+      onRules: () => {
+        setShouldShowPauseOnResume(true);
+        onShowRules();
       },
       onExit: async () => {
         setGameResult('timeout');
         setIsPaused(false);
+        setShouldShowPauseOnResume(false);
         await submitGameResult(false);
         onExit();
       },
     });
-  }, [gameResult, isPaused, isInteractionLocked, onExit, submitGameResult]);
+  }, [onExit, onShowRules, setGameResult, setIsPaused, setShouldShowPauseOnResume, submitGameResult]);
+
+  const handlePause = useCallback(() => {
+    if (gameResult !== 'playing' || isPaused || isInteractionLocked) return;
+
+    setIsPaused(true);
+    setShouldShowPauseOnResume(false);
+    openPauseModal();
+  }, [
+    gameResult,
+    isPaused,
+    isInteractionLocked,
+    openPauseModal,
+    setShouldShowPauseOnResume,
+  ]);
 
   const handleFrontImageLoad = (event: SyntheticEvent<HTMLImageElement>) => {
     const target = event.currentTarget;
@@ -433,5 +535,6 @@ export function useMemoGameLogic({
     handlePause,
     handleFrontImageLoad,
     handleFrontImageError,
+    openPauseModal,
   };
 }

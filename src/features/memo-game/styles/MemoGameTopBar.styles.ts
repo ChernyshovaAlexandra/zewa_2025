@@ -109,13 +109,3 @@ export const TimerValue = styled.span`
     animation: ${timerPulse} 1s infinite;
   }
 `;
-
-export const SnowflakeRow = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  text-align: center;
-  color: var(--main-blue);
-`;
-
-export const SnowflakeCount = styled(TimerValue)``;

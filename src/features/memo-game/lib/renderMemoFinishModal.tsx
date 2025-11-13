@@ -1,18 +1,23 @@
 import { useModalStore } from '@/shared/model/modalStore';
 import { Text, ZewaButton } from '@/shared/ui';
 import { Flex } from 'antd';
-import type { MemoLevel } from '../types';
+import Helper from '@/helpers/Helper';
 
 type MemoFinishResult = 'success' | 'timeout';
 
+export interface MemoGameRewardInfo {
+  coinsAwarded: number | null;
+  alreadyAwarded: boolean;
+}
+
 interface MemoFinishModalParams {
-  level: MemoLevel;
   result: MemoFinishResult;
   totalPairs: number;
   matchedPairs: number;
   turns: number;
   timeLimitSeconds: number;
   timeSpentSeconds: number;
+  rewardInfo: MemoGameRewardInfo;
   onRestart: () => void;
   onExit: () => void;
 }
@@ -27,23 +32,39 @@ const formatSeconds = (seconds: number) => {
 };
 
 export const renderMemoFinishModal = ({
-  level,
   result,
   totalPairs,
   matchedPairs,
   turns,
   timeLimitSeconds,
   timeSpentSeconds,
+  rewardInfo,
   onRestart,
   onExit,
 }: MemoFinishModalParams) => {
   const { openModal, closeModal } = useModalStore.getState();
 
   const isSuccess = result === 'success';
-  const statusText = isSuccess ? 'Уровень пройден!' : 'Время вышло';
-  const descriptionText = isSuccess
-    ? `Вы собрали все пары на уровне ${level}.`
-    : `Не хватило времени, чтобы собрать все пары на уровне ${level}. Попробуйте ещё раз!`;
+  const { coinsAwarded, alreadyAwarded } = rewardInfo;
+  const hasCoins = typeof coinsAwarded === 'number' && coinsAwarded > 0;
+
+  const headingText = isSuccess ? 'Оп-па! Вы выиграли!' : 'К сожалению, вы не успели';
+  const descriptionText = (() => {
+    if (!isSuccess) {
+      return 'Снежинки не начислены.';
+    }
+
+    if (hasCoins) {
+      return `Вам начислено ${coinsAwarded} ${Helper.getCoinsForm(coinsAwarded ?? 0)}.`;
+    }
+
+    if (alreadyAwarded) {
+      return 'Вам уже были начислены снежинки за эту игру.';
+    }
+
+    return `Результат сохранён. Проверьте баланс снежинок в личном кабинете.`;
+  })();
+
   const timeLimitFormatted = formatSeconds(timeLimitSeconds);
   const timeSpentFormatted = formatSeconds(timeSpentSeconds);
   const timeRemainingFormatted = formatSeconds(timeLimitSeconds - timeSpentSeconds);
@@ -62,13 +83,13 @@ export const renderMemoFinishModal = ({
   }
 
   openModal({
-    title: 'Финиш',
+    title: 'Конец игры',
     closable: false,
     content: (
       <Flex vertical gap="20px">
         <Flex vertical gap="8px">
           <Text align="center" size="p3" color="#1F2532">
-            {statusText}
+            {headingText}
           </Text>
           <Text align="center" size="p4" color="#596471">
             {descriptionText}

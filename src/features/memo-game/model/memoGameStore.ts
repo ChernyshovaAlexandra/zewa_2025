@@ -14,6 +14,8 @@ interface MemoGameState {
   refreshImageSet: () => void;
   completeLevel: (level: MemoLevel) => void;
   resetLevelProgress: (level: MemoLevel) => void;
+  shouldShowPauseOnResume: boolean;
+  setShouldShowPauseOnResume: (value: boolean) => void;
 }
 
 const createDefaultLockedState = (): Record<MemoLevel, boolean> => ({
@@ -34,6 +36,7 @@ export const useMemoGameStore = create<MemoGameState>((set) => ({
   completedLevels: createDefaultCompletionState(),
   lastCompletedLevel: null,
   currentImageSetId: getWeeklyMemoImageSet().id,
+  shouldShowPauseOnResume: false,
   setSelectedLevel: (level) => set({ selectedLevel: level }),
   setLevelLocked: (level, locked) =>
     set((state) => ({
@@ -60,4 +63,5 @@ export const useMemoGameStore = create<MemoGameState>((set) => ({
       },
       lastCompletedLevel: state.lastCompletedLevel === level ? null : state.lastCompletedLevel,
     })),
+  setShouldShowPauseOnResume: (value) => set({ shouldShowPauseOnResume: value }),
 }));
