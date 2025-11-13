@@ -1,20 +1,37 @@
-import { PageContainer, Text, ZewaButton } from '@/shared/ui';
-import { applyNbsp } from '@/utils';
-import { faqText } from './faqText';
+import { PageContainer, ZewaButton } from '@/shared/ui';
+import styled from 'styled-components';
+import { FAQ_SUPPORT_URL } from './faqText';
+import { FaqList } from './FaqList';
 
 export function FaqScreen() {
   return (
     <PageContainer title="FAQ" scrollable={true}>
-      <div style={{ padding: '0 20px 30px' }}>
-        <Text
-          color="#fff"
-          as="div"
-          size="p4"
-          style={{ padding: '0 10px' }}
-          dangerouslySetInnerHTML={{ __html: applyNbsp(faqText) }}
-        />
-        <ZewaButton variant="white">Задать вопрос</ZewaButton>
-      </div>
+      <FaqWrapper>
+        <StyledFaqList />
+        <SupportLink href={FAQ_SUPPORT_URL} target="_blank" rel="noreferrer">
+          <ZewaButton variant="white">Задать вопрос</ZewaButton>
+        </SupportLink>
+      </FaqWrapper>
     </PageContainer>
   );
 }
+
+const FaqWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+`;
+
+const SupportLink = styled.a`
+  text-decoration: none;
+  align-self: center;
+  width: 100%;
+
+  button {
+    width: 100%;
+  }
+`;
+
+const StyledFaqList = styled(FaqList)`
+  padding: 0 10px;
+`;

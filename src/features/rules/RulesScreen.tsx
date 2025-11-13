@@ -2,9 +2,10 @@ import { rulesText } from './rulesText';
 import { applyNbsp } from '@/utils';
 import { PageContainer, Text } from '@/shared/ui';
 import { TabButton, Tabs, TabsWrapper } from '../tournament/TournamentScreen.styles';
-import { faqText } from '../faq/faqText';
+import { FAQ_RULES_URL, FAQ_SUPPORT_URL } from '../faq/faqText';
 import { useState } from 'react';
 import styled from 'styled-components';
+import { FaqList } from '../faq/FaqList';
 
 export function RulesScreen() {
   const [active, setActive] = useState<'rules' | 'faq'>('rules');
@@ -35,23 +36,14 @@ export function RulesScreen() {
               size="p4"
               dangerouslySetInnerHTML={{ __html: applyNbsp(rulesText) }}
             />
-            <Linked
-              style={{ width: '200px' }}
-              href="https://back.zemma-chatbot.ru/docs/Правила_акции Zewa_Магнит.pdf"
-              target="_blank"
-            >
+            <Linked style={{ width: '200px' }} href={FAQ_RULES_URL} target="_blank" rel="noreferrer">
               Полные правила
             </Linked>
           </>
         ) : (
           <>
-            <RulesText
-              as="div"
-              size="p4"
-              style={{ padding: '0 10px' }}
-              dangerouslySetInnerHTML={{ __html: applyNbsp(faqText) }}
-            />
-            <Linked href="https://t.me/zemma_zewa_support" target="_blank">
+            <FaqListWrapper />
+            <Linked href={FAQ_SUPPORT_URL} target="_blank" rel="noreferrer">
               Задать вопрос
             </Linked>
           </>
@@ -89,6 +81,13 @@ const RulesText = styled(Text)`
   p {
     margin: 12px 0;
   }
+
+  .faq-divider {
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    margin: 18px 0;
+    opacity: 0.6;
+  }
 `;
 
 const Linked = styled.a`
@@ -116,4 +115,8 @@ const Linked = styled.a`
   line-height: 100%;
   text-decoration: none;
   margin: 17px auto 0;
+`;
+
+const FaqListWrapper = styled(FaqList)`
+  padding: 10px 10px 0;
 `;

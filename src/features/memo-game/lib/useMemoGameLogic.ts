@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type SyntheticEvent } from 'react';
 import { apiService } from '@/services';
+import { useStartDataStore, useUserStore } from '@/shared/model';
 import {
   getMemoLevelConfig,
   getWeeklyMemoImageSet,
@@ -65,6 +66,9 @@ export function useMemoGameLogic({
   const selectedLevel = useMemoGameStore((s) => s.selectedLevel);
   const currentImageSetId = useMemoGameStore((s) => s.currentImageSetId);
   const completeLevel = useMemoGameStore((s) => s.completeLevel);
+  const username = useUserStore((s) => s.user?.username ?? '');
+  const setUserData = useUserStore((s) => s.setUserData);
+  const setStartStoreData = useStartDataStore((s) => s.setStartData);
 
   const { rows, columns, pairs, timeLimitSeconds } = getMemoLevelConfig(selectedLevel);
   const imageSet =
@@ -100,6 +104,7 @@ export function useMemoGameLogic({
   const [timeRemaining, setTimeRemaining] = useState(timeLimitSeconds);
   const [gameResult, setGameResult] = useState<'playing' | 'success' | 'timeout'>('playing');
   const [isPaused, setIsPaused] = useState(false);
+  const [pendingTimeout, setPendingTimeout] = useState(false);
 
   const matchedPairsCount = useMemo(
     () => Math.floor(matchedCards.filter(Boolean).length / 2),
@@ -129,6 +134,7 @@ export function useMemoGameLogic({
     setGameResult('playing');
     setTimeRemaining(timeLimitSeconds);
     setIsPaused(false);
+    setPendingTimeout(false);
 
     if (resolutionTimeoutRef.current) {
       window.clearTimeout(resolutionTimeoutRef.current);
@@ -210,15 +216,29 @@ export function useMemoGameLogic({
     [],
   );
 
+  const refreshUserData = useCallback(async () => {
+    try {
+      const response = await apiService.start({ username });
+      const nextData = response.data.data;
+      setStartStoreData(nextData);
+      setUserData(nextData);
+    } catch (err) {
+      console.error('memo refresh user data error', err);
+    }
+  }, [setStartStoreData, setUserData, username]);
+
   const submitGameResult = useCallback(
     async (result: boolean) => {
       try {
         await apiService.gameResult({ game: 'memo', result, level: selectedLevel });
+        if (result) {
+          await refreshUserData();
+        }
       } catch (err) {
         console.error('memo gameResult error', err);
       }
     },
-    [selectedLevel],
+    [refreshUserData, selectedLevel],
   );
 
   const finishGame = useCallback(
@@ -364,15 +384,32 @@ export function useMemoGameLogic({
   useEffect(() => {
     if (!matchedCards.length || gameResult !== 'playing') return;
     if (matchedCards.every(Boolean)) {
+      if (pendingTimeout) {
+        setPendingTimeout(false);
+      }
       finishGame('success');
     }
-  }, [matchedCards, gameResult, finishGame]);
+  }, [matchedCards, gameResult, finishGame, pendingTimeout]);
 
   useEffect(() => {
     if (timeRemaining === 0 && gameResult === 'playing') {
+      if (isResolvingPair) {
+        setPendingTimeout(true);
+        return;
+      }
       finishGame('timeout');
     }
-  }, [timeRemaining, gameResult, finishGame]);
+  }, [timeRemaining, gameResult, finishGame, isResolvingPair]);
+
+  useEffect(() => {
+    if (!pendingTimeout || gameResult !== 'playing' || isResolvingPair) return;
+    setPendingTimeout(false);
+    if (matchedCards.every(Boolean)) {
+      finishGame('success');
+    } else {
+      finishGame('timeout');
+    }
+  }, [pendingTimeout, gameResult, isResolvingPair, matchedCards, finishGame]);
 
   const minutes = Math.floor(timeRemaining / 60)
     .toString()
