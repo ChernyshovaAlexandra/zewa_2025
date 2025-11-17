@@ -13,6 +13,10 @@ export const Wrapper = styled.div<{
     10px + var(--twa-safe-area-top, 0px) + (min(var(--twa-safe-area-top, 0px), 1px) * 30)
   );
 
+  box-sizing: border-box;
+  width: 100%;
+  overflow: hidden;
+
   ${({ $fullscreen }) =>
     $fullscreen &&
     css`
@@ -22,6 +26,7 @@ export const Wrapper = styled.div<{
 
 export const ScrollArea = styled.div<{ $withPadding?: boolean }>`
   overflow-y: auto;
+  overflow-x: hidden;
   color: white;
   font-size: 16px;
   line-height: 1.5;
@@ -40,10 +45,4 @@ export const ScrollArea = styled.div<{ $withPadding?: boolean }>`
   font-style: normal;
   font-weight: 400;
   line-height: 140%;
-
-  ${({ $withPadding }) =>
-    $withPadding &&
-    css`
-      padding-top: 24px;
-    `}
 `;

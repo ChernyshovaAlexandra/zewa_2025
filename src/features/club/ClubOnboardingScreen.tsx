@@ -32,7 +32,7 @@ export function ClubOnboardingScreen() {
     if (typeof window === 'undefined') {
       return;
     }
-    const hasSeen = false; // window.localStorage.getItem(CLUB_ONBOARDING_KEY) === 'true';
+    const hasSeen = window.localStorage.getItem(CLUB_ONBOARDING_KEY) === 'true';
     if (hasSeen) {
       navigate('/club', { replace: true });
       return;

@@ -64,6 +64,8 @@ export const ButtonsWrapper = styled.div`
   gap: 20px;
   width: 100%;
   max-width: 277px;
+  position: relative;
+  z-index: 100;
 `;
 
 export const Navigation = styled.nav`

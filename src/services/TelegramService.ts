@@ -18,14 +18,13 @@ export interface TelegramWebApp {
   };
   platform?: string;
   isFullscreen?: boolean;
-  safeAreaInsetTop?: number;
   safeArea?: {
     top?: number;
     bottom?: number;
     left?: number;
     right?: number;
   };
-  safeAreaInsets?: {
+  safeAreaInset?: {
     top?: number;
     bottom?: number;
     left?: number;
@@ -67,7 +66,7 @@ const TELEGRAM_BOT_USERNAME = import.meta.env.VITE_TELEGRAM_BOT_USERNAME;
 const TELEGRAM_STARTAPP_PARAM = import.meta.env.VITE_TELEGRAM_STARTAPP_PARAM ?? '';
 
 export class TelegramService {
-  private tg?: TelegramWebApp;
+  tg?: TelegramWebApp;
   private isScanPopupOpen = false;
   private listeners = new Map<keyof Events, Set<(p: any) => void>>();
   private readonly desktopPlatforms = [
