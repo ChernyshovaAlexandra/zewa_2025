@@ -65,7 +65,7 @@ export const prize_types_data: Record<
     manager:
       'Электронный сертификат придёт вам в личных сообщениях в мессенджере. До 30.07.2026 года покажите его на кассе при покупке.',
   },
-  'Годовой запас\nZewa': {
+  'Годовой запас Zewa': {
     img: `/assets/images/prizes/1.webp`,
     img_thumb: `/assets/images/prizes/1.webp`,
     description: 'Запас продукции Zewa Deluxe на год',
