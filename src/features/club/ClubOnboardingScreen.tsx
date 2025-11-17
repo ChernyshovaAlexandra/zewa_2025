@@ -9,7 +9,7 @@ const CLUB_STEPS: OnboardingStep[] = [
     image: '/assets/images/onboarding/club/1.webp',
     header: 'Клуб помощников Домовёнка',
     text: 'Играйте ежедневно, приглашайте друзей или выполните специальное задание недели, чтобы вступить в Клуб, получить новогодний бокс и 5 дополнительных снежинок.',
-  }
+  },
 ];
 
 export function ClubOnboardingScreen() {
@@ -20,6 +20,7 @@ export function ClubOnboardingScreen() {
     if (typeof window !== 'undefined') {
       window.localStorage.setItem(CLUB_ONBOARDING_KEY, 'true');
     }
+
     navigate('/club', { replace: true });
   }, [navigate]);
 
