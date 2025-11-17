@@ -73,13 +73,22 @@ export function ClubScreen() {
 
               return (
                 <S.Card key={task.id} $isCompleted={isTaskCompleted}>
-                  <S.CardHeader>
-                    <S.RoundNumber $isCompleted={isTaskCompleted}>{index + 1}</S.RoundNumber>
-                    {task.reward}
-                  </S.CardHeader>
-                  <Text as="p" size="p4" style={{ margin: 0 }}>
-                    {task.description}
-                  </Text>
+                  <S.CardContent>
+                    <S.TaskInfo>
+                      <S.CardHeader>
+                        <S.RoundNumber $isCompleted={isTaskCompleted}>{index + 1}</S.RoundNumber>
+                        {task.reward}
+                      </S.CardHeader>
+                      <Text as="p" size="p4" style={{ margin: 0 }}>
+                        {task.description}
+                      </Text>
+                    </S.TaskInfo>
+                    {task.image ? (
+                      <S.TaskImageWrapper>
+                        <img src={task.image} alt={task.reward} />
+                      </S.TaskImageWrapper>
+                    ) : null}
+                  </S.CardContent>
                 </S.Card>
               );
             })}

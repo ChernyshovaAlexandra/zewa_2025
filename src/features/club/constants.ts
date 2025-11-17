@@ -1,5 +1,12 @@
 export const CLUB_ONBOARDING_KEY = 'clubOnboardingSeen';
-export const TASKS = [
+type ClubTask = {
+  description: string;
+  reward: string;
+  id: string;
+  image?: string;
+};
+
+export const TASKS: ClubTask[] = [
   {
     description:
       'Каждый день (с понедельника по воскресенье) пройдите хотя бы одну игру любого уровня сложности.',
@@ -17,6 +24,7 @@ export const TASKS = [
       'Купите Туалетнаю бумагу Zewa Just 1, 4 слоя (4 рулона) и загрузите чек, подтверждающий покупку.',
     reward: 'Покупайте!',
     id: 'task',
+    image: '/assets/images/prizes/1.webp',
   },
 ];
 export const WINNERS = [

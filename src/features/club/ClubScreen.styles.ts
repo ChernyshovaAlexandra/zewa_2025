@@ -45,6 +45,35 @@ export const CardHeader = styled.div`
   line-height: 130%;
 `;
 
+export const CardContent = styled.div`
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+`;
+
+export const TaskInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+`;
+
+export const TaskImageWrapper = styled.div`
+  flex-shrink: 0;
+  padding: 8px;
+  border-radius: 10px;
+  background: #fff;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+
+  img {
+    display: block;
+    width: 72px;
+    height: auto;
+  }
+`;
+
 export const Badge = styled.span`
   align-self: flex-start;
   padding: 4px 10px;
