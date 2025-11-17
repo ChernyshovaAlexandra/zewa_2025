@@ -151,6 +151,12 @@ const PrizesList: React.FC<PrizesListProps> = ({ isDrawerOpen }) => {
                       zIndex: 1,
                       top: '-1rem',
                       opacity: 1,
+                      background: "transparent",
+                      mixBlendMode: 'normal',
+                      isolation: 'isolate',
+                      pointerEvents: 'none',
+                      willChange: 'opacity, transform',
+                      transform: 'translateZ(0)',
                     }}
                     autoPlay
                     controls={false}
@@ -163,9 +169,7 @@ const PrizesList: React.FC<PrizesListProps> = ({ isDrawerOpen }) => {
               </>
             )}
 
-            <StyledSpan maxWidth={100} maxLines={2}>
-              {prize.name}
-            </StyledSpan>
+            <StyledSpan>{prize.name}</StyledSpan>
             {isActivated && prize.type !== 'prize' ? (
               <ButtonScale variant="white-small" onClick={() => navigate('/prizes')}>
                 Мои призы

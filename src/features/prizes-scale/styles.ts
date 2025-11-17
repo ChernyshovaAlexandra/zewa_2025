@@ -163,7 +163,7 @@ export const Bubble = styled.div<{ $activated: boolean; $isOpen: boolean }>`
   border-radius: 14px;
   background: ${({ $activated }) =>
     $activated ? 'radial-gradient(50% 50% at 50% 50%, #eb65a7 0%, #e53375 100%), #e53375' : '#fff'};
-  backdrop-filter: blur(4px);
+  backdrop-filter: none !important;
 
   video {
     pointer-events: none;
@@ -263,6 +263,8 @@ export const PrizeImg = styled.img`
   object-fit: contain;
   object-position: center;
   margin-top: 0.5rem;
+  z-index: 2;
+  position: relative;
   img {
     width: 100%;
     height: 100%;
