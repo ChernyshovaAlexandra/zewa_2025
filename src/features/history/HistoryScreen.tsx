@@ -145,7 +145,7 @@ export function HistoryScreen() {
           <GameContainer
             key={id}
             header={
-              item.code !== 'referral'
+              item.code !== 'referral2'
                 ? `Игра «Не проЗЕВАй праздник!»`
                 : `Друг присоединился к игре`
             }
