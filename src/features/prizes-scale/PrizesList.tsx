@@ -144,27 +144,6 @@ const PrizesList: React.FC<PrizesListProps> = ({ isDrawerOpen }) => {
 
             {prize.type !== 'coupon' && (
               <>
-                {!isMobile && points < prize.points && (
-                  <video
-                    style={{
-                      position: 'absolute',
-                      zIndex: 1,
-                      top: '-1rem',
-                      opacity: 1,
-                      background: "transparent",
-                      mixBlendMode: 'normal',
-                      isolation: 'isolate',
-                      pointerEvents: 'none',
-                      willChange: 'opacity, transform',
-                      transform: 'translateZ(0)',
-                    }}
-                    autoPlay
-                    controls={false}
-                    loop
-                    src="/lottie/prize.webm"
-                  />
-                )}
-
                 <PrizeImg src={prize_types_data[prize.name]?.img_thumb} alt={prize.name} />
               </>
             )}
