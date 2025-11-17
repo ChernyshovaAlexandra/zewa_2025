@@ -6,7 +6,7 @@ export interface FaqItem {
 export const FAQ_TELEGRAM_BOT_URL = 'https://t.me/zemma_chatbot';
 export const FAQ_SUPPORT_URL = 'https://t.me/zemma_zewa_support';
 export const FAQ_RULES_URL =
-  'https://back.zemma-chatbot.ru/docs/%D0%9F%D1%80%D0%B0%D0%B2%D0%B8%D0%BB%D0%B0_%D0%B0%D0%BA%D1%86%D0%B8%D0%B8%20Zewa_%D0%9C%D0%B0%D0%B3%D0%BD%D0%B8%D1%82.pdf';
+  'https://back.zemma-chatbot.ru/docs/pravila_akcii_zewa_magnit.pdf';
 
 export const faqItems: FaqItem[] = [
   {
