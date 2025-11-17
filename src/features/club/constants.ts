@@ -24,7 +24,7 @@ export const TASKS: ClubTask[] = [
       'Купите Туалетнаю бумагу Zewa Just 1, 4 слоя (4 рулона) и загрузите чек, подтверждающий покупку.',
     reward: 'Покупайте!',
     id: 'task',
-    image: '/assets/images/prizes/1.webp',
+    image: '/assets/images/prizes/1-jo.webp',
   },
 ];
 export const WINNERS = [
