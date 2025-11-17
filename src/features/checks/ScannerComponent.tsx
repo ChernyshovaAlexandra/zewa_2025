@@ -91,6 +91,7 @@ export function ScannerComponent() {
       >
         <Flex align="center" gap="10px">
           <ScanWhiteIcon /> Сканировать
+          {/* todo: clear */}
         </Flex>
       </ZewaButton>
       <ButtonUploadCheck />
