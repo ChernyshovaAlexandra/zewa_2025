@@ -30,6 +30,7 @@ export const RollingLine = styled.div<{ $isOpen: boolean }>`
   @media screen and (min-width: 405px) {
     display: block;
   }
+  /* common */
   position: fixed;
   bottom: 1.5rem;
   left: 0;
