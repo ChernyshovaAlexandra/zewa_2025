@@ -76,7 +76,7 @@ export function TelegramProvider({ children }: { children: ReactNode }) {
     const computeSafeAreaTop = (webApp?: TelegramWebApp | null) => {
       if (!webApp) return readCssSafeArea('top');
 
-      const directValue = webApp.safeAreaInsetTop;
+      const directValue = webApp?.safeAreaInset?.top;
       if (typeof directValue === 'number' && Number.isFinite(directValue)) {
         return Math.max(0, directValue);
       }

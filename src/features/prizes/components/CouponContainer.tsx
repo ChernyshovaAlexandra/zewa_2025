@@ -31,7 +31,7 @@ const CouponContainer: React.FC<PrizeContainerProps> = ({ coupon }) => {
   const [toggledContent, setToggled] = useState(false);
   const user = useUserStore((s) => s.user);
   const setUserData = useUserStore((s) => s.setUserData);
-
+console.info(11111)
   const handleChangeToOnline = async () => {
     if (!coupon.barcode) return;
     try {

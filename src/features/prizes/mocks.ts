@@ -65,76 +65,82 @@ export const prize_types_data: Record<
     manager:
       'Электронный сертификат придёт вам в личных сообщениях в мессенджере. До 30.07.2026 года покажите его на кассе при покупке.',
   },
-  'Годовой запас Zewa': {
-    img: `
-    /assets/images/prizes/zewa.jpg`,
-    img_thumb: `
-    /assets/images/prizes/zewa_thumb.png`,
-    description: 'Набор туалетной бумаги  Zewa Deluxe',
+  'Годовой запас\nZewa': {
+    img: `/assets/images/prizes/1.webp`,
+    img_thumb: `/assets/images/prizes/1.webp`,
+    description: 'Запас продукции Zewa Deluxe на год',
     manager:
       'После получения личного сообщения в мессенджере сообщите о себе необходимую информацию. После её проверки мы доставим приз в удобное для вас место и время.',
   },
-
-  'Умная колонка Яндекс Станция Миди с Алисой на YandexGPT': {
+  'Кофемашина': {
     img: `
-    /assets/images/prizes/alisa.jpg`,
+    /assets/images/prizes/2.webp`,
     img_thumb: `
-    /assets/images/prizes/alisa_thumb.png`,
-    description: `Умная колонка Яндекс Станция Миди с Алисой на YandexGPT`,
+    /assets/images/prizes/2.webp`,
+    description: 'Современная кофемашина для напитков как в кафе',
     manager:
       'После получения личного сообщения в мессенджере сообщите о себе необходимую информацию. После её проверки мы доставим приз в удобное для вас место и время.',
   },
-  'Электрический чайник Xiaomi': {
+  'Мини-мультиварка': {
     img: `
-    /assets/images/prizes/kettle.jpg`,
+    /assets/images/prizes/3.webp`,
     img_thumb: `
-    /assets/images/prizes/kettle.png`,
-    description: `Электрический чайник Xiaomi`,
+    /assets/images/prizes/3.webp`,
+    description: 'Компактная мультиварка для быстрых домашних блюд',
     manager:
       'После получения личного сообщения в мессенджере сообщите о себе необходимую информацию. После её проверки мы доставим приз в удобное для вас место и время.',
   },
-  'Тостер Philips': {
+  'Отпариватель ручной': {
     img: `
-    /assets/images/prizes/toster.jpg`,
+    /assets/images/prizes/4.webp`,
     img_thumb: `
-    /assets/images/prizes/toster.png`,
-    description: `Тостер Philips`,
+    /assets/images/prizes/4.webp`,
+    description: 'Ручной отпариватель для быстрой глажки вещей',
     manager:
       'После получения личного сообщения в мессенджере сообщите о себе необходимую информацию. После её проверки мы доставим приз в удобное для вас место и время.',
   },
-  'Погружной блендер Polaris': {
+  'Блендер стационарный': {
     img: `
-    /assets/images/prizes/blender.jpg`,
+    /assets/images/prizes/5.webp`,
     img_thumb: `
-    /assets/images/prizes/blender.png`,
-    description: `Погружной блендер Polaris`,
+    /assets/images/prizes/5.webp`,
+    description: 'Мощный стационарный блендер для смузи и супов',
     manager:
       'После получения личного сообщения в мессенджере сообщите о себе необходимую информацию. После её проверки мы доставим приз в удобное для вас место и время.',
   },
-  'Умные часы Honor Choice InFoWear 2i 5504ACGM': {
+  'Пароочиститель': {
     img: `
-    /assets/images/prizes/watch.jpg`,
+    /assets/images/prizes/6.webp`,
     img_thumb: `
-    /assets/images/prizes/watch.png`,
-    description: `Умные часы Honor Choice InFoWear 2i 5504ACGM`,
+    /assets/images/prizes/6.webp`,
+    description: 'Пароочиститель для уборки без химии',
     manager:
       'После получения личного сообщения в мессенджере сообщите о себе необходимую информацию. После её проверки мы доставим приз в удобное для вас место и время.',
   },
-  'Умные весы XIAOMI Body Composition Scale S400 BHR7793GL': {
+  'Увлажнитель воздуха': {
     img: `
-    /assets/images/prizes/scale.jpg`,
+    /assets/images/prizes/7.webp`,
     img_thumb: `
-    /assets/images/prizes/scale.png`,
-    description: `Умные весы XIAOMI Body Composition Scale S400 BHR7793GL`,
+    /assets/images/prizes/7.webp`,
+    description: 'Увлажнитель для комфортного микроклимата дома',
     manager:
       'После получения личного сообщения в мессенджере сообщите о себе необходимую информацию. После её проверки мы доставим приз в удобное для вас место и время.',
   },
-  'Беспроводные наушники JBL Tune 520BT, USB Type-C': {
+  'Вафельница': {
     img: `
-    /assets/images/prizes/headphones.jpg`,
+    /assets/images/prizes/8.webp`,
     img_thumb: `
-    /assets/images/prizes/headphones.png`,
-    description: `Беспроводные наушники JBL Tune 520BT, USB Type-C `,
+    /assets/images/prizes/8.webp`,
+    description: 'Вафельница для приготовления десертов дома',
+    manager:
+      'После получения личного сообщения в мессенджере сообщите о себе необходимую информацию. После её проверки мы доставим приз в удобное для вас место и время.',
+  },
+  'Пылесос вертикальный': {
+    img: `
+    /assets/images/prizes/9.webp`,
+    img_thumb: `
+    /assets/images/prizes/9.webp`,
+    description: 'Манёвренный вертикальный пылесос для ежедневной уборки',
     manager:
       'После получения личного сообщения в мессенджере сообщите о себе необходимую информацию. После её проверки мы доставим приз в удобное для вас место и время.',
   },

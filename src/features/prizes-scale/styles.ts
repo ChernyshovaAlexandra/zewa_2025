@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Card, EllipsisText, HorizontalScroll } from '@vkontakte/vkui';
+import { Card, HorizontalScroll } from '@vkontakte/vkui';
 import { ButtonProps, ButtonStyles } from '@/components';
 import { Text, ZewaButton } from '@/shared/ui';
 
@@ -201,15 +201,16 @@ export const StyledCard = styled(Card)`
   background: transparent;
 `;
 
-export const StyledSpan = styled(EllipsisText)`
+export const StyledSpan = styled.span`
   position: relative;
   z-index: 16;
   text-align: center;
-
+  white-space: pre-wrap;
   color: #ffffff;
   font-family: 'Foco Trial';
   font-weight: 700;
-  font-size: 16px;
+  font-size: 15px;
+  text-align: center;
   line-height: 120%;
   letter-spacing: 0;
 
@@ -223,6 +224,9 @@ export const StyledSpan = styled(EllipsisText)`
     0 0 0 #003980,
     0.5px 0.5px 0 #003980,
     -0.5px -0.5px 0 #003980;
+  width: 130px;
+  margin-left: auto;
+  margin-right: auto;
 `;
 
 export const StyledSpanPink = styled.span`

@@ -17,6 +17,7 @@ import { useUserStore } from '@/shared/model';
 // import { Coupon } from '@/types';
 import { useNavigate } from 'react-router-dom';
 import { Coupon } from '@/types';
+import { prizeScaleMocks } from './mocks';
 
 interface PrizesListProps {
   isDrawerOpen: boolean;
@@ -28,6 +29,8 @@ const PrizesList: React.FC<PrizesListProps> = ({ isDrawerOpen }) => {
   const prizeRefs = React.useRef<Array<HTMLDivElement | null>>([]);
   const { isMobile } = useWindowSize();
   const navigate = useNavigate();
+  const userCoins = userData?.user.coins ?? 0;
+  const userPoints = userData?.user.points ?? 0;
 
   // Активированные и новые купоны из данных пользователя
   const activatedCouponsArray = React.useMemo(
@@ -41,9 +44,19 @@ const PrizesList: React.FC<PrizesListProps> = ({ isDrawerOpen }) => {
     [userData],
   );
 
-  const modifiedPrizes = React.useMemo(() => {
-    if (!userData) return [];
+  const prizesWithMocks = React.useMemo(() => {
+    const prizes = userData?.prizes ?? [];
+    if (!prizes.length) {
+      return prizeScaleMocks;
+    }
 
+    const existingNames = new Set(prizes.map((prize) => prize.name));
+    const missingPrizes = prizeScaleMocks.filter((mock) => !existingNames.has(mock.name));
+
+    return [...prizes, ...missingPrizes];
+  }, [userData]);
+
+  const modifiedPrizes = React.useMemo(() => {
     const emptyPrize = {
       points: 0,
       type: 'empty',
@@ -54,14 +67,14 @@ const PrizesList: React.FC<PrizesListProps> = ({ isDrawerOpen }) => {
 
     const coupons = activatedCouponsArray;
 
-    const prizesWithoutDuplicates = userData.prizes.filter(
+    const prizesWithoutDuplicates = prizesWithMocks.filter(
       (p) => !coupons.some((c) => c.points === p.points),
     );
 
     const sorted = [...prizesWithoutDuplicates, ...coupons].sort((a, b) => a.points - b.points);
 
     return [emptyPrize, ...sorted];
-  }, [userData, activatedCouponsArray]);
+  }, [activatedCouponsArray, prizesWithMocks]);
   // const modifiedPrizes = React.useMemo(() => {
   //   return [
   //     { points: 0, type: 'empty', name: '', new: false, activated: false },
@@ -109,34 +122,32 @@ const PrizesList: React.FC<PrizesListProps> = ({ isDrawerOpen }) => {
   // }, []);
 
   const lastActivatedIndex = modifiedPrizes.reduce((lastIndex, prize, index) => {
-    if (!userData) return 0;
-    if (userData.user.coins >= prize.points || prize.activated) {
+    if (userCoins >= prize.points || prize.activated) {
       return index;
     }
     return lastIndex;
   }, -1);
 
   const renderPrizeCells = React.useMemo(() => {
-    if (!modifiedPrizes.length || !userData) return null;
-    const { coins: points } = userData.user;
+    if (!modifiedPrizes.length) return null;
 
     return modifiedPrizes.map((prize, id) => {
       const isActivated = prize.activated;
 
       return (
         <StyledCell
-          $isFirstEmpty={id === 1 && points < 2}
+          $isFirstEmpty={id === 1 && userCoins < 2}
           ref={(el) => {
             prizeRefs.current[id] = el;
           }}
           $isEmpty={prize.type === 'empty'}
           $isOpen={isDrawerOpen}
-          $isActivated={id === 0 ? true : points >= prize.points}
+          $isActivated={id === 0 ? true : userCoins >= prize.points}
           $showPaper={id === lastActivatedIndex}
           key={`${prize.points}-${id}`}
         >
           <Bubble $isOpen={isDrawerOpen} $activated={isActivated}>
-            {prize.type === 'coupon' ? null : points >= prize.points ? (
+            {prize.type === 'coupon' ? null : userCoins >= prize.points ? (
               <StyledSpanPink>
                 <SpanDraw>Участвуете в розыгрыше</SpanDraw>{' '}
               </StyledSpanPink>
@@ -144,7 +155,7 @@ const PrizesList: React.FC<PrizesListProps> = ({ isDrawerOpen }) => {
 
             {prize.type !== 'coupon' && (
               <>
-                {!isMobile && points < prize.points && (
+                {!isMobile && userCoins < prize.points && (
                   <video
                     style={{
                       position: 'absolute',
@@ -163,9 +174,7 @@ const PrizesList: React.FC<PrizesListProps> = ({ isDrawerOpen }) => {
               </>
             )}
 
-            <StyledSpan maxWidth={100} maxLines={2}>
-              {prize.name}
-            </StyledSpan>
+            <StyledSpan>{prize.name}</StyledSpan>
             {isActivated && prize.type !== 'prize' ? (
               <ButtonScale variant="white-small" onClick={() => navigate('/prizes')}>
                 Мои призы
@@ -174,16 +183,13 @@ const PrizesList: React.FC<PrizesListProps> = ({ isDrawerOpen }) => {
               <></>
             )}
           </Bubble>
-          <Zewa
-            $isOpen={isDrawerOpen}
-            $isActivated={id === 0 ? true : userData.user.points >= prize.points}
-          >
+          <Zewa $isOpen={isDrawerOpen} $isActivated={id === 0 ? true : userPoints >= prize.points}>
             {prize.points}
           </Zewa>
         </StyledCell>
       );
     });
-  }, [modifiedPrizes, userData, isDrawerOpen, lastActivatedIndex, isMobile, navigate]);
+  }, [isDrawerOpen, isMobile, lastActivatedIndex, modifiedPrizes, navigate, userCoins, userPoints]);
 
   const scrollToLastActivatedPrize = useCallback(() => {
     if (scrollContainerRef.current && prizeRefs.current[lastActivatedIndex]) {

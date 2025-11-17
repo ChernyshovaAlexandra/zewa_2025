@@ -63,7 +63,7 @@ export function useReceiptScan() {
                   `После проверки мы зарегистрируем чек, начислим вам снежинки и пришлём уведомление об этом.`}
               </Text>
               <ZewaButton
-                style={{ marginTop: 16 }}
+                style={{ marginTop: 16, width: '100%', textTransform: 'none' }}
                 variant="blue-b"
                 onClick={() => useModalStore.getState().closeModal()}
               >
@@ -73,7 +73,6 @@ export function useReceiptScan() {
           ),
         });
       } else {
-        console.info(data);
         renderScanErrorModal(data?.message ?? 'Ошибка при отправке чека');
       }
     },
@@ -131,37 +130,41 @@ export function useReceiptScan() {
     [handleApiResponse, renderScanErrorModal, showPendingModal],
   );
 
+  const convertFileToBase64 = useCallback(
+    (file: File) =>
+      new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result as string);
+        reader.onerror = () => reject(new Error('Ошибка при конвертации файла.'));
+        reader.readAsDataURL(file);
+      }),
+    [],
+  );
+
   const handlePhotoUpload = useCallback(
     async (photoFile: File) => {
+      setPending(true);
+      showPendingModal();
       try {
-        setPending(true);
-        showPendingModal();
-        const reader = new FileReader();
-
-        reader.onloadend = async () => {
-          const imgBase64 = reader.result as string;
-          const resp = await apiService.addCheckImageManual({
-            telegram_id: user?.id || 0,
-            img: imgBase64,
-          });
-          handleApiResponse(resp.data);
-        };
-
-        reader.onerror = () => {
-          renderScanErrorModal('Ошибка при конвертации файла.');
-          setPending(false);
-        };
-
-        reader.readAsDataURL(photoFile);
+        const imgBase64 = await convertFileToBase64(photoFile);
+        const resp = await apiService.addCheckImageManual({
+          telegram_id: user?.id || 0,
+          img: imgBase64,
+        });
+        handleApiResponse(resp.data);
       } catch (err: any) {
         if (!axios.isCancel(err)) {
-          renderScanErrorModal('Сеть недоступна или сервер не отвечает');
+          const message =
+            err?.message === 'Ошибка при конвертации файла.'
+              ? err.message
+              : 'Не удалось отправить чек, попробуйте через несколько минут';
+          renderScanErrorModal(message);
         }
       } finally {
         setPending(false);
       }
     },
-    [handleApiResponse, renderScanErrorModal, showPendingModal, user?.id],
+    [convertFileToBase64, handleApiResponse, renderScanErrorModal, showPendingModal, user?.id],
   );
 
   const openTelegramScanner = async () => {
