@@ -64,12 +64,14 @@ console.info(11111)
             />
           </Flex>
 
-          {coupon.barcode && coupon.can_change ? (
+          {coupon.barcode ? (
             <>
               <BarcodeComponent barcode={coupon.barcode} />
-              <ZewaButton onClick={handleChangeToOnline} variant="blue-b">
-                Поменять на онлайн
-              </ZewaButton>
+              {coupon.can_change && (
+                <ZewaButton onClick={handleChangeToOnline} variant="blue-b">
+                  Поменять на онлайн
+                </ZewaButton>
+              )}
             </>
           ) : coupon.code ? (
             <Code code={coupon.code} />
