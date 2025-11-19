@@ -8,6 +8,7 @@ import { useUserStore } from '@/shared/model';
 import { prize_types_data } from '../prizes/mocks';
 import { useNavigate } from 'react-router-dom';
 
+// TODO: check
 const WEEK_PERIODS: Record<string, string> = {
   '1': 'С\u00a019\u00a0ноября\u00a02025\u00a0года\u00a0по\u00a023\u00a0ноября\u00a02025',
   '2': 'С\u00a024\u00a0ноября\u00a02025\u00a0года\u00a0по\u00a030\u00a0ноября\u00a02025',
