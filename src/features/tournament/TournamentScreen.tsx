@@ -8,6 +8,15 @@ import { useUserStore } from '@/shared/model';
 import { prize_types_data } from '../prizes/mocks';
 import { useNavigate } from 'react-router-dom';
 
+const WEEK_PERIODS: Record<string, string> = {
+  '1': 'С\u00a019\u00a0ноября\u00a02025\u00a0года\u00a0по\u00a023\u00a0ноября\u00a02025',
+  '2': 'С\u00a024\u00a0ноября\u00a02025\u00a0года\u00a0по\u00a030\u00a0ноября\u00a02025',
+  '3': 'С\u00a001\u00a0декабря\u00a02025\u00a0года\u00a0по\u00a007\u00a0декабря\u00a02025',
+  '4': 'С\u00a008\u00a0декабря\u00a02025\u00a0года\u00a0по\u00a014\u00a0декабря\u00a02025',
+  '5': 'С\u00a015\u00a0декабря\u00a02025\u00a0года\u00a0по\u00a021\u00a0декабря\u00a02025',
+  '6': 'С\u00a022\u00a0декабря\u00a02025\u00a0года\u00a0по\u00a028\u00a0декабря\u00a02025',
+};
+
 export function TournamentScreen() {
   const user = useUserStore((s) => s.user);
   const navigate = useNavigate();
@@ -54,17 +63,7 @@ export function TournamentScreen() {
                 <b>Неделя {week}</b>
                 <br />
 
-                {week === '1' ? (
-                  <>С&nbsp;05.08&nbsp;по&nbsp;10.08</>
-                ) : week === '2' ? (
-                  <>С&nbsp;11.08&nbsp;по&nbsp;17.08</>
-                ) : week === '3' ? (
-                  <>С&nbsp;18.08&nbsp;по&nbsp;24.08</>
-                ) : week === '4' ? (
-                  <>С&nbsp;25.08&nbsp;по&nbsp;31.08</>
-                ) : (
-                  <></>
-                )}
+                {WEEK_PERIODS[week] ? <>{WEEK_PERIODS[week]}</> : null}
               </Text>
 
               {(winners as Array<{ name: string; prize: string }>).map((w, i) => {

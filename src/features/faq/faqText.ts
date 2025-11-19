@@ -1,3 +1,14 @@
+import {
+  CERTIFICATE_EXPIRY_TEXT,
+  DISCOUNT_EXPIRY_TEXT,
+  GRAND_PRIZE_DATE_TEXT,
+  PROMO_END_DATE_SHORT,
+  PROMO_END_DATE_TEXT,
+  PROMO_START_DATE_SHORT,
+  PROMO_START_DATE_TEXT,
+  PRIZE_DELIVERY_END_DATE_TEXT,
+} from '@/shared/constants/promoDates';
+
 export interface FaqItem {
   question: string;
   answer: string;
@@ -12,10 +23,10 @@ export const faqItems: FaqItem[] = [
   {
     question: 'Когда проходит акция?',
     answer: `
-      <p>Участвовать в акции можно <b>с 17 ноября по 28 декабря 2025 года</b>. 
+      <p>Участвовать в акции можно <b>с ${PROMO_START_DATE_TEXT} по ${PROMO_END_DATE_TEXT}</b>. 
       В этот период покупайте товары Zewa в «Магните», загружайте чеки в бот и играйте в игру «Не проЗЕВАй праздник!». </p>
-      <p>Обладатель главного приза будет определён <b>12 января 2026 года</b>. 
-      Вручение призов проходит по <b>27 февраля 2026 года</b>.</p>
+      <p>Обладатель главного приза будет определён <b>${GRAND_PRIZE_DATE_TEXT}</b>. 
+      Вручение призов проходит по <b>${PRIZE_DELIVERY_END_DATE_TEXT}</b>.</p>
     `,
   },
   {
@@ -35,7 +46,7 @@ export const faqItems: FaqItem[] = [
   {
     question: 'Как принять участие в акции?',
     answer: `
-      <p><b>До 28 декабря 2025 года:</b></p>
+      <p><b>До ${PROMO_END_DATE_TEXT}:</b></p>
       <ol>
         <li>Зарегистрироваться в Telegram.</li>
         <li>Перейти в телеграм-бот акции 
@@ -145,7 +156,7 @@ export const faqItems: FaqItem[] = [
       <ul>
         <li>сертификаты — от <b>25</b></li>
         <li>годовой запас Zewa — от <b>55</b></li>
-        <li>бытовая техника — от <b>65</b></li>
+        <li>бытовая техника — от <b>75</b></li>
         <li>кофемашина/пылесос — от <b>99</b></li>
       </ul>
     `,
@@ -173,8 +184,8 @@ export const faqItems: FaqItem[] = [
   {
     question: 'Сколько действуют скидки и сертификаты?',
     answer: `
-      <p>Скидки действуют до <b>11 января 2026 г.</b></p>
-      <p>Сертификаты — до <b>16 ноября 2028 г.</b></p>
+      <p>Скидки действуют до <b>${DISCOUNT_EXPIRY_TEXT}</b></p>
+      <p>Сертификаты — до <b>${CERTIFICATE_EXPIRY_TEXT}</b></p>
     `,
   },
   {
@@ -228,7 +239,7 @@ export const faqItems: FaqItem[] = [
     question: 'Почему не проходит чек?',
     answer: `
       <p>Бот принимает чеки только из «Магнита» или приложения «Магнит: акции и доставка» за период 
-      <b>17.11–28.12.2025</b>.</p>
+      <b>${PROMO_START_DATE_SHORT}–${PROMO_END_DATE_SHORT}</b>.</p>
       <p>Проверьте данные и попробуйте снова, либо обратитесь в поддержку 
       <a href="${FAQ_SUPPORT_URL}" target="_blank" rel="noreferrer">@zemma_zewa_support</a>.</p>
     `,

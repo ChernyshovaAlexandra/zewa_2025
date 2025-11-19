@@ -11,7 +11,6 @@ import {
   ButtonScale,
 } from './styles';
 
-import useWindowSize from '@/helpers/windowSize';
 import { prize_types_data } from '../prizes/mocks';
 import { useUserStore } from '@/shared/model';
 // import { Coupon } from '@/types';
@@ -26,7 +25,6 @@ const PrizesList: React.FC<PrizesListProps> = ({ isDrawerOpen }) => {
   const userData = useUserStore((s) => s.userData);
   const scrollContainerRef = React.useRef<HTMLDivElement>(null);
   const prizeRefs = React.useRef<Array<HTMLDivElement | null>>([]);
-  const { isMobile } = useWindowSize();
   const navigate = useNavigate();
 
   // Активированные и новые купоны из данных пользователя
@@ -166,7 +164,7 @@ const PrizesList: React.FC<PrizesListProps> = ({ isDrawerOpen }) => {
         </StyledCell>
       );
     });
-  }, [isDrawerOpen, isMobile, lastActivatedIndex, modifiedPrizes, navigate, userData]);
+  }, [isDrawerOpen, lastActivatedIndex, modifiedPrizes, navigate, userData]);
 
   const scrollToLastActivatedPrize = useCallback(() => {
     if (scrollContainerRef.current && prizeRefs.current[lastActivatedIndex]) {
