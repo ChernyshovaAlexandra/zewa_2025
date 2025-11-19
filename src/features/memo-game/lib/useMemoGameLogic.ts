@@ -212,6 +212,8 @@ export function useMemoGameLogic({
 
   const resolutionTimeoutRef = useRef<number | null>(null);
   const timerIntervalRef = useRef<number | null>(null);
+  const hasFinishedRef = useRef(false);
+  const hasSubmittedResultRef = useRef(false);
 
   useEffect(() => {
     setActiveIndexes([]);
@@ -222,6 +224,8 @@ export function useMemoGameLogic({
     setTimeRemaining(timeLimitSeconds);
     setIsPaused(false);
     setPendingTimeout(false);
+    hasFinishedRef.current = false;
+    hasSubmittedResultRef.current = false;
 
     if (resolutionTimeoutRef.current) {
       window.clearTimeout(resolutionTimeoutRef.current);
@@ -316,9 +320,15 @@ export function useMemoGameLogic({
 
   const submitGameResult = useCallback(
     async (result: boolean): Promise<MemoGameRewardInfo> => {
+      if (hasSubmittedResultRef.current) {
+        return { coinsAwarded: null, alreadyAwarded: false };
+      }
+
       let rewardInfo: MemoGameRewardInfo = { coinsAwarded: null, alreadyAwarded: false };
 
       try {
+        hasSubmittedResultRef.current = true;
+        hasFinishedRef.current = true;
         const response = await apiService.gameResult({ game: 'memo', result, level: selectedLevel });
         const coinsAwarded = extractCoinsFromGameResult(response?.data);
         rewardInfo = {
@@ -340,7 +350,8 @@ export function useMemoGameLogic({
 
   const finishGame = useCallback(
     (result: 'success' | 'timeout') => {
-      if (gameResult !== 'playing') return;
+      if (gameResult !== 'playing' || hasFinishedRef.current) return;
+      hasFinishedRef.current = true;
 
       if (resolutionTimeoutRef.current) {
         window.clearTimeout(resolutionTimeoutRef.current);
