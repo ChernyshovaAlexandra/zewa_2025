@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type SyntheticEvent } from 'react';
 import { apiService } from '@/services';
+import { triggerNotificationHaptic } from '@/helpers/haptics';
 import { useStartDataStore, useUserStore } from '@/shared/model';
 import {
   getMemoLevelConfig,
@@ -435,6 +436,10 @@ export function useMemoGameLogic({
         const firstCard = cardDeck[firstIndex];
         const secondCard = cardDeck[index];
         const isMatch = firstCard?.pairId === secondCard?.pairId;
+
+        if (isMatch) {
+          triggerNotificationHaptic('success');
+        }
 
         resolutionTimeoutRef.current = window.setTimeout(() => {
           if (isMatch) {

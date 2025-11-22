@@ -53,7 +53,7 @@ const INTRO_STAGGER = 140;
 
 export function MemoOnboardingOverlay() {
   const isVisible = useMemoOnboardingStore((s) => s.isVisible);
-  const hideOnboarding = useMemoOnboardingStore((s) => s.hide);
+  const completeOnboarding = useMemoOnboardingStore((s) => s.complete);
   const selectedLevel = useMemoGameStore((s) => s.selectedLevel);
   const [introReady, setIntroReady] = useState(false);
 
@@ -155,7 +155,7 @@ export function MemoOnboardingOverlay() {
         </ContentInner>
 
         <IntroItem $introReady={introReady} style={getDelayStyle('button')}>
-          <ZewaButton onClick={hideOnboarding} style={{ margin: '5px auto 0' }} variant="blue-b">
+          <ZewaButton onClick={completeOnboarding} style={{ margin: '5px auto 0' }} variant="blue-b">
             Играть
           </ZewaButton>
         </IntroItem>

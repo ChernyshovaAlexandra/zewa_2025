@@ -57,6 +57,11 @@ export interface TelegramWebApp {
   isOrientationLocked?: boolean;
   toggleOrientationLock?: (locked?: boolean) => void;
   web_app_toggle_orientation_lock?: (params: { locked: boolean }) => void;
+  HapticFeedback?: {
+    impactOccurred?: (style: 'light' | 'medium' | 'heavy' | 'rigid' | 'soft') => void;
+    notificationOccurred?: (type: 'error' | 'success' | 'warning') => void;
+    selectionChanged?: () => void;
+  };
 }
 
 type Events = { qrText: string };
