@@ -52,7 +52,7 @@ export default function App() {
     right: 0,
   };
 
-  const allowBrowserMode = false; //import.meta.env.VITE_ALLOW_BROWSER_MODE === 'true';
+  const allowBrowserMode = import.meta.env.VITE_ALLOW_BROWSER_MODE === 'true';
   const botUsername = import.meta.env.VITE_TELEGRAM_BOT_USERNAME;
   const startAppParam = import.meta.env.VITE_TELEGRAM_STARTAPP_PARAM;
   const telegramStartAppQuery =

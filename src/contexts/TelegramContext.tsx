@@ -51,6 +51,8 @@ export function TelegramProvider({ children }: { children: ReactNode }) {
     let timeoutId: number | null = null;
     let attempts = 0;
     const maxAttempts = 30; 
+    const slowRetryDelay = 1000;
+    let hasCompletedFallback = false;
     let detachSafeAreaListener: (() => void) | null = null;
 
     const readCssSafeArea = (edge: 'top' | 'bottom') => {
@@ -140,27 +142,15 @@ export function TelegramProvider({ children }: { children: ReactNode }) {
       }
     };
 
-    const bootstrap = () => {
+    const initializeWebApp = (webApp: TelegramWebApp) => {
       if (cancelled) return;
-
-      const webApp = window.Telegram?.WebApp;
-
-      if (!webApp) {
-        attempts += 1;
-
-        if (attempts > maxAttempts) {
-          complete(false);
-          return;
-        }
-
-        timeoutId = window.setTimeout(bootstrap, 100);
-        return;
-      }
 
       const handleViewportChange = () => {
         if (cancelled) return;
         applySafeArea(telegramService.getWebApp());
       };
+
+      detachSafeAreaListener?.();
 
       telegramService.init();
       telegramService.stopDeviceOrientation();
@@ -183,6 +173,7 @@ export function TelegramProvider({ children }: { children: ReactNode }) {
       }
 
       complete(true);
+      hasCompletedFallback = true;
       applySafeArea(webApp);
 
       try {
@@ -239,6 +230,29 @@ export function TelegramProvider({ children }: { children: ReactNode }) {
             startRequestSentRef.current = false;
           });
       }
+    };
+
+    const bootstrap = () => {
+      if (cancelled) return;
+
+      const webApp = window.Telegram?.WebApp;
+
+      if (!webApp) {
+        attempts += 1;
+
+        if (!hasCompletedFallback && attempts > maxAttempts) {
+          hasCompletedFallback = true;
+          complete(false);
+        }
+
+        timeoutId = window.setTimeout(
+          bootstrap,
+          attempts > maxAttempts ? slowRetryDelay : 100,
+        );
+        return;
+      }
+
+      initializeWebApp(webApp);
     };
 
     bootstrap();
