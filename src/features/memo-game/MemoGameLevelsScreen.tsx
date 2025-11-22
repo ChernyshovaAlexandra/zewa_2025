@@ -36,7 +36,7 @@ const LEVELS: Array<{
     description: 'Загрузите больше чеков с продукцией Zewa, чтобы продолжить игру',
     time: '2 мин',
     snowflakes: 15,
-    requiredSnowflakes: 35,
+    requiredSnowflakes: 65,
   },
 ];
 
@@ -46,6 +46,7 @@ export function MemoGameLevelsScreen() {
   const setSelectedLevel = useMemoGameStore((s) => s.setSelectedLevel);
   const userSnowflakes = useUserStore((s) => s.userData?.user?.coins ?? 0);
   const completedMemoLevel = useUserStore((s) => s.userData?.user?.memo_level ?? 0);
+  const availableMemoLevel = useUserStore((s) => s.userData?.user?.available_memo_level ?? 1);
 
   const handlePlay = (level: MemoLevel) => {
     setSelectedLevel(level);
@@ -67,7 +68,8 @@ export function MemoGameLevelsScreen() {
             level.requiredSnowflakes === undefined
               ? true
               : userSnowflakes > level.requiredSnowflakes;
-          const isLocked = lockedLevels[level.id] || !hasRequiredSnowflakes;
+          const isLocked =
+            lockedLevels[level.id] || !hasRequiredSnowflakes || level.id > availableMemoLevel;
           const levelDescription = level.description;
           const isLevelCompleted = completedMemoLevel >= level.id;
 

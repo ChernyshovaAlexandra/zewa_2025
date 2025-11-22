@@ -43,6 +43,7 @@ export interface UserInfoExpanded extends UserInfo {
   is_in_club: boolean;
   club_tasks?: Record<string, boolean>;
   memo_level?: number;
+  available_memo_level?: number;
 }
 
 export interface UserData {
