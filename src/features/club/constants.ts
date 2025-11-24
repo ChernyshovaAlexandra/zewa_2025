@@ -21,10 +21,10 @@ export const TASKS: ClubTask[] = [
   },
   {
     description:
-      'Купите Туалетнаю бумагу Zewa Just 1, 4 слоя (4 рулона) и загрузите чек, подтверждающий покупку.',
+      'Купите Бумажные полотенца Zewa Premium Decor (2 рулона) и загрузите чек, подтверждающий покупку.',
     reward: 'Покупайте!',
     id: 'task',
-    image: '/assets/images/prizes/1-jo.webp',
+    image: '/assets/images/prizes/premium-tissue.webp',
   },
 ];
 export const WINNERS = [
