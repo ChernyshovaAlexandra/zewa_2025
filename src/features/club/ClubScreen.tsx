@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PageContainer, Text, ZewaButton } from '@/shared/ui';
-import { useUserStore } from '@/shared/model';
+import { useStartDataStore, useUserStore } from '@/shared/model';
 import { TabsWrapper, Tabs, TabButton } from '../tournament/TournamentScreen.styles';
 import * as S from './ClubScreen.styles';
 import Heading from '@/components/UI/heading';
@@ -18,8 +18,17 @@ export function ClubScreen() {
   const isInClub = useUserStore((s) => s.userData?.user.is_in_club ?? false);
   const clubTasks = useUserStore((s) => s.userData?.user.club_tasks ?? null);
   const user = useUserStore((s) => s.user);
-  const referralLink = useUserStore((s) => s.userData?.user.tg_referral_link ?? '');
+  const tgReferralLink = useStartDataStore((s) => s.tg_referral_link);
   const telegram = useTelegramService();
+  const handleShare = () => {
+    if (!tgReferralLink) return;
+    const text = '\nПрисоединяйся к игре от Zewa по моей ссылке — и выигрывай призы до 100 000 ₽!';
+    const shareUrl =
+      `https://t.me/share/url?` +
+      `url=${encodeURIComponent(tgReferralLink)}` +
+      `&text=${encodeURIComponent(text)}`;
+    telegram.openTelegramLink(shareUrl);
+  };
 
   const { data } = useStandings(user?.id || 0);
 
@@ -92,10 +101,10 @@ export function ClubScreen() {
                       </S.TaskImageWrapper>
                     ) : null}
                   </S.CardContent>
-                  {task.id === 'referal' && referralLink ? (
+                  {task.id === 'referal' && tgReferralLink ? (
                     <div style={{ marginTop: 4 }}>
                       <ZewaButton
-                        onClick={() => telegram.openTelegramLink(referralLink)}
+                        onClick={handleShare}
                         variant="blue-b"
                         style={{
                           textTransform: 'none',
