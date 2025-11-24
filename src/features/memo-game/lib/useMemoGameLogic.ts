@@ -199,16 +199,30 @@ export function useMemoGameLogic({
     [matchedCards],
   );
 
+  // Track whether we've sent /game/start for the current run
+  const hasSentStartRef = useRef(false);
   useEffect(() => {
-    const startMemoGame = async () => {
-      try {
-        await apiService.gameStart({ game: 'memo', level: selectedLevel });
-      } catch (err) {
-        console.error('memo gameStart error', err);
-      }
-    };
+    // reset flag on level change or restart
+    hasSentStartRef.current = false;
+  }, [selectedLevel, restartToken]);
 
-    startMemoGame();
+  // Start control to avoid duplicate /game/start requests
+  const isStartingRef = useRef(false);
+  const lastStartTsRef = useRef(0);
+  const startMemoGame = useCallback(async () => {
+    const now = Date.now();
+    // Debounce rapid restarts within 1s window
+    if (now - lastStartTsRef.current < 1000) return;
+    if (isStartingRef.current) return;
+    isStartingRef.current = true;
+    lastStartTsRef.current = now;
+    try {
+      await apiService.gameStart({ game: 'memo', level: selectedLevel });
+    } catch (err) {
+      console.error('memo gameStart error', err);
+    } finally {
+      isStartingRef.current = false;
+    }
   }, [selectedLevel]);
 
   const resolutionTimeoutRef = useRef<number | null>(null);
@@ -319,6 +333,9 @@ export function useMemoGameLogic({
     }
   }, [setStartStoreData, setUserData, username]);
 
+  // Mark that we should refresh user data after user clicks "Играть ещё"
+  const shouldRefreshAfterRestartRef = useRef(false);
+
   const submitGameResult = useCallback(
     async (result: boolean): Promise<MemoGameRewardInfo> => {
       if (hasSubmittedResultRef.current) {
@@ -337,8 +354,9 @@ export function useMemoGameLogic({
           alreadyAwarded: Boolean(result && coinsAwarded === 0),
         };
 
+        // Do not refresh immediately; defer to after user clicks "Играть ещё"
         if (result && typeof coinsAwarded === 'number' && coinsAwarded > 0) {
-          await refreshUserData();
+          shouldRefreshAfterRestartRef.current = true;
         }
       } catch (err) {
         console.error('memo gameResult error', err);
@@ -391,9 +409,19 @@ export function useMemoGameLogic({
           timeSpentSeconds: result === 'timeout' ? timeLimitSeconds : timeSpentSeconds,
           rewardInfo,
           onRestart: () => {
+            // Only start a new game here; do NOT call /start to avoid two "start" requests
+            void startMemoGame();
             setRestartToken((prev) => prev + 1);
           },
           onExit: () => {
+            // If coins were awarded, refresh user data on exit instead of on restart
+            if (shouldRefreshAfterRestartRef.current) {
+              void refreshUserData().finally(() => {
+                shouldRefreshAfterRestartRef.current = false;
+                onExit();
+              });
+              return;
+            }
             onExit();
           },
         });
@@ -412,6 +440,7 @@ export function useMemoGameLogic({
       turnsCount,
       onExit,
       submitGameResult,
+      startMemoGame,
     ],
   );
 
@@ -420,6 +449,13 @@ export function useMemoGameLogic({
       if (gameResult !== 'playing' || isPaused || isResolvingPair || isInteractionLocked) return;
       if (matchedCards[index]) return;
       if (activeIndexes.includes(index)) return;
+
+      if (!hasSentStartRef.current) {
+        hasSentStartRef.current = true;
+        void apiService
+          .gameStart({ game: 'memo', level: selectedLevel })
+          .catch((err) => console.error('memo gameStart error', err));
+      }
 
       if (activeIndexes.length === 0) {
         setActiveIndexes([index]);
@@ -456,7 +492,16 @@ export function useMemoGameLogic({
         }, CARD_REVEAL_DELAY_MS);
       }
     },
-    [activeIndexes, cardDeck, gameResult, isPaused, isResolvingPair, matchedCards, isInteractionLocked],
+    [
+      activeIndexes,
+      cardDeck,
+      gameResult,
+      isPaused,
+      isResolvingPair,
+      matchedCards,
+      isInteractionLocked,
+      selectedLevel,
+    ],
   );
 
   const openPauseModal = useCallback(() => {

@@ -27,7 +27,6 @@ export const PageContainer = ({
   const { safeAreaInsetTop } = useTelegram();
   const webApp = useTelegramService();
   const tg_top = webApp?.tg?.safeAreaInset?.top;
-  console.info(webApp?.tg?.safeAreaInset?.top);
 
   return (
     <Wrapper
