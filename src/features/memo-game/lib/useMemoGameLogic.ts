@@ -206,29 +206,13 @@ export function useMemoGameLogic({
     hasSentStartRef.current = false;
   }, [selectedLevel, restartToken]);
 
-  // Start control to avoid duplicate /game/start requests
-  const isStartingRef = useRef(false);
-  const lastStartTsRef = useRef(0);
-  const startMemoGame = useCallback(async () => {
-    const now = Date.now();
-    // Debounce rapid restarts within 1s window
-    if (now - lastStartTsRef.current < 1000) return;
-    if (isStartingRef.current) return;
-    isStartingRef.current = true;
-    lastStartTsRef.current = now;
-    try {
-      await apiService.gameStart({ game: 'memo', level: selectedLevel });
-    } catch (err) {
-      console.error('memo gameStart error', err);
-    } finally {
-      isStartingRef.current = false;
-    }
-  }, [selectedLevel]);
-
+  // Timer and result control refs
   const resolutionTimeoutRef = useRef<number | null>(null);
   const timerIntervalRef = useRef<number | null>(null);
   const hasFinishedRef = useRef(false);
   const hasSubmittedResultRef = useRef(false);
+
+  
 
   useEffect(() => {
     setActiveIndexes([]);
@@ -300,6 +284,14 @@ export function useMemoGameLogic({
     }, 1000);
 
     timerIntervalRef.current = intervalId;
+
+    // Send game start exactly when the timer starts for a fresh run
+    if (!hasSentStartRef.current) {
+      hasSentStartRef.current = true;
+      void apiService
+        .gameStart({ game: 'memo', level: selectedLevel })
+        .catch((err) => console.error('memo gameStart error', err));
+    }
 
     return () => {
       window.clearInterval(intervalId);
@@ -409,8 +401,7 @@ export function useMemoGameLogic({
           timeSpentSeconds: result === 'timeout' ? timeLimitSeconds : timeSpentSeconds,
           rewardInfo,
           onRestart: () => {
-            // Only start a new game here; do NOT call /start to avoid two "start" requests
-            void startMemoGame();
+            // Just restart; timer effect will handle /game/start for the next run
             setRestartToken((prev) => prev + 1);
           },
           onExit: () => {
@@ -440,7 +431,6 @@ export function useMemoGameLogic({
       turnsCount,
       onExit,
       submitGameResult,
-      startMemoGame,
     ],
   );
 
@@ -450,12 +440,7 @@ export function useMemoGameLogic({
       if (matchedCards[index]) return;
       if (activeIndexes.includes(index)) return;
 
-      if (!hasSentStartRef.current) {
-        hasSentStartRef.current = true;
-        void apiService
-          .gameStart({ game: 'memo', level: selectedLevel })
-          .catch((err) => console.error('memo gameStart error', err));
-      }
+      // Start is sent only on timer start; do not send here
 
       if (activeIndexes.length === 0) {
         setActiveIndexes([index]);
@@ -527,6 +512,11 @@ export function useMemoGameLogic({
   const handlePause = useCallback(() => {
     if (gameResult !== 'playing' || isPaused || isInteractionLocked) return;
 
+    // Immediately stop the timer to avoid race conditions
+    if (timerIntervalRef.current) {
+      window.clearInterval(timerIntervalRef.current);
+      timerIntervalRef.current = null;
+    }
     setIsPaused(true);
     setShouldShowPauseOnResume(false);
     openPauseModal();
