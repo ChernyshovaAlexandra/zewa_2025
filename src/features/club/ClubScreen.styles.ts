@@ -30,6 +30,13 @@ export const Card = styled.div<{ $isCompleted?: boolean }>`
   span {
     color: ${({ $isCompleted }) => ($isCompleted ? '#fff' : 'var(--main-blue)')};
   }
+  button {
+    margin-left: 0;
+    margin-right: auto;
+    span {
+      color: #fff;
+    }
+  }
 `;
 
 export const CardHeader = styled.div`

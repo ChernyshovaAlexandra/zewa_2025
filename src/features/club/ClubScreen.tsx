@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { PageContainer, Text } from '@/shared/ui';
+import { PageContainer, Text, ZewaButton } from '@/shared/ui';
 import { useUserStore } from '@/shared/model';
 import { TabsWrapper, Tabs, TabButton } from '../tournament/TournamentScreen.styles';
 import * as S from './ClubScreen.styles';
@@ -8,6 +8,7 @@ import Heading from '@/components/UI/heading';
 import { TASKS } from './constants';
 import { useStandings } from '../tournament/useStandings';
 import { smartMaskName } from '@/utils';
+import { useTelegramService } from '@/contexts/TelegramContext';
 
 type Tab = 'tasks' | 'winners';
 
@@ -17,6 +18,8 @@ export function ClubScreen() {
   const isInClub = useUserStore((s) => s.userData?.user.is_in_club ?? false);
   const clubTasks = useUserStore((s) => s.userData?.user.club_tasks ?? null);
   const user = useUserStore((s) => s.user);
+  const referralLink = useUserStore((s) => s.userData?.user.tg_referral_link ?? '');
+  const telegram = useTelegramService();
 
   const { data } = useStandings(user?.id || 0);
 
@@ -89,6 +92,23 @@ export function ClubScreen() {
                       </S.TaskImageWrapper>
                     ) : null}
                   </S.CardContent>
+                  {task.id === 'referal' && referralLink ? (
+                    <div style={{ marginTop: 4 }}>
+                      <ZewaButton
+                        onClick={() => telegram.openTelegramLink(referralLink)}
+                        variant="blue-b"
+                        style={{
+                          textTransform: 'none',
+                          paddingRight: 0,
+                          paddingLeft: 0,
+                          width: 'fit-content',
+                          color: '#fff',
+                        }}
+                      >
+                        Пригласить друга
+                      </ZewaButton>
+                    </div>
+                  ) : null}
                 </S.Card>
               );
             })}
