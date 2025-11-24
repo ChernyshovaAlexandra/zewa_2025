@@ -24,17 +24,17 @@ export const prize_types_data: Record<
 > = {
   'Сертификат на 100 руб': {
     img: `
-    /assets/images/prizes/100rub.webp`,
+    /assets/images/prizes/100rub_1.webp`,
     img_thumb: `
-    /assets/images/prizes/100rub.webp`,
+    /assets/images/prizes/100rub_1.webp`,
     description: 'Для оплаты любых товаров в магазинах «Магнит».',
     manager: `Электронный сертификат придёт вам в\u00A0личных сообщениях в мессенджере. До ${CERTIFICATE_SHOW_DEADLINE_SHORT} года покажите его на кассе при покупке.`,
   },
   'Главный приз': {
     img: `
-    /assets/images/prizes/main-prize.jpg`,
+    /assets/images/prizes/main-prize.webp`,
     img_thumb: `
-    /assets/images/prizes/main-prize_thumb.png`,
+    /assets/images/prizes/main-prize.webp`,
     description: 'Для оплаты любых товаров в магазинах «Магнит».',
     manager:
       'После получения личного сообщения в\u00A0мессенджере сообщите о себе необходимую информацию. После её проверки мы перечислим деньги на ваш банковский счёт.',
@@ -50,9 +50,9 @@ export const prize_types_data: Record<
   },
   'Сертификат на 500 руб': {
     img: `
-    /assets/images/prizes/500rub.jpg`,
+    /assets/images/prizes/500rub.webp`,
     img_thumb: `
-    /assets/images/prizes/100rub_thumb.png`,
+    /assets/images/prizes/500rub.webp`,
     description: 'Для оплаты любых товаров в магазинах «Магнит».',
     manager: `Электронный сертификат придёт вам в\u00A0личных сообщениях в мессенджере. До ${CERTIFICATE_SHOW_DEADLINE_SHORT} года покажите его на кассе при покупке.`,
   },

@@ -115,7 +115,6 @@ export function HistoryScreen() {
     return (
       <>
         {data.slice(0, visibleChecks).map((item, id) => {
-          console.info(item.date_time_raw);
           return (
             <CheckContainer
               key={id}

@@ -67,7 +67,8 @@ export function TournamentScreen() {
               </Text>
 
               {(winners as Array<{ name: string; prize: string }>).map((w, i) => {
-                const img = prize_types_data[w.name]?.img || '/assets/images/prize-bg.png';
+                console.info(winners[i])
+                const img = prize_types_data[winners[i].prize]?.img || '/assets/images/prize-bg.png';
                 return (
                   <S.PrizeItem key={`${week}-${i}`}>
                     <div>

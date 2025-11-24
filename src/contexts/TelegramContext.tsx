@@ -1,6 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from 'react';
 import { telegramService, type TelegramWebApp } from '../services/TelegramService';
+import { logger } from '../services/logger';
 import { apiService } from '../services/ApiService';
 import { useUserStore, useStartDataStore } from '../shared/model';
 
@@ -50,7 +51,7 @@ export function TelegramProvider({ children }: { children: ReactNode }) {
     let cancelled = false;
     let timeoutId: number | null = null;
     let attempts = 0;
-    const maxAttempts = 30; 
+    const maxAttempts = 90; 
     const slowRetryDelay = 1000;
     let hasCompletedFallback = false;
     let detachSafeAreaListener: (() => void) | null = null;
@@ -170,6 +171,7 @@ export function TelegramProvider({ children }: { children: ReactNode }) {
         webAppInstance.disableVerticalSwipes?.();
       } catch (err) {
         console.warn('Failed to expand Telegram WebApp:', err);
+        logger.warn('webapp_expand_failed', { message: String(err) });
       }
 
       complete(true);
@@ -187,13 +189,24 @@ export function TelegramProvider({ children }: { children: ReactNode }) {
         };
       } catch (eventErr) {
         console.warn('Failed to subscribe to viewport changes:', eventErr);
+        logger.warn('webapp_viewport_subscribe_failed', { message: String(eventErr) });
       }
 
       const user = telegramService.getUser();
       const webAppInstance = telegramService.getWebApp();
 
-      if (!user || !webAppInstance) {
-        console.warn('Telegram WebApp detected but user data is unavailable.');
+      if (!webAppInstance) {
+        console.warn('Telegram WebApp detected but instance is unavailable.');
+        logger.info('webapp_instance_unavailable');
+        return;
+      }
+
+      if (!user) {
+        console.warn('Telegram WebApp detected but user data is unavailable (including fallback).');
+        logger.info('webapp_user_unavailable', {
+          hasInstance: Boolean(webAppInstance),
+          hasUser: Boolean(user),
+        });
         return;
       }
 
@@ -205,15 +218,10 @@ export function TelegramProvider({ children }: { children: ReactNode }) {
         photoUrl: user.photo_url,
       });
 
-      const { hash = '', auth_date: authDateRaw = '' } = webAppInstance.initDataUnsafe ?? {};
-      const authDate = Number.parseInt(authDateRaw, 10);
+      const hash = telegramService.getHash() ?? '';
+      const authDateVal = telegramService.getAuthDate();
 
-      apiService.setHash(
-        user.id,
-        hash,
-        webAppInstance.initData,
-        Number.isFinite(authDate) ? authDate : 0,
-      );
+      apiService.setHash(user.id, hash, webAppInstance.initData, authDateVal ?? 0);
 
       if (!startRequestSentRef.current) {
         startRequestSentRef.current = true;
@@ -243,6 +251,25 @@ export function TelegramProvider({ children }: { children: ReactNode }) {
         if (!hasCompletedFallback && attempts > maxAttempts) {
           hasCompletedFallback = true;
           complete(false);
+          try {
+            type WinWithTelegram = typeof window & {
+              Telegram?: { WebApp?: TelegramWebApp };
+            };
+            const w = window as unknown as WinWithTelegram;
+            const hasWindowTelegram = typeof w?.Telegram !== 'undefined';
+            const href = typeof window !== 'undefined' ? window.location.href : undefined;
+            const ua = typeof navigator !== 'undefined' ? navigator.userAgent : undefined;
+            logger.info('webapp_env_not_detected_timeout', {
+              attempts,
+              maxAttempts,
+              hasWindowTelegram,
+              href,
+              ua,
+            });
+          } catch (logErr) {
+            console.warn('log failure', logErr);
+            logger.warn('log_failure', { message: String(logErr) });
+          }
         }
 
         timeoutId = window.setTimeout(
@@ -253,6 +280,15 @@ export function TelegramProvider({ children }: { children: ReactNode }) {
       }
 
       initializeWebApp(webApp);
+      try {
+        const version = (webApp as TelegramWebApp & { version?: string })?.version;
+        logger.info('webapp_initialized', {
+          platform: webApp.platform,
+          version,
+        });
+      } catch (e) {
+        logger.warn('webapp_initialized_log_failed', { message: String(e) });
+      }
     };
 
     bootstrap();

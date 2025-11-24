@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import { logger } from './services/logger';
+import type { TelegramWebApp } from './services/TelegramService';
 import { SplashScreen } from './features/splash/SplashScreen';
 import { AppRouter } from './router';
 import { ZewaModal } from './shared/ui';
@@ -53,90 +55,121 @@ export default function App() {
   };
 
   const allowBrowserMode = import.meta.env.VITE_ALLOW_BROWSER_MODE === 'true';
-  const botUsername = import.meta.env.VITE_TELEGRAM_BOT_USERNAME;
-  const startAppParam = import.meta.env.VITE_TELEGRAM_STARTAPP_PARAM;
-  const telegramStartAppQuery =
-    startAppParam != null && startAppParam.length > 0
-      ? `startapp=${encodeURIComponent(startAppParam)}`
-      : 'startapp';
-  const telegramHttpsLink =
-    botUsername != null ? `https://t.me/${botUsername}?${telegramStartAppQuery}` : undefined;
-  const telegramDeepLink =
-    botUsername != null ? `tg://resolve?domain=${botUsername}&${telegramStartAppQuery}` : undefined;
+
   const shouldShowSplash = stage === 'splash' || !isTelegramReady;
-
-  useEffect(() => {
-    if (!isTelegramReady || isTelegramWebApp || allowBrowserMode || !telegramDeepLink) {
-      return;
-    }
-
-    const timer = window.setTimeout(() => {
-      try {
-        window.location.href = telegramDeepLink;
-      } catch {
-        if (telegramHttpsLink) {
-          window.location.href = telegramHttpsLink;
-        }
-      }
-    }, 250000);
-
-    return () => {
-      window.clearTimeout(timer);
-    };
-  }, [allowBrowserMode, isTelegramReady, isTelegramWebApp, telegramDeepLink, telegramHttpsLink]);
 
   if (shouldShowSplash) {
     return <SplashScreen />;
   }
 
   if (!isTelegramWebApp && !allowBrowserMode) {
-    return (
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          minHeight: '100vh',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: '32px 24px',
-          textAlign: 'center',
-          gap: '16px',
-          background: '#f7f7f7',
-          color: '#1c1c1c',
-        }}
-      >
-        <h1 style={{ fontSize: '24px', fontWeight: 700, margin: 0 }}>
-          Откройте мини-приложение в Telegram
-        </h1>
-        <p style={{ fontSize: '16px', margin: 0 }}>
-          Похоже, что вы запускаете проект в обычном браузере. Чтобы продолжить, откройте бота из
-          Telegram, нажмите кнопку с типом <code>web_app</code> и авторизуйтесь во встроенном
-          webview.
-        </p>
-        <p style={{ fontSize: '14px', margin: 0 }}>
-          Если вы настраиваете проект локально, включите режим отладки в браузере с помощью
-          переменной <code>VITE_ALLOW_BROWSER_MODE=true</code>.
-        </p>
-        {telegramHttpsLink ? (
-          <a
+    const FallbackView = () => {
+      useEffect(() => {
+        try {
+          type WinWithTelegram = typeof window & {
+            Telegram?: { WebApp?: TelegramWebApp & { version?: string } };
+          };
+          const w = window as unknown as WinWithTelegram;
+          const tg = w?.Telegram?.WebApp;
+          const info = {
+            decision: 'show_fallback',
+            allowBrowserMode,
+            isTelegramReady,
+            hasWindowTelegram: typeof w?.Telegram !== 'undefined',
+            hasWebApp: Boolean(tg),
+            initDataLen: tg?.initData ? String(tg.initData).length : 0,
+            hasUser: Boolean(tg?.initDataUnsafe?.user),
+            platform: tg?.platform,
+            version: tg?.version,
+            href: typeof window !== 'undefined' ? window.location.href : undefined,
+            ua: typeof navigator !== 'undefined' ? navigator.userAgent : undefined,
+          };
+          logger.info('fallback_screen_shown', info);
+        } catch (err) {
+          logger.exception(err, { where: 'FallbackView mount' });
+        }
+      }, []);
+
+      return (
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            minHeight: '100vh',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '32px 24px',
+            textAlign: 'center',
+            gap: '16px',
+            background: '#f7f7f7',
+            color: '#1c1c1c',
+          }}
+        >
+          <h1 style={{ fontSize: '24px', fontWeight: 700, margin: 0 }}>
+            Не удалось запустить мини‑приложение
+          </h1>
+          <p style={{ fontSize: '16px', margin: 0 }}>
+            Попробуйте перезапустить мини‑приложение. Если проблема сохраняется — обновите Telegram
+            до последней версии.
+          </p>
+          <div
             style={{
-              display: 'inline-flex',
-              alignItems: 'center',
+              display: 'flex',
+              gap: 12,
+              marginTop: 8,
+              flexWrap: 'wrap',
               justifyContent: 'center',
-              padding: '12px 20px',
-              borderRadius: '9999px',
-              background: '#229ED9',
-              color: '#fff',
-              textDecoration: 'none',
-              fontWeight: 600,
             }}
-            href={telegramHttpsLink}
           >
-            Открыть в Telegram
-          </a>
-        ) : null}
-      </div>
-    );
+            <button
+              type="button"
+              onClick={() => {
+                try {
+                  if (typeof window !== 'undefined') window.location.reload();
+                } catch (e) {
+                  logger.exception(e, { where: 'fallback_reload' });
+                }
+              }}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: '12px 20px',
+                borderRadius: '9999px',
+                background: '#182F5D',
+                color: '#fff',
+                textDecoration: 'none',
+                fontWeight: 600,
+                border: 'none',
+                cursor: 'pointer',
+              }}
+            >
+              Перезапустить
+            </button>
+            <a
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: '12px 20px',
+                borderRadius: '9999px',
+                background: '#229ED9',
+                color: '#fff',
+                textDecoration: 'none',
+                fontWeight: 600,
+              }}
+              href="https://telegram.org/dl"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Обновить Telegram
+            </a>
+          </div>
+        </div>
+      );
+    };
+
+    return <FallbackView />;
   }
 
   if (stage === 'onboarding') {

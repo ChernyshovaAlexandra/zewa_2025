@@ -13,6 +13,7 @@ import { useUserStore } from '@/shared/model';
 import { ButtonManualAddCheck } from '@/features/checks/ButtonManualAddCheck';
 import { ButtonUploadCheck } from '@/features/checks/ButtonUploadCheck';
 import { Spinner } from '@vkontakte/vkui';
+import { Scanner } from '@yudiel/react-qr-scanner';
 
 export function useReceiptScan() {
   const [pending, setPending] = useState(false);
@@ -168,14 +169,54 @@ export function useReceiptScan() {
   );
 
   const openTelegramScanner = async () => {
+    const tg = telegramService.getWebApp();
+    const canTgScan = Boolean(tg && typeof tg.showScanQrPopup === 'function');
+
+    if (canTgScan) {
+      try {
+        const raw: { data: string } = await telegramService.showScanQrPopup();
+        sendReceipt(raw.data);
+        return;
+      } catch (e: any) {
+        if (e?.message === 'popup-closed') {
+          renderScanErrorModal('Сканирование отменено.');
+          return;
+        }
+        // Fall through to local scanner on other errors
+      }
+    }
+
+    // Fallback: try local scanner in a modal
     try {
-      const raw: { data: string } = await telegramService.showScanQrPopup();
-      sendReceipt(raw.data);
-    } catch (e: any) {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      stream.getTracks().forEach((t) => t.stop());
+
+      useModalStore.getState().openModal({
+        title: 'Сканер QR-кодов',
+        closable: true,
+        content: (
+          <Flex vertical gap="10px">
+            <div style={{ width: '100%', maxWidth: 320, margin: '0 auto' }}>
+              <Scanner
+                onScan={(codes) => {
+                  const value = codes?.[0]?.rawValue;
+                  if (value) {
+                    useModalStore.getState().closeModal();
+                    sendReceipt(value);
+                  }
+                }}
+                onError={() => {}}
+                scanDelay={500}
+              />
+            </div>
+            <ButtonManualAddCheck />
+            <ButtonUploadCheck />
+          </Flex>
+        ),
+      });
+    } catch {
       renderScanErrorModal(
-        e.message === 'popup-closed'
-          ? 'Сканирование отменено.'
-          : 'Ошибка при сканировании QR-кода.',
+        'Сканирование недоступно на устройстве. Загрузите фото чека или введите данные вручную.',
       );
     }
   };

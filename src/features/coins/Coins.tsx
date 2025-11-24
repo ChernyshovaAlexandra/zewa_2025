@@ -11,7 +11,6 @@ export const Coins = () => {
     <ZewaButton
       variant="white"
       onClick={() => {
-        console.info('navigate');
         navigate('/history');
       }}
     >

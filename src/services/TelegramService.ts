@@ -16,6 +16,7 @@ export interface TelegramWebApp {
     auth_date?: string;
     query_id?: string;
   };
+  version?: string;
   platform?: string;
   isFullscreen?: boolean;
   safeArea?: {
@@ -95,8 +96,45 @@ export class TelegramService {
     this.maybeExpandToFullscreen();
   }
 
-  getUser() {
-    return this.tg?.initDataUnsafe.user;
+  private parseInitData(initData?: string): Record<string, string> | null {
+    if (!initData || typeof initData !== 'string') return null;
+    try {
+      const sp = new URLSearchParams(initData);
+      const out: Record<string, string> = {};
+      for (const [k, v] of sp.entries()) out[k] = v;
+      return out;
+    } catch {
+      return null;
+    }
+  }
+
+  getUser(): TelegramUser | undefined {
+    const user = this.tg?.initDataUnsafe?.user;
+    if (user) return user;
+    const params = this.parseInitData(this.tg?.initData);
+    if (!params) return undefined;
+    const rawUser = params['user'];
+    if (!rawUser) return undefined;
+    try {
+      return JSON.parse(rawUser) as TelegramUser;
+    } catch {
+      return undefined;
+    }
+  }
+
+  getHash(): string | undefined {
+    const unsafeHash = this.tg?.initDataUnsafe?.hash;
+    if (unsafeHash) return unsafeHash;
+    const params = this.parseInitData(this.tg?.initData);
+    return params?.['hash'];
+  }
+
+  getAuthDate(): number | undefined {
+    const unsafe = this.tg?.initDataUnsafe?.auth_date;
+    const raw = unsafe ?? this.parseInitData(this.tg?.initData)?.['auth_date'];
+    if (!raw) return undefined;
+    const num = Number.parseInt(raw, 10);
+    return Number.isFinite(num) ? num : undefined;
   }
 
   getWebApp() {
