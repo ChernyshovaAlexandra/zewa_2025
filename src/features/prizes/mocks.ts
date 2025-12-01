@@ -22,6 +22,15 @@ export const prize_types_data: Record<
     manager?: string;
   }
 > = {
+  'Новогодний бокс': {
+    img: `
+    /assets/images/prizes/new-year-box.webp`,
+    img_thumb: `
+    /assets/images/prizes/new-year-box.webp`,
+    description: 'Подарочный набор продукции Zewa Deluxe и праздничных сюрпризов',
+    manager:
+      'После получения личного сообщения в\u00A0мессенджере сообщите о себе необходимую информацию. После её проверки мы доставим приз в удобное для вас место и время.',
+  },
   'Сертификат на 100 руб': {
     img: `
     /assets/images/prizes/100rub_1.webp`,
@@ -71,7 +80,7 @@ export const prize_types_data: Record<
     manager:
       'После получения личного сообщения в\u00A0мессенджере сообщите о себе необходимую информацию. После её проверки мы доставим приз в удобное для вас место и время.',
   },
-  'Кофемашина': {
+  Кофемашина: {
     img: `
     /assets/images/prizes/2.webp`,
     img_thumb: `
@@ -107,7 +116,7 @@ export const prize_types_data: Record<
     manager:
       'После получения личного сообщения в\u00A0мессенджере сообщите о себе необходимую информацию. После её проверки мы доставим приз в удобное для вас место и время.',
   },
-  'Пароочиститель': {
+  Пароочиститель: {
     img: `
     /assets/images/prizes/6.webp`,
     img_thumb: `
@@ -125,7 +134,7 @@ export const prize_types_data: Record<
     manager:
       'После получения личного сообщения в\u00A0мессенджере сообщите о себе необходимую информацию. После её проверки мы доставим приз в удобное для вас место и время.',
   },
-  'Вафельница': {
+  Вафельница: {
     img: `
     /assets/images/prizes/8.webp`,
     img_thumb: `

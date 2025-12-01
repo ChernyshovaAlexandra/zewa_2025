@@ -175,11 +175,9 @@ const PrizesList: React.FC<PrizesListProps> = ({ isDrawerOpen }) => {
         const prizeRect = prizeElement.getBoundingClientRect();
         const containerRect = scrollContainer.getBoundingClientRect();
 
-        // Вычисляем позицию, на которую нужно прокрутить контейнер
         const offset =
           prizeRect.left - containerRect.left + scrollContainer.scrollLeft - prizeRect.width;
 
-        // Прокручиваем контейнер
         scrollContainer.scrollTo({
           left: offset,
           behavior: 'smooth',
