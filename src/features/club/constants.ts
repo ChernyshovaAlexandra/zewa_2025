@@ -21,11 +21,18 @@ export const TASKS: ClubTask[] = [
   },
   {
     description:
-      'Купите Бумажные полотенца Zewa Premium Decor (2 рулона) и загрузите чек, подтверждающий покупку.',
+      'Купите туалетную бумагу Zewa Deluxe Без аромата, 3 слоя, 8 рулонов и загрузите чек, подтверждающий покупку.',
     reward: 'Покупайте!',
     id: 'task',
-    image: '/assets/images/prizes/premium-tissue.webp',
+    image: '/assets/images/prizes/3-tp.png',
   },
+  // {
+  //   description:
+  //     'Купите Бумажные полотенца Zewa Premium Decor (2 рулона) и загрузите чек, подтверждающий покупку.',
+  //   reward: 'Покупайте!',
+  //   id: 'task',
+  //   image: '/assets/images/prizes/premium-tissue.webp',
+  // },
 ];
 export const WINNERS = [
   {
